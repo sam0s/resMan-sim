@@ -2,7 +2,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.newdawn.slick.*;
 
-public class Game extends BasicGame
+public class Game extends BasicGame 
 {
 	Image i;
 	Container menu;
@@ -15,19 +15,29 @@ public class Game extends BasicGame
 	@Override
 	public void init(GameContainer gc) throws SlickException {
 		i = new Image("img.png");
-		menu = new Container(500,64);
+		menu = new Container(500,64,200,500);
 	}
 
 	@Override
-	public void update(GameContainer gc, int i) throws SlickException {}
+	public void update(GameContainer gc, int i) throws SlickException {
+		
+		//just a test
+		if (menu.y>300){
+			menu.y-=0.05*(menu.y-300);
+		}
+	}
 
 	@Override
 	public void render(GameContainer gc, Graphics g) throws SlickException
 	{
-		menu.draw(100,200,g);
+		menu.draw(g);
 		//i.draw(32,32,300,300);
 	}
 
+	public void loop(){
+		
+	}
+	
 	public static void main(String[] args)
 	{
 		try
