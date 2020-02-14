@@ -33,7 +33,7 @@ public class Game extends BasicGame
 		try
 		{
 			AppGameContainer appgc;
-			appgc = new AppGameContainer(new Game("come up with game name"));
+			appgc = new AppGameContainer(new Game("COOMER SHELTER"));
 			appgc.setDisplayMode(640, 480, false);
 			appgc.start();
 		}
