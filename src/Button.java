@@ -19,9 +19,9 @@ public class Button extends Container {
 	
 	public void draw(Graphics surface){
 		super.draw(surface);
-		surface.setColor(inner);
 		surface.setFont(f);
-		surface.drawString(text, x+sizex/2, y+sizey/2);
+		surface.setColor(outer);
+		surface.drawString(text, (x+sizex/2)-f.getWidth(text)/2, (y+sizey/2)-f.getHeight(text)/2);
 		
 	}
 
