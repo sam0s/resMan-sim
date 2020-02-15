@@ -21,7 +21,7 @@ public class Game extends StateBasedGame {
     public static final int FPS     = 120;
     
     								// major.minor(patch)
-    public static final double VERSION = 1.11;
+    public static final double VERSION = 1.12;
 
     public void initStatesList(GameContainer gc) throws SlickException {
         this.addState(new StateGame());
