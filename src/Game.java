@@ -7,8 +7,10 @@ import org.newdawn.slick.*;
 
 public class Game extends BasicGame
 {
+	double theta;
 	Image i;
 	Container menu;
+	Container blocks[];
 	Input input;
 	java.awt.Font fontRaw;
 	Font f_32;
@@ -30,8 +32,13 @@ public class Game extends BasicGame
 	public void init(GameContainer gc) throws SlickException
 	{
 		i = new Image("hogBoss.jpg");
+		theta = 0;
 		input = gc.getInput();
 		menu = new Container(500, 64, 200, 500);
+		blocks = new Container[4];
+		for (int i = 0; i < 4; i++) {
+			blocks[i] = new Container(20, 20, 100, 100);
+		}
 		fontRaw = null;
 		try
 		{
@@ -63,19 +70,30 @@ public class Game extends BasicGame
 		mouse_pos[0] -= menu.sizex/2;
 		mouse_pos[1] -= menu.sizey/2;
 		
-		if (menu.x > mouse_pos[0])
-		{
-			menu.x -= 0.10 * (menu.x - mouse_pos[0]);
-		} else if (menu.x < mouse_pos[0]) {
-			menu.x += 0.10 * (mouse_pos[0] - menu.x);
-		}
+		menu.x -= 0.10*(menu.x-mouse_pos[0]);
+		menu.y -= 0.10*(menu.y-mouse_pos[1]);
 		
-		if (menu.y > mouse_pos[1])
-		{
-			menu.y -= 0.10 * (menu.y - mouse_pos[1]);
-		} else if (menu.y < mouse_pos[1]) {
-			menu.y += 0.10 * (mouse_pos[1] - menu.y);
-		}
+		
+		blocks[0].x = (float)Math.cos(theta)*100 + 150;
+		blocks[0].y = (float)Math.sin(theta)*100 + 150;
+		
+		theta += 0.01 * Math.PI;
+		
+		//blocks[0].x -= 0.10*(blocks[0].x - menu.x - menu.sizex/2);
+		//blocks[0].y -= 0.10*(blocks[0].y - menu.y - menu.sizey/2);
+		
+		blocks[1].x -= 0.10*(blocks[1].x - blocks[0].x);
+		blocks[1].y -= 0.10*(blocks[1].y - blocks[0].y);
+
+		blocks[2].x = (float)Math.cos(-theta)*100 + 150;
+		blocks[2].y = (float)Math.sin(-theta)*100 + 150;
+		
+		//blocks[2].x -= 0.10*(blocks[2].x - blocks[1].x);
+		//blocks[2].y -= 0.10*(blocks[2].y - blocks[1].y);
+		
+		blocks[3].x -= 0.10*(blocks[3].x - blocks[2].x);
+		blocks[3].y -= 0.10*(blocks[3].y - blocks[2].y);
+
 
 	}
 
@@ -85,6 +103,9 @@ public class Game extends BasicGame
 		i.draw(210, 140, 200,200);
 		f_32.drawString(32, 32, String.format("Coomer Shelter (%d, %d)", getMouse()[0], getMouse()[1]), Color.orange);
 		menu.draw(g);
+		for (int i = 0; i < 4; i++) {
+		blocks[i].draw(g);
+		}
 		f_24.drawString(menu.x+4, menu.y+4, "Menu",Color.orange);
 	}
 
