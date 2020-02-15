@@ -59,13 +59,22 @@ public class Game extends BasicGame
 
 		//gc.getGraphics().setFont(f);
 				
-		int mouse_y = getMouse()[1] - menu.sizey/2;
+		int mouse_pos[] = getMouse();
+		mouse_pos[0] -= menu.sizex/2;
+		mouse_pos[1] -= menu.sizey/2;
 		
-		if (menu.y > mouse_y)
+		if (menu.x > mouse_pos[0])
 		{
-			menu.y -= 0.10 * (menu.y - mouse_y);
-		} else if (menu.y < mouse_y) {
-			menu.y += 0.10 * (mouse_y - menu.y);
+			menu.x -= 0.10 * (menu.x - mouse_pos[0]);
+		} else if (menu.x < mouse_pos[0]) {
+			menu.x += 0.10 * (mouse_pos[0] - menu.x);
+		}
+		
+		if (menu.y > mouse_pos[1])
+		{
+			menu.y -= 0.10 * (menu.y - mouse_pos[1]);
+		} else if (menu.y < mouse_pos[1]) {
+			menu.y += 0.10 * (mouse_pos[1] - menu.y);
 		}
 
 	}
