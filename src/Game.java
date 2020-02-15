@@ -56,9 +56,14 @@ public class Game extends BasicGame
 		gc.getGraphics().setFont(f);
 		System.out.println(i);
 		// just a test
-		if (menu.y > 300)
+		
+		int mouse_y = getMouse()[1] - menu.sizey/2;
+		
+		if (menu.y > mouse_y)
 		{
-			menu.y -= 0.07 * (menu.y - 300);
+			menu.y -= 0.07 * (menu.y - mouse_y);
+		} else if (menu.y < mouse_y) {
+			menu.y += 0.07 * (mouse_y - menu.y);
 		}
 
 	}
