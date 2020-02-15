@@ -4,8 +4,8 @@ import org.newdawn.slick.Color;
 public class Container {
 	int sizex;
 	int sizey;
-	int x;
-	int y;
+	float x;
+	float y;
 	int color;
 	
 	Color outer = new Color(255,0,0);
