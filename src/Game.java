@@ -10,7 +10,10 @@ public class Game extends BasicGame
 	Image i;
 	Container menu;
 	Input input;
-	Font f;
+	java.awt.Font fontRaw;
+	Font f_32;
+	Font f_24;
+	Font f_16;
 
 	public Game(String gamename)
 	{
@@ -29,11 +32,10 @@ public class Game extends BasicGame
 		i = new Image("hogBoss.jpg");
 		input = gc.getInput();
 		menu = new Container(500, 64, 200, 500);
-		java.awt.Font fontRaw = null;
+		fontRaw = null;
 		try
 		{
 			fontRaw = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new java.io.File("FreeMonoBold.ttf"));
-			fontRaw = fontRaw.deriveFont(32f);
 		} catch (FontFormatException e)
 		{
 			e.printStackTrace();
@@ -46,17 +48,17 @@ public class Game extends BasicGame
 		{
 			fontRaw = new java.awt.Font("Default", 0, 28);
 		}
-		f = new TrueTypeFont(fontRaw, true);
+		f_32 = new TrueTypeFont(fontRaw.deriveFont(32f), true);
+		f_24 = new TrueTypeFont(fontRaw.deriveFont(24f), true);
+		f_16 = new TrueTypeFont(fontRaw.deriveFont(16f), true);
 	}
 
 	@Override
 	public void update(GameContainer gc, int i) throws SlickException
 	{
 
-		gc.getGraphics().setFont(f);
-		System.out.println(i);
-		// just a test
-		
+		//gc.getGraphics().setFont(f);
+				
 		int mouse_y = getMouse()[1] - menu.sizey/2;
 		
 		if (menu.y > mouse_y)
@@ -72,9 +74,9 @@ public class Game extends BasicGame
 	public void render(GameContainer gc, Graphics g) throws SlickException
 	{
 		i.draw(32, 32, 200,200);
-		f.drawString(32, 32, String.format("Coomer Shelter (%d, %d)", getMouse()[0], getMouse()[1]), Color.orange);
+		f_32.drawString(32, 32, String.format("Coomer Shelter (%d, %d)", getMouse()[0], getMouse()[1]), Color.orange);
 		menu.draw(g);
-		f.drawString(menu.x, menu.y, "Menu",Color.black);
+		f_24.drawString(menu.x+4, menu.y+4, "Menu",Color.orange);
 	}
 
 	public void loop()
