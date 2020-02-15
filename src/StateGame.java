@@ -65,9 +65,14 @@ public class StateGame extends BasicGameState
 		f_16 = new TrueTypeFont(fontRaw.deriveFont(16f), true);
 	}
 	
-	public float[] travel_to_point(float curx, float cury, float destx, float desty) {
-		curx -= 0.10 * (curx - destx);
-		cury -= 0.10 * (cury - desty);
+	public float[] travel_to_point(float curx, float cury, float destx, float desty, float speed, int delta) {
+		/* delta is in miliseconds, so divide by 1000 to get seconds. multiply by speed (pixels/s) to get 
+		 * number of pixels we need to move. finally, multiply by curpos - destpos to make
+		 * movement proportional to distance from target.
+		 */
+		
+		curx -= speed * (delta/1000f) * (curx - destx);
+		cury -= speed * (delta/1000f) * (cury - desty);
 		
 		return new float[] { curx, cury };
 	}
@@ -81,14 +86,14 @@ public class StateGame extends BasicGameState
 		// BECAUSE DELTA TIME = TIME BETWEEN FRAMES
 		// THIS FUNCTION SHOULD BE INCREMENTING FRAMETIME BY A LARGER NUMBER WHEN THE FRAMERATE IS HIGH
 		// AND BY A SMALLER NUMBER WHEN THE FRAMERATE IS LOW??? I THINK BUT THIS ACTUALLY EVENS THE SPEED OUT SOMEHOW TOO
-		if (frameTime>20){
+		//if (frameTime>20){
 		//System.out.println(delta);
 		int mouse_pos[] = getMouse();
 		mouse_pos[0] -= menu.sizex/2;
 		mouse_pos[1] -= menu.sizey/2;
 		
-		float new_point[] = travel_to_point(menu.x, menu.y, mouse_pos[0], mouse_pos[1]);
-		float diff_avg = ((menu.x - mouse_pos[0])+(menu.y - mouse_pos[1]))/2;
+		float new_point[] = travel_to_point(menu.x, menu.y, mouse_pos[0], mouse_pos[1], 3, delta);
+		float diff_avg = ((menu.x - mouse_pos[0])+(menu.y - mouse_pos[1]))/4;
 		
 		menu.x = new_point[0];
 		menu.y = new_point[1];
@@ -107,12 +112,12 @@ public class StateGame extends BasicGameState
 		
 		for (int j = 1; j <= 3; j++) {
 			if (j == 2) { continue; }
-			new_point = travel_to_point(blocks[j].x, blocks[j].y, blocks[j-1].x, blocks[j-1].y);
+			new_point = travel_to_point(blocks[j].x, blocks[j].y, blocks[j-1].x, blocks[j-1].y, 3, delta);
 			blocks[j].x = new_point[0];
 			blocks[j].y = new_point[1];
 		}
-		frameTime=0;
-		}
+		//frameTime=0;
+		//}
 	}
 
 	@Override
