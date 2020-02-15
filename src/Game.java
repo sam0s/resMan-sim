@@ -37,7 +37,7 @@ public class Game extends BasicGame
 		menu = new Container(500, 64, 200, 500);
 		blocks = new Container[4];
 		for (int i = 0; i < 4; i++) {
-			blocks[i] = new Container(20, 20, 100, 100);
+			blocks[i] = new Container(20, 20, 320, 240);
 		}
 		fontRaw = null;
 		try
@@ -59,6 +59,13 @@ public class Game extends BasicGame
 		f_24 = new TrueTypeFont(fontRaw.deriveFont(24f), true);
 		f_16 = new TrueTypeFont(fontRaw.deriveFont(16f), true);
 	}
+	
+	public float[] travel_to_point(float curx, float cury, float destx, float desty) {
+		curx -= 0.10 * (curx - destx);
+		cury -= 0.10 * (cury - desty);
+		
+		return new float[] { curx, cury };
+	}
 
 	@Override
 	public void update(GameContainer gc, int i) throws SlickException
@@ -70,12 +77,18 @@ public class Game extends BasicGame
 		mouse_pos[0] -= menu.sizex/2;
 		mouse_pos[1] -= menu.sizey/2;
 		
-		menu.x -= 0.10*(menu.x-mouse_pos[0]);
-		menu.y -= 0.10*(menu.y-mouse_pos[1]);
+		float new_point[] = travel_to_point(menu.x, menu.y, mouse_pos[0], mouse_pos[1]);
+		float diff_avg = ((menu.x - mouse_pos[0])+(menu.y - mouse_pos[1]))/2;
 		
+		menu.x = new_point[0];
+		menu.y = new_point[1];
 		
-		blocks[0].x = (int) ((float)Math.cos(theta)*100 + 150);
-		blocks[0].y = (int) ((float)Math.sin(theta)*100 + 150);
+		menu.set_size(500, 64);
+		menu.sizex += diff_avg;
+		menu.sizey += diff_avg;
+		
+		blocks[0].x = (int) ((float)Math.cos(theta)*100 + 320);
+		blocks[0].y = (int) ((float)Math.sin(theta)*100 + 240);
 		
 		theta += 0.01 * Math.PI;
 		
@@ -85,8 +98,8 @@ public class Game extends BasicGame
 		blocks[1].x -= 0.10*(blocks[1].x - blocks[0].x);
 		blocks[1].y -= 0.10*(blocks[1].y - blocks[0].y);
 
-		blocks[2].x = (float)Math.cos(-theta)*100 + 150;
-		blocks[2].y = (float)Math.sin(-theta)*100 + 150;
+		blocks[2].x = (float)Math.cos(-theta)*100 + 320;
+		blocks[2].y = (float)Math.sin(-theta)*100 + 240;
 		
 		//blocks[2].x -= 0.10*(blocks[2].x - blocks[1].x);
 		//blocks[2].y -= 0.10*(blocks[2].y - blocks[1].y);
