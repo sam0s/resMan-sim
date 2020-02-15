@@ -85,8 +85,8 @@ public class Game extends BasicGame
 		blocks[1].x -= 0.10*(blocks[1].x - blocks[0].x);
 		blocks[1].y -= 0.10*(blocks[1].y - blocks[0].y);
 
-		blocks[2].x = (int) ((float)Math.cos(-theta)*100 + 150);
-		blocks[2].y = (int) ((float)Math.sin(-theta)*100 + 150);
+		blocks[2].x = (float)Math.cos(-theta)*100 + 150;
+		blocks[2].y = (float)Math.sin(-theta)*100 + 150;
 		
 		//blocks[2].x -= 0.10*(blocks[2].x - blocks[1].x);
 		//blocks[2].y -= 0.10*(blocks[2].y - blocks[1].y);
