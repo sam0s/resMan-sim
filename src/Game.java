@@ -61,9 +61,9 @@ public class Game extends BasicGame
 		
 		if (menu.y > mouse_y)
 		{
-			menu.y -= 0.07 * (menu.y - mouse_y);
+			menu.y -= 0.10 * (menu.y - mouse_y);
 		} else if (menu.y < mouse_y) {
-			menu.y += 0.07 * (mouse_y - menu.y);
+			menu.y += 0.10 * (mouse_y - menu.y);
 		}
 
 	}
@@ -74,6 +74,7 @@ public class Game extends BasicGame
 		i.draw(32, 32, 200,200);
 		f.drawString(32, 32, String.format("Coomer Shelter (%d, %d)", getMouse()[0], getMouse()[1]), Color.orange);
 		menu.draw(g);
+		f.drawString(menu.x, menu.y, "Menu",Color.black);
 	}
 
 	public void loop()
