@@ -19,6 +19,8 @@ public class StateGame extends BasicGameState
 	Font f_24;
 	Font f_16;
 	long frameTime = 0;
+	Button menuBtn;
+	
 	public static final int ID = 0;
 
 	public int[] getMouse()
@@ -41,6 +43,7 @@ public class StateGame extends BasicGameState
 		input = gc.getInput();
 		menu = new Container(500, 64, 200, 500,inner,outer,2.5);
 		blocks = new Container[4];
+		
 		for (int i = 0; i < 4; i++) {
 			blocks[i] = new Container(20, 20, 320, 240,inner,outer,1);
 		}
@@ -63,6 +66,8 @@ public class StateGame extends BasicGameState
 		f_32 = new TrueTypeFont(fontRaw.deriveFont(32f), true);
 		f_24 = new TrueTypeFont(fontRaw.deriveFont(24f), true);
 		f_16 = new TrueTypeFont(fontRaw.deriveFont(16f), true);
+		
+		menuBtn = new Button(500, 64, 200, 500,inner,outer,2.5,"New",f_32);
 	}
 	
 	public float[] travel_to_point(float curx, float cury, float destx, float desty, float speed, int delta) {
@@ -136,5 +141,6 @@ public class StateGame extends BasicGameState
 		blocks[i].draw(g);
 		}
 		f_24.drawString(menu.x+4, menu.y+4, "Menu",Color.orange);
+		menuBtn.draw(g);
 	}
 }
