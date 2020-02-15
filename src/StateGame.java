@@ -92,15 +92,22 @@ public class StateGame extends BasicGameState
 		mouse_pos[0] -= menu.sizex/2;
 		mouse_pos[1] -= menu.sizey/2;
 		
+		
 		float new_point[] = travel_to_point(menu.x, menu.y, mouse_pos[0], mouse_pos[1], 3, delta);
 		float diff_avg = ((menu.x - mouse_pos[0])+(menu.y - mouse_pos[1]))/4;
 		
-		menu.x = new_point[0];
-		menu.y = new_point[1];
-		
 		menu.set_size(500, 64);
-		menu.sizex += diff_avg;
-		menu.sizey += diff_avg;
+
+		if (mouse_pos[1] > 400) {
+			menu.x = new_point[0];
+			menu.y = new_point[1];
+			menu.sizex += diff_avg;
+			menu.sizey += diff_avg;
+		} else {
+			new_point = travel_to_point(menu.x, menu.y, 120, 450, 3, delta);
+			menu.x = new_point[0];
+			menu.y = new_point[1];
+		}
 		
 		blocks[0].x = (int) ((float)Math.cos(theta)*100 + 320);
 		blocks[0].y = (int) ((float)Math.sin(theta)*100 + 240);
