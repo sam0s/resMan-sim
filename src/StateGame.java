@@ -93,7 +93,7 @@ public class StateGame extends BasicGameState
 		mouse_pos[1] -= menu.sizey/2;
 		
 		
-		float new_point[] = travel_to_point(menu.x, menu.y, mouse_pos[0], mouse_pos[1], 3, delta);
+		float new_point[] = travel_to_point(menu.x, menu.y, mouse_pos[0], mouse_pos[1], 4, delta);
 		float diff_avg = ((menu.x - mouse_pos[0])+(menu.y - mouse_pos[1]))/4;
 		
 		menu.set_size(500, 64);
@@ -104,7 +104,7 @@ public class StateGame extends BasicGameState
 			menu.sizex += diff_avg;
 			menu.sizey += diff_avg;
 		} else {
-			new_point = travel_to_point(menu.x, menu.y, 120, 450, 3, delta);
+			new_point = travel_to_point(menu.x, menu.y, mouse_pos[0], 450, 3, delta);
 			menu.x = new_point[0];
 			menu.y = new_point[1];
 		}
@@ -115,11 +115,11 @@ public class StateGame extends BasicGameState
 		blocks[2].x = (float)Math.cos(-theta)*100 + 320;
 		blocks[2].y = (float)Math.sin(-theta)*100 + 240;
 		
-		theta += 0.01 * Math.PI;
+		theta += 1 * Math.PI * (delta/1000f);
 		
 		for (int j = 1; j <= 3; j++) {
 			if (j == 2) { continue; }
-			new_point = travel_to_point(blocks[j].x, blocks[j].y, blocks[j-1].x, blocks[j-1].y, 3, delta);
+			new_point = travel_to_point(blocks[j].x, blocks[j].y, blocks[j-1].x, blocks[j-1].y, 4, delta);
 			blocks[j].x = new_point[0];
 			blocks[j].y = new_point[1];
 		}
