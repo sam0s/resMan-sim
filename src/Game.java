@@ -74,8 +74,8 @@ public class Game extends BasicGame
 		menu.y -= 0.10*(menu.y-mouse_pos[1]);
 		
 		
-		blocks[0].x = (float)Math.cos(theta)*100 + 150;
-		blocks[0].y = (float)Math.sin(theta)*100 + 150;
+		blocks[0].x = (int) ((float)Math.cos(theta)*100 + 150);
+		blocks[0].y = (int) ((float)Math.sin(theta)*100 + 150);
 		
 		theta += 0.01 * Math.PI;
 		
@@ -85,8 +85,8 @@ public class Game extends BasicGame
 		blocks[1].x -= 0.10*(blocks[1].x - blocks[0].x);
 		blocks[1].y -= 0.10*(blocks[1].y - blocks[0].y);
 
-		blocks[2].x = (float)Math.cos(-theta)*100 + 150;
-		blocks[2].y = (float)Math.sin(-theta)*100 + 150;
+		blocks[2].x = (int) ((float)Math.cos(-theta)*100 + 150);
+		blocks[2].y = (int) ((float)Math.sin(-theta)*100 + 150);
 		
 		//blocks[2].x -= 0.10*(blocks[2].x - blocks[1].x);
 		//blocks[2].y -= 0.10*(blocks[2].y - blocks[1].y);
@@ -121,7 +121,9 @@ public class Game extends BasicGame
 			AppGameContainer appgc;
 			appgc = new AppGameContainer(new Game("COOMER SHELTER"));
 			appgc.setDisplayMode(640, 480, false);
+			appgc.setTargetFrameRate(60);
 			appgc.start();
+			
 
 		} catch (SlickException ex)
 		{

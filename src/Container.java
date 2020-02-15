@@ -20,9 +20,9 @@ public class Container {
 	}
 	public void draw(Graphics surface){
 		//surface.fillRect(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
-		//surface.setColor(inner);
+		surface.setColor(inner);
 		surface.fillRect(x, y, sizex, sizey);
-		//surface.setColor(outer);
+		surface.setColor(outer);
 		surface.drawRect(x, y, sizex, sizey);
 		
 	}
