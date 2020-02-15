@@ -35,12 +35,14 @@ public class StateGame extends BasicGameState
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		i = new Image("hogBoss.jpg");
+		Color outer = new Color(255,0,0);
+		Color inner = new Color(255,255,255,50);
 		theta = 0;
 		input = gc.getInput();
-		menu = new Container(500, 64, 200, 500);
+		menu = new Container(500, 64, 200, 500,inner,outer,2.5);
 		blocks = new Container[4];
 		for (int i = 0; i < 4; i++) {
-			blocks[i] = new Container(20, 20, 320, 240);
+			blocks[i] = new Container(20, 20, 320, 240,inner,outer,1);
 		}
 		fontRaw = null;
 		try

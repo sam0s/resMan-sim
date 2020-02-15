@@ -6,17 +6,18 @@ public class Container {
 	int sizey;
 	float x;
 	float y;
-	int color;
+	Color inner;
+	Color outer;
+	float weight;
 	
-	Color outer = new Color(255,0,0);
-	Color inner = new Color(255,255,255,50);
-	
-	public Container(int sizex,int sizey,int x,int y){
+	public Container(int sizex,int sizey,int x,int y,Color c1,Color c2,double weight){
 		this.sizex=sizex;
 		this.sizey=sizey;
 		this.x=x;
 		this.y=y;
-		//this.color=color;
+		this.inner = c1;
+		this.outer = c2;
+		this.weight = (float) weight;
 	}
 	
 	public void set_size(int sizex, int sizey) {
@@ -25,6 +26,7 @@ public class Container {
 	}
 	
 	public void draw(Graphics surface){
+		surface.setLineWidth(weight);
 		surface.setColor(inner);
 		surface.fillRect(x, y, sizex, sizey);
 		surface.setColor(outer);
