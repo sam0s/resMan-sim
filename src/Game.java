@@ -82,7 +82,7 @@ public class Game extends BasicGame
 	@Override
 	public void render(GameContainer gc, Graphics g) throws SlickException
 	{
-		i.draw(32, 32, 200,200);
+		i.draw(210, 140, 200,200);
 		f_32.drawString(32, 32, String.format("Coomer Shelter (%d, %d)", getMouse()[0], getMouse()[1]), Color.orange);
 		menu.draw(g);
 		f_24.drawString(menu.x+4, menu.y+4, "Menu",Color.orange);
