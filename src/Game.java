@@ -90,24 +90,17 @@ public class Game extends BasicGame
 		blocks[0].x = (int) ((float)Math.cos(theta)*100 + 320);
 		blocks[0].y = (int) ((float)Math.sin(theta)*100 + 240);
 		
-		theta += 0.01 * Math.PI;
-		
-		//blocks[0].x -= 0.10*(blocks[0].x - menu.x - menu.sizex/2);
-		//blocks[0].y -= 0.10*(blocks[0].y - menu.y - menu.sizey/2);
-		
-		blocks[1].x -= 0.10*(blocks[1].x - blocks[0].x);
-		blocks[1].y -= 0.10*(blocks[1].y - blocks[0].y);
-
 		blocks[2].x = (float)Math.cos(-theta)*100 + 320;
 		blocks[2].y = (float)Math.sin(-theta)*100 + 240;
 		
-		//blocks[2].x -= 0.10*(blocks[2].x - blocks[1].x);
-		//blocks[2].y -= 0.10*(blocks[2].y - blocks[1].y);
+		theta += 0.01 * Math.PI;
 		
-		blocks[3].x -= 0.10*(blocks[3].x - blocks[2].x);
-		blocks[3].y -= 0.10*(blocks[3].y - blocks[2].y);
-
-
+		for (int j = 1; j <= 3; j++) {
+			if (j == 2) { continue; }
+			new_point = travel_to_point(blocks[j].x, blocks[j].y, blocks[j-1].x, blocks[j-1].y);
+			blocks[j].x = new_point[0];
+			blocks[j].y = new_point[1];
+		}
 	}
 
 	@Override
