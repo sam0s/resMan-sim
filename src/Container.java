@@ -31,7 +31,6 @@ public class Container {
 		surface.fillRect(x, y, sizex, sizey);
 		surface.setColor(outer);
 		surface.drawRect(x, y, sizex, sizey);
-		
 	}
 
 }
