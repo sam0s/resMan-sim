@@ -23,6 +23,7 @@ public class StateGame extends BasicGameState
 	long frameTime = 0;
 	Button menuBtn;
 	Button btn2;
+	Window test_window;
 	int[] mouse_pos;
 	Random b = new Random();
 
@@ -78,7 +79,7 @@ public class StateGame extends BasicGameState
 
 		try
 		{
-			menuBtn = new Button(500, 64, 200, 500, inner, outer, 2.5, "New", f_32, getMethod("hello"), this);
+			menuBtn = new Button(100, 64, 200, 500, inner, outer, 2.5, "New", f_16, getMethod("hello"), this);
 			btn2 = new Button(100, 45, 100, 100, inner, outer, 2, "buton", f_16, getMethod("moveMe"), this);
 		} catch (NoSuchMethodException e)
 		{
@@ -89,6 +90,9 @@ public class StateGame extends BasicGameState
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		test_window = new Window(200, 500, 50, 50, inner, outer, 2.5);
+		test_window.add_button(menuBtn,  0,  0);
 	}
 
 	public void moveMe()
@@ -152,6 +156,8 @@ public class StateGame extends BasicGameState
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		test_window.update(input, delta);
 	}
 
 	@Override
@@ -161,7 +167,7 @@ public class StateGame extends BasicGameState
 		f_32.drawString(32, 32, String.format("Coomer Shelter (%d, %d)", getMouse()[0], getMouse()[1]), Color.orange);
 		menu.draw(g);
 		f_24.drawString(menu.x + 4, menu.y + 4, "Menu", Color.orange);
-		menuBtn.draw(g);
+		test_window.draw(g);
 		btn2.draw(g);
 	}
 }

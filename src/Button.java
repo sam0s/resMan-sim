@@ -37,7 +37,7 @@ public class Button extends Container
 		{
 			if (my > y && my < y + sizey)
 			{
-				if (i.isMousePressed(0))
+				if (i.isMouseButtonDown(0))
 				{
 					func.invoke(gc);
 				}
