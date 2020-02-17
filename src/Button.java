@@ -3,21 +3,31 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Input;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 public class Button extends Container
 {
 	Font f;
 	String text;
 	Color hi_color;
 	boolean hi = false;
-
-	public Button(int sizex, int sizey, int x, int y, Color c1, Color c2, double weight, String text, Font fnt)
+	boolean triggered;
+	Method func;
+	Object gc;
+	
+	
+	public Button(int sizex, int sizey, int x, int y, Color c1, Color c2, double weight, String text, Font fnt,Method func,Object gc)
 	{
 		super(sizex, sizey, x, y, c1, c2, weight);
 		this.f = fnt;
 		this.text = text;
-		this.hi_color = new Color(inner.r, inner.g, inner.b, inner.a+5);
+		this.hi_color = inner.brighter(200);
+		this.func = func;
+		this.gc=gc;
 
 	}
+	
 
 	public void set_size(int sizex, int sizey)
 	{
@@ -25,21 +35,26 @@ public class Button extends Container
 		this.sizey = sizey;
 	}
 
-	public void update(Graphics surface, int[] mouse)
+	public void update(Input i) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{
 		hi = false;
-		if (mouse[0] > x && mouse[0] < x + sizex)
+		int mx = i.getMouseX();
+		int my = i.getMouseY();
+		if (mx > x && mx < x + sizex)
 		{
-			if (mouse[1] > y && mouse[1] < y + sizey)
+			if (my > y && my < y + sizey)
 			{
+				if (i.isMousePressed(0))
+				{
+					func.invoke(gc,"img.png");
+				}
+				
 				if (hi == false)
 				{
 					hi = true;
 				}
 			}
 		}
-		draw(surface);
-
 	}
 
 	public void draw(Graphics surface)

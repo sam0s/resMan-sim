@@ -2,6 +2,8 @@ import java.awt.FontFormatException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
@@ -65,7 +67,23 @@ public class StateGame extends BasicGameState
 		f_24 = new TrueTypeFont(fontRaw.deriveFont(24f), true);
 		f_16 = new TrueTypeFont(fontRaw.deriveFont(16f), true);
 		
-		menuBtn = new Button(500, 64, 200, 500,inner,outer,2.5,"New",f_32);
+		try
+		{
+			menuBtn = new Button(500, 64, 200, 500,inner,outer,2.5,"New",f_32,this.getClass().getDeclaredMethod("hello",new Class[]{String.class}),this);
+		} catch (NoSuchMethodException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	
+	public void hello(String a) throws SlickException{
+		i = new Image(a);
 	}
 	
 	public float[] travel_to_point(float curx, float cury, float destx, float desty, float speed, int delta) {
@@ -92,7 +110,7 @@ public class StateGame extends BasicGameState
 		float diff_avg = ((menu.x - mouse_pos[0])+(menu.y - mouse_pos[1]))/4;
 		
 		menu.set_size(500, 64);
-
+		
 		if (mouse_pos[1] > 600) {
 			new_point = travel_to_point(menu.x, menu.y, 0, 620, 4, delta);
 			menu.y = new_point[1];
@@ -103,6 +121,15 @@ public class StateGame extends BasicGameState
 			menu.x = new_point[0];
 			menu.y = new_point[1];
 		}
+		
+		try
+		{
+			menuBtn.update(input);
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -111,6 +138,6 @@ public class StateGame extends BasicGameState
 		f_32.drawString(32, 32, String.format("Coomer Shelter (%d, %d)", getMouse()[0], getMouse()[1]), Color.orange);
 		menu.draw(g);
 		f_24.drawString(menu.x+4, menu.y+4, "Menu",Color.orange);
-		menuBtn.update(g,mouse_pos);
+		menuBtn.draw(g);
 	}
 }
