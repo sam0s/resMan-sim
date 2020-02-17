@@ -17,22 +17,15 @@ public class Button extends Container
 	Object gc;
 	
 	
-	public Button(int sizex, int sizey, int x, int y, Color c1, Color c2, double weight, String text, Font fnt,Method func,Object gc)
+	public Button(int sizex, int sizey, int x, int y, Color inner, Color outer, double weight, String text, Font fnt,Method func,Object gc)
 	{
-		super(sizex, sizey, x, y, c1, c2, weight);
+		super(sizex, sizey, x, y, inner, outer, weight);
 		this.f = fnt;
 		this.text = text;
-		this.hi_color = inner.brighter(200);
+		this.hi_color = new Color(inner.getRed(),inner.getGreen(),inner.getBlue(),inner.getAlpha()+30);
 		this.func = func;
 		this.gc=gc;
 
-	}
-	
-
-	public void set_size(int sizex, int sizey)
-	{
-		this.sizex = sizex;
-		this.sizey = sizey;
 	}
 
 	public void update(Input i) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException
@@ -46,7 +39,7 @@ public class Button extends Container
 			{
 				if (i.isMousePressed(0))
 				{
-					func.invoke(gc,"img.png");
+					func.invoke(gc);
 				}
 				
 				if (hi == false)

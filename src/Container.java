@@ -10,13 +10,13 @@ public class Container {
 	Color outer;
 	float weight;
 	
-	public Container(int sizex,int sizey,int x,int y,Color c1,Color c2,double weight){
+	public Container(int sizex,int sizey,int x,int y,Color inner,Color outer,double weight){
 		this.sizex=sizex;
 		this.sizey=sizey;
 		this.x=x;
 		this.y=y;
-		this.inner = c1;
-		this.outer = c2;
+		this.inner = inner;
+		this.outer = outer;
 		this.weight = (float) weight;
 	}
 	
