@@ -19,6 +19,7 @@ public class StateGame extends BasicGameState
 	Font f_16;
 	long frameTime = 0;
 	Button menuBtn;
+	int[] mouse_pos;
 	
 	public static final int ID = 0;
 
@@ -42,6 +43,8 @@ public class StateGame extends BasicGameState
 		input = gc.getInput();
 		menu = new Container(500, 64, 200, 500,inner,outer,2.5);
 		fontRaw = null;
+		mouse_pos = getMouse();
+		
 		
 		try
 		{
@@ -80,9 +83,9 @@ public class StateGame extends BasicGameState
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException
 	{
-		int mouse_pos[] = getMouse();
-		mouse_pos[0] -= menu.sizex/2;
-		mouse_pos[1] -= menu.sizey/2;
+		mouse_pos = getMouse();
+		//mouse_pos[0] -= menu.sizex/2;
+		//mouse_pos[1] -= menu.sizey/2;
 		
 		
 		float new_point[] = travel_to_point(menu.x, menu.y, mouse_pos[0], mouse_pos[1], 4, delta);
@@ -108,6 +111,6 @@ public class StateGame extends BasicGameState
 		f_32.drawString(32, 32, String.format("Coomer Shelter (%d, %d)", getMouse()[0], getMouse()[1]), Color.orange);
 		menu.draw(g);
 		f_24.drawString(menu.x+4, menu.y+4, "Menu",Color.orange);
-		menuBtn.draw(g);
+		menuBtn.update(g,mouse_pos);
 	}
 }
