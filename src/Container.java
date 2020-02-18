@@ -25,6 +25,23 @@ public class Container {
 		this.sizey = sizey;
 	}
 	
+	public float[] travel_to_point(float curx, float cury, float destx, float desty, float speed, int delta)
+	{
+		/*
+		 * delta is in miliseconds, so divide by 1000 to get seconds. multiply
+		 * by speed (pixels/s) to get number of pixels we need to move. finally,
+		 * multiply by curpos - destpos to make movement proportional to
+		 * distance from target.
+		 */
+
+		curx -= speed * (delta / 1000f) * (curx - destx);
+		cury -= speed * (delta / 1000f) * (cury - desty);
+
+		return new float[]
+		{ curx, cury };
+	}
+	
+	
 	public void draw(Graphics surface){
 		surface.setLineWidth(weight);
 		surface.setColor(inner);
