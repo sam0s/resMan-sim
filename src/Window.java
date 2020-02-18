@@ -10,9 +10,6 @@ import org.newdawn.slick.Color;
 
 public class Window extends Container {
 
-    public Button buttons[];
-    public int n_buttons;
-
     public Container titlebar;
     public int titlebar_height;
     public String title;
@@ -29,14 +26,9 @@ public class Window extends Container {
 	hidden = !hidden;
     }
 
-    public Method getMethod(String methodName, Class... args) throws NoSuchMethodException, SecurityException {
-	return this.getClass().getDeclaredMethod(methodName, args);
-    }
 
     public Window(int sizex, int sizey, int x, int y, Color inner, Color outer, double weight, Font f, String title) throws NoSuchMethodException, SecurityException {
 	super(sizex, sizey, x, y, inner, outer, weight);
-	this.buttons = new Button[] {};
-	this.n_buttons = 0;
 	this.moving_cursor_x_offset = 0;
 	this.moving_cursor_y_offset = 0;
 	titlebar_height = 20;
@@ -50,11 +42,8 @@ public class Window extends Container {
     }
 
     public void add_button(Button new_button, int relx, int rely) {
-	this.buttons = Arrays.copyOf(this.buttons, n_buttons + 1);
-	this.buttons[n_buttons] = new_button;
-	new_button.x = this.x + relx;
-	new_button.y = this.y + rely + this.titlebar_height;
-	n_buttons++;
+	super.add_button(new_button,relx,rely);
+	new_button.y = new_button.y + this.titlebar_height;
     }
 
     public void update(Input i, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -80,9 +69,9 @@ public class Window extends Container {
 		titlebar.x += xoffset;
 		titlebar.y += yoffset;
 
-		for (int j = 0; j < n_buttons; j++) {
-		    buttons[j].x += xoffset;
-		    buttons[j].y += yoffset;
+		for (Button b: buttons) {
+		    b.x += xoffset;
+		    b.y += yoffset;
 		}
 	    }
 
@@ -109,8 +98,8 @@ public class Window extends Container {
 	    surface.drawRect(x, y, sizex, sizey);
 	    titlebar.draw(surface);
 
-	    for (int i = 0; i < this.n_buttons; i++) {
-		buttons[i].draw(surface);
+	    for (Button b:buttons) {
+		b.draw(surface);
 	    }
 
 	    surface.setFont(f);
