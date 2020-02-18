@@ -14,6 +14,8 @@ public class Window extends Container {
 	public int titlebar_height;
 	
 	boolean moving;
+	float moving_cursor_x_offset;
+	float moving_cursor_y_offset;
 	
 	public Window(int sizex, int sizey, int x, int y, Color inner, Color outer, double weight) {
 		super(sizex, sizey, x, y, inner, outer, weight);
@@ -23,6 +25,8 @@ public class Window extends Container {
 		titlebar_height = 20;
 		titlebar = new Container(this.sizex, this.titlebar_height, this.x, this.y, inner, outer, 2.5);
 		moving = false;
+		this.moving_cursor_x_offset = 0;
+		this.moving_cursor_y_offset = 0;
 	}
 	
 	public void add_button(Button new_button, int relx, int rely) {
@@ -59,7 +63,7 @@ public class Window extends Container {
 		
 		if (moving)
 		{
-			float new_point[] = travel_to_point(this.x, this.y, mx-(this.x - mx), my, 10, delta);
+			float new_point[] = travel_to_point(this.x, this.y, mx-this.moving_cursor_x_offset, my-this.moving_cursor_y_offset, 20, delta);
 			float xoffset = new_point[0] - this.x;
 			float yoffset = new_point[1] - this.y;
 			this.x += xoffset;
@@ -80,6 +84,10 @@ public class Window extends Container {
 			{
 				if (!moving) {
 					moving = i.isMouseButtonDown(0);
+					if (moving) {
+						moving_cursor_x_offset = mx - this.x;
+						moving_cursor_y_offset = my - this.y;
+					}
 				}
 			}
 		} 
