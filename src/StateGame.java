@@ -23,6 +23,7 @@ public class StateGame extends BasicGameState {
     long frameTime = 0;
     Button menuBtn;
     Button btn2;
+    Button btn_showattr;
     Window test_window;
     int[] mouse_pos;
     Random b = new Random();
@@ -38,8 +39,8 @@ public class StateGame extends BasicGameState {
 	return StateGame.ID;
     }
 
-    public Method getMethod(String methodName, Class... args) throws NoSuchMethodException, SecurityException {
-	return this.getClass().getDeclaredMethod(methodName, args);
+    public Method fgetMethod(String methodName, Class... args) throws NoSuchMethodException, SecurityException {
+	return this.getClass().getMethod(methodName, args);
     }
 
     @Override
@@ -70,16 +71,18 @@ public class StateGame extends BasicGameState {
 	f_16 = new TrueTypeFont(fontRaw.deriveFont(16f), true);
 
 	try {
-	    menuBtn = new Button(100, 64, 200, 500, Color.black, Color.red, 2.5, "New", f_24, getMethod("hello"), this);
-	    btn2 = new Button(100, 45, 100, 100, inner, outer, 2, "buton", f_24, getMethod("moveMe"), this);
+	    menuBtn = new Button(100, 64, 2, 2, Color.black, Color.red, 2.5, "New", f_24, fgetMethod("hello"), this);
+	    btn2 = new Button(100, 45, 2,  menuBtn.sizey + 6, inner, outer, 2, "buton", f_24, fgetMethod("moveMe"), this);
 	    test_window = new Window(200, 500, 50, 50, Color.white, Color.blue, 2.5, f_18, "Attributes");
+	    btn_showattr = new Button(100,45, 4,20,Color.black, Color.red, 2, "Show Attr.",f_24,test_window.fgetMethod("show"),test_window);
 	} catch (NoSuchMethodException | SecurityException e) {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
 
-	test_window.add_button(menuBtn, 2, 2);
-	test_window.add_button(btn2, 2, menuBtn.sizey + 4);
+	test_window.add_button(menuBtn);
+	test_window.add_button(btn2);
+	menu.add_button(btn_showattr);
     }
 
     public void moveMe() {
@@ -130,6 +133,7 @@ public class StateGame extends BasicGameState {
 
 	try {
 	    test_window.update(input, delta);
+	    menu.update(input);
 	} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();

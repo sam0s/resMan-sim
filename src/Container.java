@@ -1,6 +1,8 @@
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
+import org.newdawn.slick.Input;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Color;
 
@@ -13,13 +15,25 @@ public class Container {
     Color outer;
     float weight;
     public Button buttons[];
+    public boolean hidden = false;
+    float relx;
+    float rely;
 
     //Use to get method reference to a method of this class!
-    public Method getMethod(String methodName, Class... args) throws NoSuchMethodException, SecurityException {
-	return this.getClass().getDeclaredMethod(methodName, args);
+    public Method fgetMethod(String methodName, Class... args) throws NoSuchMethodException, SecurityException {
+	return this.getClass().getMethod(methodName, args);
+    }
+    
+    public void hide() {
+	hidden = true;
+    }
+    
+    public void show() {
+	hidden = false;
     }
     
     
+    //When making a container, relx, rely are set to original x,y, in the case that this is a sub-container.
     public Container(int sizex, int sizey, float x, float y, Color inner, Color outer, double weight) {
 	this.sizex = sizex;
 	this.sizey = sizey;
@@ -29,13 +43,23 @@ public class Container {
 	this.outer = outer;
 	this.weight = (float) weight;
 	this.buttons = new Button[] {};
+	this.relx=x;
+	this.rely=y;
     }
 
-    public void add_button(Button new_button, int relx, int rely) {
+    public void add_button(Button new_button) {
 	this.buttons = Arrays.copyOf(this.buttons, buttons.length+1);
 	this.buttons[buttons.length-1] = new_button;
-	new_button.x = this.x + relx;
-	new_button.y = this.y + rely;
+	new_button.x = this.x + new_button.relx;
+	new_button.y = this.y + new_button.rely;
+    }
+    
+    public void update(Input i) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	for (Button b : buttons) {
+	    b.update(i);
+	    b.x = x + b.relx;
+	    b.y = y + b.rely;
+	}
     }
 
     public void set_size(int sizex, int sizey) {
@@ -63,6 +87,10 @@ public class Container {
 	surface.fillRect(x, y, sizex, sizey);
 	surface.setColor(outer);
 	surface.drawRect(x, y, sizex, sizey);
+	
+	for (Button b : buttons) {
+		b.draw(surface);
+	    }
     }
 
 }
