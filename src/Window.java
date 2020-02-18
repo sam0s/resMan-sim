@@ -22,6 +22,9 @@ public class Window extends Container {
     public boolean hidden = false;
     Button hidebutton;
 
+    float moving_cursor_x_offset;
+    float moving_cursor_y_offset;
+
     public void toggle_hide() {
 	hidden = !hidden;
     }
@@ -34,9 +37,11 @@ public class Window extends Container {
 	super(sizex, sizey, x, y, inner, outer, weight);
 	this.buttons = new Button[] {};
 	this.n_buttons = 0;
+	this.moving_cursor_x_offset = 0;
+	this.moving_cursor_y_offset = 0;
 	titlebar_height = 20;
 	titlebar = new Container(this.sizex, titlebar_height, this.x, this.y, outer, inner, 2.5);
-	hidebutton = new Button(30, titlebar_height-2, 0, 0, Color.white, Color.red, 2.5, "X", f, getMethod("toggle_hide"), this);
+	hidebutton = new Button(30, titlebar_height - 2, 0, 0, Color.white, Color.red, 2.5, "X", f, getMethod("toggle_hide"), this);
 	moving = false;
 	this.title = title;
 	this.f = f;
@@ -66,7 +71,7 @@ public class Window extends Container {
 	    }
 
 	    if (moving) {
-		float new_point[] = travel_to_point(this.x, this.y, mx - (this.x - mx), my, 10, delta);
+		float new_point[] = travel_to_point(this.x, this.y, mx - this.moving_cursor_x_offset, my - this.moving_cursor_y_offset, 20, delta);
 		float xoffset = new_point[0] - this.x;
 		float yoffset = new_point[1] - this.y;
 		this.x += xoffset;
@@ -85,6 +90,10 @@ public class Window extends Container {
 		if (my > y && my < y + this.titlebar_height) {
 		    if (!moving) {
 			moving = i.isMouseButtonDown(0);
+			if (moving) {
+			    moving_cursor_x_offset = mx - this.x;
+			    moving_cursor_y_offset = my - this.y;
+			}
 		    }
 		}
 	    }
