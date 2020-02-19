@@ -37,13 +37,13 @@ public class Window extends Container {
 	super(sizex, sizey, x, y, inner, outer, weight);
 	this.moving_cursor_x_offset = 0;
 	this.moving_cursor_y_offset = 0;
-	titlebar_height = 20;
-	titlebar = new Container(this.sizex, titlebar_height, this.x, this.y, outer, inner, 2.5);
-	hidebutton = new Button(30, titlebar_height - 2, sizex - 32, -titlebar.sizey, Color.white, Color.red, 2.5, "X", f, fgetMethod("hide"), this);
+	titlebar_height = 25;
+	titlebar = new Container(this.sizex, titlebar_height, this.x, this.y, inner, outer, weight);
+	hidebutton = new Button(30, titlebar_height - 2, sizex - 32, -titlebar.sizey, Color.white, Color.red, weight, "X", f, fgetMethod("hide"), this);
 	moving = false;
 	this.title = title;
 	this.f = f;
-	this.title_color = new Color(inner.getRed(), inner.getGreen(), inner.getBlue());
+	this.title_color = outer;
 	this.add_button(hidebutton);
     }
 

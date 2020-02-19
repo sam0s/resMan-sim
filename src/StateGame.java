@@ -23,10 +23,13 @@ public class StateGame extends BasicGameState {
     long frameTime = 0;
     Button menuBtn;
     Button btn2;
+    Button btn3;
     Button btn_showattr;
     Window test_window;
     int[] mouse_pos;
     Random b = new Random();
+    
+    Sound soundbyte;
 
     public static final int ID = 0;
 
@@ -46,6 +49,7 @@ public class StateGame extends BasicGameState {
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 	i = new Image("hogBoss.jpg");
+	soundbyte = new Sound("cooom.ogg");
 	Color outer = new Color(255, 0, 0);
 	Color inner = new Color(255, 255, 255, 50);
 	theta = 0;
@@ -65,15 +69,19 @@ public class StateGame extends BasicGameState {
 	if (fontRaw == null) {
 	    fontRaw = new java.awt.Font("Default", 0, 28);
 	}
-	f_32 = new TrueTypeFont(fontRaw.deriveFont(32f), true);
-	f_24 = new TrueTypeFont(fontRaw.deriveFont(24f), true);
-	f_18 = new TrueTypeFont(fontRaw.deriveFont(18f), true);
-	f_16 = new TrueTypeFont(fontRaw.deriveFont(16f), true);
+	f_32 = new TrueTypeFont(fontRaw.deriveFont(32f), false);
+	f_24 = new TrueTypeFont(fontRaw.deriveFont(24f), false);
+	f_18 = new TrueTypeFont(fontRaw.deriveFont(18f), false);
+	f_16 = new TrueTypeFont(fontRaw.deriveFont(16f), false);
+	
+	Color window_inner = new Color(40, 40, 40, 225);
+	Color window_outer = Color.orange;
 
 	try {
-	    menuBtn = new Button(100, 64, 2, 2, Color.black, Color.red, 2.5, "New", f_24, fgetMethod("hello"), this);
-	    btn2 = new Button(100, 45, 2,  menuBtn.sizey + 6, inner, outer, 2, "buton", f_24, fgetMethod("moveMe"), this);
-	    test_window = new Window(200, 500, 50, 50, Color.white, Color.blue, 2.5, f_18, "Attributes");
+	    menuBtn = new Button(100, 64, 4, 4, window_inner, window_outer, 2, "New", f_24, fgetMethod("hello"), this);
+	    btn2 = new Button(100, f_24.getHeight("buton")+4, 4,  menuBtn.rely+menuBtn.sizey+4, window_inner, window_outer, 2, "buton", f_24, fgetMethod("moveMe"), this);
+	    btn3 = new Button(100, f_24.getHeight("COOM")+4, 4, btn2.rely + btn2.sizey+4, window_inner, window_outer, 2, "COOM", f_24, fgetMethod("coom"), this);
+	    test_window = new Window(300, 600, 50, 50, window_inner, window_outer, 2, f_18, "Attributes");
 	    btn_showattr = new Button(100,45, 4,20,Color.black, Color.red, 2, "Show Attr.",f_24,test_window.fgetMethod("show"),test_window);
 	} catch (NoSuchMethodException | SecurityException e) {
 	    // TODO Auto-generated catch block
@@ -82,12 +90,17 @@ public class StateGame extends BasicGameState {
 
 	test_window.add_button(menuBtn);
 	test_window.add_button(btn2);
+	test_window.add_button(btn3);
 	menu.add_button(btn_showattr);
     }
 
     public void moveMe() {
 	btn2.set_size(b.nextInt(Game.WIDTH), b.nextInt(Game.WIDTH));
 
+    }
+    
+    public void coom() {
+    	soundbyte.play();
     }
 
     public void hello() throws SlickException {
