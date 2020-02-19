@@ -14,6 +14,8 @@ public class Container {
     Color inner;
     Color outer;
     float weight;
+    public Container containers[];
+    public TextBox textboxes[];
     public Button buttons[];
     public boolean hidden = false;
     float relx;
@@ -32,6 +34,37 @@ public class Container {
 	hidden = false;
     }
     
+    public void set_pos(float x, float y) {
+    	this.x = x + relx;
+    	this.y = y + rely;
+    	
+    	for (TextBox t: textboxes) {
+    		t.set_pos(x, y);
+    	}
+    	for (Button b : buttons) {
+    		b.set_pos(x, y);
+
+    	}
+    	for (Container c : containers) {
+    		c.set_pos(x, y);
+    	}
+    	
+    }
+    
+    public void move(float xoffset, float yoffset) {
+    	this.x += xoffset;
+    	this.y += yoffset;
+    	
+    	for (TextBox t: textboxes) {
+    		t.move(xoffset, yoffset);
+    	}
+    	for (Button b : buttons) {
+    		b.move(xoffset, yoffset);
+    	}
+    	for (Container c : containers) {
+    		c.move(xoffset, yoffset);
+    	}
+    }
     
     //When making a container, relx, rely are set to original x,y, in the case that this is a sub-container.
     public Container(int sizex, int sizey, float x, float y, Color inner, Color outer, double weight) {
@@ -43,6 +76,8 @@ public class Container {
 	this.outer = outer;
 	this.weight = (float) weight;
 	this.buttons = new Button[] {};
+	this.textboxes = new TextBox[] {};
+	this.containers = new Container[] {};
 	this.relx=x;
 	this.rely=y;
     }
@@ -52,6 +87,21 @@ public class Container {
 	this.buttons[buttons.length-1] = new_button;
 	new_button.x = this.x + new_button.relx;
 	new_button.y = this.y + new_button.rely;
+    }
+    
+    public void add_conatiner(Container new_container) {
+    this.containers = Arrays.copyOf(this.containers, this.containers.length+1);
+    this.containers[containers.length-1] = new_container;
+    new_container.x = this.x + new_container.relx;
+    new_container.y = this.y + new_container.rely;
+    }
+    
+    public void add_textbox(TextBox new_tb) {
+    	this.textboxes = Arrays.copyOf(this.textboxes, this.textboxes.length+1);
+    	this.textboxes[textboxes.length-1] = new_tb;
+    	new_tb.x = this.x + new_tb.relx;
+    	System.out.printf("this is %f\n", new_tb.x);
+    	new_tb.y = this.y + new_tb.rely;
     }
     
     public void update(Input i) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{
@@ -87,6 +137,15 @@ public class Container {
 	surface.fillRect(x, y, sizex, sizey);
 	surface.setColor(outer);
 	surface.drawRect(x, y, sizex, sizey);
+	
+	for (TextBox t : textboxes) {
+		t.draw(surface);
+		System.out.printf("%f %f\n", t.x, t.y);
+	}
+	
+	for (Container c : containers) {
+		c.draw(surface);
+	}
 	
 	for (Button b : buttons) {
 		b.draw(surface);

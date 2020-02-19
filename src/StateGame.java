@@ -25,6 +25,8 @@ public class StateGame extends BasicGameState {
     Button btn2;
     Button btn3;
     Button btn_showattr;
+    TextBox tb;
+    Container test_container;
     Window test_window;
     int[] mouse_pos;
     Random b = new Random();
@@ -53,6 +55,7 @@ public class StateGame extends BasicGameState {
 	Color outer = new Color(255, 0, 0);
 	Color inner = new Color(255, 255, 255, 50);
 	theta = 0;
+	int padding = 4;
 	input = gc.getInput();
 	menu = new Container(500, 64, 200, 500, inner, outer, 2.5);
 	fontRaw = null;
@@ -78,19 +81,25 @@ public class StateGame extends BasicGameState {
 	Color window_outer = Color.orange;
 
 	try {
-	    menuBtn = new Button(100, 64, 4, 4, window_inner, window_outer, 2, "New", f_24, fgetMethod("hello"), this);
-	    btn2 = new Button(100, f_24.getHeight("buton")+4, 4,  menuBtn.rely+menuBtn.sizey+4, window_inner, window_outer, 2, "buton", f_24, fgetMethod("moveMe"), this);
-	    btn3 = new Button(100, f_24.getHeight("COOM")+4, 4, btn2.rely + btn2.sizey+4, window_inner, window_outer, 2, "COOM", f_24, fgetMethod("coom"), this);
+	    menuBtn = new Button(100, 64, padding, padding, window_inner, window_outer, 2, "New", f_24, fgetMethod("hello"), this);
+	    btn2 = new Button(100, f_24.getHeight("buton")+padding, padding,  menuBtn.rely+menuBtn.sizey+padding, window_inner, window_outer, 2, "buton", f_24, fgetMethod("moveMe"), this);
+	    btn3 = new Button(100, f_24.getHeight("COOM")+padding, padding, btn2.rely + btn2.sizey+4, window_inner, window_outer, 2, "COOM", f_24, fgetMethod("coom"), this);
 	    test_window = new Window(300, 600, 50, 50, window_inner, window_outer, 2, f_24, "Attributes");
 	    btn_showattr = new Button(100,45, 4,20,Color.black, Color.red, 2, "Show Attr.",f_24,test_window.fgetMethod("show"),test_window);
 	} catch (NoSuchMethodException | SecurityException e) {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
-
+	
+	test_container = new Container(test_window.sizex - btn2.sizex - (padding*3) - (int)Math.ceil(test_window.weight/2), 100, btn2.sizex + padding*2, padding, window_inner, window_outer, 2);
+	tb = new TextBox(10,  10,  2,  true, window_inner, window_outer, 1, "big chungus", f_24);
+	
 	test_window.add_button(menuBtn);
 	test_window.add_button(btn2);
 	test_window.add_button(btn3);
+	test_window.add_conatiner(test_container);
+	test_container.add_textbox(tb);
+
 	menu.add_button(btn_showattr);
     }
 
@@ -124,6 +133,9 @@ public class StateGame extends BasicGameState {
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 	mouse_pos = getMouse();
+	
+	tb.set_text(String.format("%s", delta % 2 == 0 ? "Commer" : "Commin"));
+	tb.update();
 
 	// mouse_pos[0] -= menu.sizex/2;
 	// mouse_pos[1] -= menu.sizey/2;

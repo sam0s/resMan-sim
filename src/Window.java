@@ -60,11 +60,8 @@ public class Window extends Container {
 		float new_point[] = travel_to_point(this.x, this.y, mx - this.moving_cursor_x_offset, my - this.moving_cursor_y_offset, 20, delta);
 		float xoffset = new_point[0] - this.x;
 		float yoffset = new_point[1] - this.y;
-		this.x += xoffset;
-		this.y += yoffset;
-
-		titlebar.x += xoffset;
-		titlebar.y += yoffset;
+		this.move(xoffset, yoffset);
+		titlebar.move(xoffset, yoffset);
 
 	    }
 
@@ -79,11 +76,19 @@ public class Window extends Container {
 		    }
 		}
 	    }
+	    
+	    for (TextBox t : textboxes) {
+	    	t.set_pos(this.x, this.y + titlebar.sizey);
+	    }
+	    
+	    for (Container c : containers) {
+	    	c.update(i);
+	    	c.set_pos(this.x,  this.y + titlebar.sizey);
+	    }
 	
 	    for (Button b : buttons) {
 		b.update(i);
-		b.x = x + b.relx;
-		b.y = y + b.rely + titlebar.sizey;
+		b.set_pos(this.x, this.y + titlebar.sizey);
 	    }
 	}
     }
@@ -96,6 +101,12 @@ public class Window extends Container {
 	    surface.setColor(outer);
 	    surface.drawRect(x, y, sizex, sizey);
 	    titlebar.draw(surface);
+	    for(TextBox t : textboxes)  {
+	    	t.draw(surface);
+	    }
+	    for (Container c : containers) {
+	    	c.draw(surface);
+	    }
 	    for (Button b : buttons) {
 		b.draw(surface);
 	    }
