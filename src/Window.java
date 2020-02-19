@@ -22,9 +22,13 @@ public class Window extends Container {
     float moving_cursor_y_offset;
 
     @Override
-    public void add_button(Button new_button) {
-	super.add_button(new_button);
-	new_button.y += this.titlebar_height;
+    public void add_container(Container... containerz) {
+	for (Container new_container : containerz) {
+	    containers = Arrays.copyOf(containers, containers.length + 1);
+	    containers[containers.length - 1] = new_container;
+	    new_container.x = x + new_container.relx;
+	    new_container.y = y + new_container.rely + this.titlebar_height;
+	}
     }
     
     @Override
@@ -44,7 +48,7 @@ public class Window extends Container {
 	this.title = title;
 	this.f = f;
 	this.title_color = outer;
-	this.add_button(hidebutton);
+	this.add_container(hidebutton);
     }
 
     public void update(Input i, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -77,16 +81,7 @@ public class Window extends Container {
 		}
 	    }
 	    
-	    for (TextBox t : textboxes) {
-	    	t.set_pos(this.x, this.y + titlebar.sizey);
-	    }
-	    
-	    for (Container c : containers) {
-	    	c.update(i);
-	    	c.set_pos(this.x,  this.y + titlebar.sizey);
-	    }
-	
-	    for (Button b : buttons) {
+	    for (Container b : containers) {
 		b.update(i);
 		b.set_pos(this.x, this.y + titlebar.sizey);
 	    }
@@ -101,14 +96,8 @@ public class Window extends Container {
 	    surface.setColor(outer);
 	    surface.drawRect(x, y, sizex, sizey);
 	    titlebar.draw(surface);
-	    for(TextBox t : textboxes)  {
-	    	t.draw(surface);
-	    }
 	    for (Container c : containers) {
 	    	c.draw(surface);
-	    }
-	    for (Button b : buttons) {
-		b.draw(surface);
 	    }
 	    surface.setFont(f);
 	    surface.setColor(title_color);

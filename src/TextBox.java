@@ -22,8 +22,6 @@ public class TextBox extends Container {
 	}
 	
 	public void update() {
-		//sizex = f.getWidth(this.text) + padding*2;
-		//sizey = f.getHeight(this.text) + padding*2;
 	}
 	
 	public void draw(Graphics surface) {

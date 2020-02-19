@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Random;
-
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -61,14 +60,14 @@ public class StateGame extends BasicGameState {
 	fontRaw = null;
 	mouse_pos = getMouse();
 
-	try {
-	    fontRaw = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new java.io.File("TerminusTTF-Bold-4.47.0.ttf"));
-	} catch (FontFormatException e) {
-	    e.printStackTrace();
 
-	} catch (IOException e) {
+	 try {
+	    fontRaw = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new java.io.File("TerminusTTF-Bold-4.47.0.ttf"));
+	} catch (FontFormatException | IOException e) {
+	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
+	 
 	if (fontRaw == null) {
 	    fontRaw = new java.awt.Font("Default", 0, 28);
 	}
@@ -87,20 +86,16 @@ public class StateGame extends BasicGameState {
 	    test_window = new Window(300, 600, 50, 50, window_inner, window_outer, 2, f_24, "Attributes");
 	    btn_showattr = new Button(100,45, 4,20,Color.black, Color.red, 2, "Show Attr.",f_24,test_window.fgetMethod("show"),test_window);
 	} catch (NoSuchMethodException | SecurityException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
 	
 	test_container = new Container(test_window.sizex - btn2.sizex - (padding*3) - (int)Math.ceil(test_window.weight/2), 100, btn2.sizex + padding*2, padding, window_inner, window_outer, 2);
-	tb = new TextBox(10,  10,  2,  true, window_inner, window_outer, 1, "big chungus", f_24);
+	tb = new TextBox(10,  10,  2,  true, window_inner, window_outer, 1, "resMan-sim :)", f_24);
 	
-	test_window.add_button(menuBtn);
-	test_window.add_button(btn2);
-	test_window.add_button(btn3);
-	test_window.add_conatiner(test_container);
-	test_container.add_textbox(tb);
-
-	menu.add_button(btn_showattr);
+	test_window.add_container(menuBtn,btn2,btn3,test_container);
+	test_container.add_container(tb);
+	menu.add_container(btn_showattr);
+	menu.set_size(500, 64);
     }
 
     public void moveMe() {
@@ -134,33 +129,24 @@ public class StateGame extends BasicGameState {
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 	mouse_pos = getMouse();
 	
-	tb.set_text(String.format("%s", delta % 2 == 0 ? "Commer" : "Commin"));
-	tb.update();
-
-	// mouse_pos[0] -= menu.sizex/2;
-	// mouse_pos[1] -= menu.sizey/2;
-
+	// handle bottom menu
 	float new_point[] = travel_to_point(menu.x, menu.y, mouse_pos[0], mouse_pos[1], 4, delta);
 	float diff_avg = ((menu.x - mouse_pos[0]) + (menu.y - mouse_pos[1])) / 4;
-
-	menu.set_size(500, 64);
 
 	if (mouse_pos[1] > 600) {
 	    new_point = travel_to_point(menu.x, menu.y, 0, 620, 4, delta);
 	    menu.y = new_point[1];
-	    // menu.sizex += diff_avg;
-	    // menu.sizey += diff_avg;
 	} else {
 	    new_point = travel_to_point(menu.x, menu.y, Game.WIDTH / 2 - menu.sizex / 2, Game.HEIGHT, 3, delta);
 	    menu.x = new_point[0];
 	    menu.y = new_point[1];
 	}
-
+	
+	// update things with containers
 	try {
 	    test_window.update(input, delta);
 	    menu.update(input);
 	} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
 
@@ -174,7 +160,7 @@ public class StateGame extends BasicGameState {
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 	i.draw(210, 140, 200, 200);
-	f_32.drawString(32, 32, String.format("Coomer Shelter (%d, %d)", getMouse()[0], getMouse()[1]), Color.orange);
+	f_32.drawString(32, 32, String.format("(%d, %d)", mouse_pos[0], mouse_pos[1]), Color.orange);
 	menu.draw(g);
 	f_24.drawString(menu.x + 4, menu.y + 4, "Menu", Color.orange);
 	test_window.draw(g);
