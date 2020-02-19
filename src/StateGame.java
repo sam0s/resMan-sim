@@ -63,9 +63,9 @@ public class StateGame extends BasicGameState {
 		Color outer = new Color(255, 0, 0);
 		Color inner = new Color(255, 255, 255, 50);
 		theta = 0;
-		int padding = 4;
+		int pad = 4;
 		input = gc.getInput();
-		menu = new Container(500, 64, 200, 500, inner, outer, 2.5);
+		menu = new Container(500, 64, 200, 500, pad, pad, inner, outer, 2.5);
 		fontRaw = null;
 		mouse_pos = getMouse();
 
@@ -88,19 +88,14 @@ public class StateGame extends BasicGameState {
 		Color window_outer = Color.orange;
 
 		try {
-			test_window = new EntityWindow(300, 600, 50, 50, window_inner, window_outer, 2, f_24, "");
+			test_window = new EntityWindow(300, 600, 50, 50, pad, pad, window_inner, window_outer, 2, f_24, "");
 			test_window.setEntity(testGuy);
-			menuBtn = new Button(100, 64, padding, padding, window_inner, window_outer, 2, "-", f_24, test_window.activeEnt.fgetMethod("downSize"), test_window.activeEnt);
-			btn_showattr = new Button(100, 45, 4, 20, Color.black, Color.red, 2, "Show Attr.", f_24, test_window.fgetMethod("show"), test_window);
-			btn2 = new Button(100, f_24.getHeight("buton") + padding, padding, menuBtn.rely + menuBtn.sizey + padding, window_inner, window_outer, 2, "+", f_24, test_window.activeEnt.fgetMethod("upSize"), test_window.activeEnt);
+			menuBtn = new Button(100, 64, 0, 0, pad, pad, window_inner, window_outer, 2, "-", f_24, test_window.activeEnt.fgetMethod("downSize"), test_window.activeEnt);
+			btn_showattr = new Button(100, 45, 4, 20, pad, pad, Color.black, Color.red, 2, "Show Attr.", f_24, test_window.fgetMethod("show"), test_window);
 		} catch (NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
 		}
 
-		test_container = new Container(test_window.sizex - btn2.sizex - (padding * 3) - (int) Math.ceil(test_window.weight / 2), 100, btn2.sizex + padding * 2, padding, window_inner, window_outer, 2);
-		tb = new Label(10, 10, 2, true, window_inner, window_outer, 1, "resMan-sim :)", f_24);
-		test_window.add_container(menuBtn, btn2, test_container);
-		test_container.add_container(tb);
 		menu.add_container(btn_showattr);
 		menu.set_size(500, 64);
 	}

@@ -11,6 +11,8 @@ public class Container {
 	int sizey;
 	float x;
 	float y;
+	int padx;
+	int pady;
 	Color inner;
 	Color outer;
 	float weight;
@@ -53,11 +55,13 @@ public class Container {
 
 	// When making a container, relx, rely are set to original x,y, in the case
 	// that this is a sub-container.
-	public Container(int sizex, int sizey, float x, float y, Color inner, Color outer, double weight) {
+	public Container(int sizex, int sizey, float x, float y, int paddingx, int paddingy, Color inner, Color outer, double weight) {
 		this.sizex = sizex;
 		this.sizey = sizey;
 		this.x = x;
 		this.y = y;
+		this.padx = paddingx;
+		this.pady = paddingy;
 		this.inner = inner;
 		this.outer = outer;
 		this.weight = (float) weight;
@@ -70,16 +74,16 @@ public class Container {
 		for (Container new_container : containerz) {
 			containers = Arrays.copyOf(containers, containers.length + 1);
 			containers[containers.length - 1] = new_container;
-			new_container.x = x + new_container.relx;
-			new_container.y = y + new_container.rely;
+			new_container.x = x + new_container.relx + padx;
+			new_container.y = y + new_container.rely + pady;
 		}
 	}
 
 	public void update(Input i) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		for (Container c : containers) {
 			c.update(i);
-			c.x = x + c.relx;
-			c.y = y + c.rely;
+			c.x = x + c.relx + padx;
+			c.y = y + c.rely + pady;
 		}
 	}
 

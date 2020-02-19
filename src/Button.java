@@ -15,8 +15,8 @@ public class Button extends Container {
 	Method func;
 	Object gc;
 
-	public Button(int sizex, int sizey, float x, float y, Color inner, Color outer, double weight, String text, Font fnt, Method func, Object gc) {
-		super(sizex, sizey, x, y, inner, outer, weight);
+	public Button(int sizex, int sizey, float x, float y, int padx, int pady, Color inner, Color outer, double weight, String text, Font fnt, Method func, Object gc) {
+		super(sizex, sizey, x, y, padx, pady, inner, outer, weight);
 		this.f = fnt;
 		this.text = text;
 		this.hi_color = new Color(inner.getRed() + 40, inner.getGreen() + 40, inner.getBlue() + 40, inner.getAlpha() + 40);

@@ -37,13 +37,13 @@ public class Window extends Container {
 		moving = false;
 	}
 
-	public Window(int sizex, int sizey, int x, int y, Color inner, Color outer, double weight, Font f, String title) throws NoSuchMethodException, SecurityException {
-		super(sizex, sizey, x, y, inner, outer, weight);
+	public Window(int sizex, int sizey, int x, int y, int padx, int pady, Color inner, Color outer, double weight, Font f, String title) throws NoSuchMethodException, SecurityException {
+		super(sizex, sizey, x, y, padx, pady, inner, outer, weight);
 		this.moving_cursor_x_offset = 0;
 		this.moving_cursor_y_offset = 0;
 		titlebar_height = f.getHeight(title) + 2;
-		titlebar = new Container(this.sizex, titlebar_height, this.x, this.y, inner, outer, weight);
-		hidebutton = new Button(30, titlebar_height - 2, sizex - 32, -titlebar.sizey + (int) Math.ceil(weight) / 2, inner, outer, weight, "H", f, fgetMethod("hide"), this);
+		titlebar = new Container(this.sizex, titlebar_height, this.x, this.y, 2, 2, inner, outer, weight);
+		hidebutton = new Button(30, titlebar_height - 2, sizex - 32, -titlebar.sizey + (int) Math.ceil(weight) / 2, 2, 2, inner, outer, weight, "H", f, fgetMethod("hide"), this);
 		moving = false;
 		this.title = title;
 		this.f = f;
