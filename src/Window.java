@@ -43,7 +43,7 @@ public class Window extends Container {
 		this.moving_cursor_y_offset = 0;
 		titlebar_height = f.getHeight(title) + 2;
 		titlebar = new Container(this.sizex, titlebar_height, this.x, this.y, 2, 2, inner, outer, weight);
-		hidebutton = new Button(30, titlebar_height - 2, sizex - 32, -titlebar.sizey + (int) Math.ceil(weight) / 2, 2, 2, inner, outer, weight, "H", f, fgetMethod("hide"), this);
+		hidebutton = new Button(30, titlebar_height, sizex - 30, -titlebar.sizey, 2, 2, inner, outer, weight, "H", f, fgetMethod("hide"), this);
 		moving = false;
 		this.title = title;
 		this.f = f;
