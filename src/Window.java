@@ -61,9 +61,8 @@ public class Window extends Container {
 			}
 
 			if (moving) {
-				float new_point[] = travel_to_point(this.x, this.y, mx - this.moving_cursor_x_offset, my - this.moving_cursor_y_offset, 20, delta);
-				float xoffset = new_point[0] - this.x;
-				float yoffset = new_point[1] - this.y;
+				float xoffset = mx - this.moving_cursor_x_offset - x;
+				float yoffset = my - this.moving_cursor_y_offset - y;
 				this.move(xoffset, yoffset);
 				titlebar.move(xoffset, yoffset);
 
