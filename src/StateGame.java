@@ -59,7 +59,7 @@ public class StateGame extends BasicGameState {
 	mouse_pos = getMouse();
 
 	try {
-	    fontRaw = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new java.io.File("FreeMonoBold.ttf"));
+	    fontRaw = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new java.io.File("TerminusTTF-Bold-4.47.0.ttf"));
 	} catch (FontFormatException e) {
 	    e.printStackTrace();
 
@@ -81,7 +81,7 @@ public class StateGame extends BasicGameState {
 	    menuBtn = new Button(100, 64, 4, 4, window_inner, window_outer, 2, "New", f_24, fgetMethod("hello"), this);
 	    btn2 = new Button(100, f_24.getHeight("buton")+4, 4,  menuBtn.rely+menuBtn.sizey+4, window_inner, window_outer, 2, "buton", f_24, fgetMethod("moveMe"), this);
 	    btn3 = new Button(100, f_24.getHeight("COOM")+4, 4, btn2.rely + btn2.sizey+4, window_inner, window_outer, 2, "COOM", f_24, fgetMethod("coom"), this);
-	    test_window = new Window(300, 600, 50, 50, window_inner, window_outer, 2, f_18, "Attributes");
+	    test_window = new Window(300, 600, 50, 50, window_inner, window_outer, 2, f_24, "Attributes");
 	    btn_showattr = new Button(100,45, 4,20,Color.black, Color.red, 2, "Show Attr.",f_24,test_window.fgetMethod("show"),test_window);
 	} catch (NoSuchMethodException | SecurityException e) {
 	    // TODO Auto-generated catch block
@@ -115,8 +115,8 @@ public class StateGame extends BasicGameState {
 	 * distance from target.
 	 */
 
-	curx -= speed * (delta / 1000f) * (curx - destx);
-	cury -= speed * (delta / 1000f) * (cury - desty);
+	curx -= Math.ceil(speed * (delta / 1000f) * (curx - destx));
+	cury -= Math.ceil(speed * (delta / 1000f) * (cury - desty));
 
 	return new float[] { curx, cury };
     }

@@ -37,9 +37,9 @@ public class Window extends Container {
 	super(sizex, sizey, x, y, inner, outer, weight);
 	this.moving_cursor_x_offset = 0;
 	this.moving_cursor_y_offset = 0;
-	titlebar_height = 25;
+	titlebar_height = f.getHeight(title)+2;
 	titlebar = new Container(this.sizex, titlebar_height, this.x, this.y, inner, outer, weight);
-	hidebutton = new Button(30, titlebar_height - 2, sizex - 32, -titlebar.sizey, Color.white, Color.red, weight, "X", f, fgetMethod("hide"), this);
+	hidebutton = new Button(30, titlebar_height - 2, sizex - 32, -titlebar.sizey + (int)Math.ceil(weight)/2, inner, outer, weight, "H", f, fgetMethod("hide"), this);
 	moving = false;
 	this.title = title;
 	this.f = f;
@@ -79,7 +79,7 @@ public class Window extends Container {
 		    }
 		}
 	    }
-
+	
 	    for (Button b : buttons) {
 		b.update(i);
 		b.x = x + b.relx;

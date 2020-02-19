@@ -75,8 +75,8 @@ public class Container {
 	 * distance from target.
 	 */
 
-	curx -= speed * (delta / 1000f) * (curx - destx);
-	cury -= speed * (delta / 1000f) * (cury - desty);
+	curx -= Math.ceil(speed * (delta / 1000f) * (curx - destx));
+	cury -= Math.ceil(speed * (delta / 1000f) * (cury - desty));
 
 	return new float[] { curx, cury };
     }
