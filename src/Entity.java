@@ -14,6 +14,7 @@ public class Entity {
 	public float size = 1;
 	public int x;
 	public int y;
+	
 
 	
 	public Method fgetMethod(String methodName, Class... args) throws NoSuchMethodException, SecurityException {

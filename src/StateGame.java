@@ -30,7 +30,8 @@ public class StateGame extends BasicGameState {
 	EntityWindow test_window;
 	int[] mouse_pos;
 	Random b = new Random();
-	Entity testGuy = new Entity("TestGuy",100,100);
+	Entity testGuy = new Entity("TestGuy",600,100);
+	Entity testGuy2 = new Entity("TestGuy",600,200);
 	// Sound soundbyte;
 
 	public static final int ID = 0;
@@ -50,7 +51,12 @@ public class StateGame extends BasicGameState {
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		testGuy.setSpriteLoad(new SpriteSheet(new Image("gfx//testChar.png"),32,64));
+		
+		Image sheet1 = new Image("gfx//testChar.png");
+		sheet1.setFilter(Image.FILTER_NEAREST);
+		
+		testGuy.setSpriteLoad(new SpriteSheet(sheet1,32,64));
+		testGuy2.setSpriteLoad(new SpriteSheet(sheet1,32,64));
 		i = new Image("hogBoss.jpg");
 		bg = new Image("testBack.png");
 		// soundbyte = new Sound("cooom.ogg");
@@ -149,7 +155,7 @@ public class StateGame extends BasicGameState {
 
 		// eat mouse input
 		if (input.isMousePressed(0)) {
-			System.out.printf("nothing!");
+			//asdf
 		}
 
 	}
@@ -163,5 +169,6 @@ public class StateGame extends BasicGameState {
 		f_24.drawString(menu.x + 4, menu.y + 4, "Menu", Color.orange);
 		test_window.draw(g);
 		testGuy.draw(g);
+		testGuy2.draw(g);
 	}
 }
