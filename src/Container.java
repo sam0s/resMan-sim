@@ -55,13 +55,13 @@ public class Container {
 
 	// When making a container, relx, rely are set to original x,y, in the case
 	// that this is a sub-container.
-	public Container(int sizex, int sizey, float x, float y, int paddingx, int paddingy, Color inner, Color outer, double weight) {
+	public Container(int sizex, int sizey, float x, float y, int padx, int pady, Color inner, Color outer, double weight) {
 		this.sizex = sizex;
 		this.sizey = sizey;
 		this.x = x;
 		this.y = y;
-		this.padx = paddingx;
-		this.pady = paddingy;
+		this.padx = padx;
+		this.pady = pady;
 		this.inner = inner;
 		this.outer = outer;
 		this.weight = (float) weight;

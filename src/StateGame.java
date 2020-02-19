@@ -13,7 +13,6 @@ public class StateGame extends BasicGameState {
 	double theta;
 	Image i;
 	Image bg;
-	Container menu;
 	Input input;
 	java.awt.Font fontRaw;
 	Font f_32;
@@ -21,17 +20,13 @@ public class StateGame extends BasicGameState {
 	Font f_24;
 	Font f_16;
 	long frameTime = 0;
-	Button menuBtn;
-	Button btn2;
-	Button btn3;
-	Button btn_showattr;
-	Label tb;
-	Container test_container;
-	EntityWindow test_window;
 	int[] mouse_pos;
 	Random b = new Random();
 	Entity testGuy = new Entity("TestGuy",600,100);
 	Entity testGuy2 = new Entity("TestGuy",600,200);
+	
+	Window win;
+	
 	// Sound soundbyte;
 
 	public static final int ID = 0;
@@ -60,12 +55,12 @@ public class StateGame extends BasicGameState {
 		i = new Image("hogBoss.jpg");
 		bg = new Image("testBack.png");
 		// soundbyte = new Sound("cooom.ogg");
-		Color outer = new Color(255, 0, 0);
-		Color inner = new Color(255, 255, 255, 50);
+		Color window_inner = new Color(40, 40, 40, 225);
+		Color window_outer = Color.orange;
 		theta = 0;
 		int pad = 4;
 		input = gc.getInput();
-		menu = new Container(500, 64, 200, 500, pad, pad, inner, outer, 2.5);
+		//menu = new Container(500, 64, 200, 500, pad, pad, inner, outer, 2.5);
 		fontRaw = null;
 		mouse_pos = getMouse();
 
@@ -84,25 +79,18 @@ public class StateGame extends BasicGameState {
 		f_18 = new TrueTypeFont(fontRaw.deriveFont(18f), false);
 		f_16 = new TrueTypeFont(fontRaw.deriveFont(16f), false);
 
-		Color window_inner = new Color(40, 40, 40, 225);
-		Color window_outer = Color.orange;
-
+		
+		/* init containers */
+		Container cont = new Container(100, 100, 0, 0, pad, pad, window_inner, window_outer, 2);
+		
 		try {
-			test_window = new EntityWindow(300, 600, 50, 50, pad, pad, window_inner, window_outer, 2, f_24, "");
-			test_window.setEntity(testGuy);
-			menuBtn = new Button(100, 64, 0, 0, pad, pad, window_inner, window_outer, 2, "-", f_24, test_window.activeEnt.fgetMethod("downSize"), test_window.activeEnt);
-			btn_showattr = new Button(100, 45, 4, 20, pad, pad, Color.black, Color.red, 2, "Show Attr.", f_24, test_window.fgetMethod("show"), test_window);
+			win = new Window(300, 500, 100, 100, pad, pad, window_inner, window_outer, 2, f_24, "window");
+			win.add_container(cont);
 		} catch (NoSuchMethodException | SecurityException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		menu.add_container(btn_showattr);
-		menu.set_size(500, 64);
-	}
-
-	public void moveMe() {
-		btn2.set_size(b.nextInt(Game.WIDTH), b.nextInt(Game.WIDTH));
-
+		
 	}
 
 	// public void coom() {
@@ -128,6 +116,7 @@ public class StateGame extends BasicGameState {
 		mouse_pos = getMouse();
 
 		// handle bottom menu
+		/*
 		float new_point[] = travel_to_point(menu.x, menu.y, mouse_pos[0], mouse_pos[1], 4, delta);
 		float diff_avg = ((menu.x - mouse_pos[0]) + (menu.y - mouse_pos[1])) / 4;
 
@@ -139,15 +128,17 @@ public class StateGame extends BasicGameState {
 			menu.x = new_point[0];
 			menu.y = new_point[1];
 		}
-
-		// update things with containers
+		
+		*/
+		
+		/* update windows */
 		try {
-			test_window.update(input, delta);
-			menu.update(input);
+			win.update(input, delta);
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
 		// eat mouse input
 		if (input.isMousePressed(0)) {
 			//asdf
@@ -160,10 +151,9 @@ public class StateGame extends BasicGameState {
 		bg.draw(0,0);
 		i.draw(210, 140, 200, 200);
 		f_32.drawString(32, 32, String.format("(%d, %d)", mouse_pos[0], mouse_pos[1]), Color.orange);
-		menu.draw(g);
-		f_24.drawString(menu.x + 4, menu.y + 4, "Menu", Color.orange);
-		test_window.draw(g);
 		testGuy.draw(g);
 		testGuy2.draw(g);
+		
+		win.draw(g);
 	}
 }

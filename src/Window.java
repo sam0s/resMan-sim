@@ -26,8 +26,8 @@ public class Window extends Container {
 		for (Container new_container : containerz) {
 			containers = Arrays.copyOf(containers, containers.length + 1);
 			containers[containers.length - 1] = new_container;
-			new_container.x = x + new_container.relx;
-			new_container.y = y + new_container.rely + this.titlebar_height;
+			new_container.x = x + new_container.relx + padx;
+			new_container.y = y + new_container.rely + this.titlebar_height + pady;
 		}
 	}
 
@@ -43,7 +43,7 @@ public class Window extends Container {
 		this.moving_cursor_y_offset = 0;
 		titlebar_height = f.getHeight(title) + 2;
 		titlebar = new Container(this.sizex, titlebar_height, this.x, this.y, 2, 2, inner, outer, weight);
-		hidebutton = new Button(30, titlebar_height, sizex - 30, -titlebar.sizey, 2, 2, inner, outer, weight, "H", f, fgetMethod("hide"), this);
+		hidebutton = new Button(30, titlebar_height, sizex - 30-padx, -titlebar.sizey-pady, 2, 2, inner, outer, weight, "H", f, fgetMethod("hide"), this);
 		moving = false;
 		this.title = title;
 		this.f = f;
@@ -61,29 +61,29 @@ public class Window extends Container {
 			}
 
 			if (moving) {
-				float xoffset = mx - this.moving_cursor_x_offset - x;
-				float yoffset = my - this.moving_cursor_y_offset - y;
-				this.move(xoffset, yoffset);
+				float xoffset = mx - moving_cursor_x_offset - x;
+				float yoffset = my - moving_cursor_y_offset - y;
+				move(xoffset, yoffset);
 				titlebar.move(xoffset, yoffset);
 
 			}
 
-			if (mx > x && mx < x + this.sizex) {
-				if (my > y && my < y + this.titlebar_height) {
+			if (mx > x && mx < x + sizex) {
+				if (my > y && my < y + titlebar_height) {
 					if (!moving) {
 						moving = i.isMouseButtonDown(0);
 						if (moving) {
-							moving_cursor_x_offset = mx - this.x;
-							moving_cursor_y_offset = my - this.y;
+							moving_cursor_x_offset = mx - x;
+							moving_cursor_y_offset = my - y;
 						}
 					}
 				}
 			}
-
-			for (Container b : containers) {
-				b.update(i);
-				b.set_pos(this.x, this.y + titlebar.sizey);
+			
+			for (Container c : containers) {
+				c.update(i);
 			}
+			
 		}
 	}
 
