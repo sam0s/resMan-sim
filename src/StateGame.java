@@ -25,9 +25,9 @@ public class StateGame extends BasicGameState {
 	Random b = new Random();
 	Entity testGuy = new Entity("Frank",600,100);
 	Entity testGuy2 = new Entity("Joe",600,200);
+	Entity[] guys;
 	
 	EntityWindow test_win;
-	
 	// Sound soundbyte;
 
 	public static final int ID = 0;
@@ -50,9 +50,9 @@ public class StateGame extends BasicGameState {
 		
 		Image sheet1 = new Image("gfx//testChar.png");
 		sheet1.setFilter(Image.FILTER_NEAREST);
-		
 		testGuy.setSpriteLoad(new SpriteSheet(sheet1,32,64));
 		testGuy2.setSpriteLoad(new SpriteSheet(sheet1,32,64));
+		guys=new  Entity[] {testGuy2,testGuy};
 		i = new Image("hogBoss.jpg");
 		bg = new Image("testBack.png");
 		// soundbyte = new Sound("cooom.ogg");
@@ -145,7 +145,13 @@ public class StateGame extends BasicGameState {
 		
 		// eat mouse input
 		if (input.isMousePressed(0)) {
-			//asdf
+		    for(Entity e:guys){
+		    	if (e.isClicked(input)){
+		    		test_win.setEntity(e);
+		    		break;
+		    	}
+		    	test_win.setEntity(null);
+			}
 		}
 
 	}
@@ -155,9 +161,9 @@ public class StateGame extends BasicGameState {
 		bg.draw(0,0);
 		i.draw(210, 140, 200, 200);
 		f_32.drawString(32, 32, String.format("(%d, %d)", mouse_pos[0], mouse_pos[1]), Color.orange);
-		testGuy.draw(g);
-		testGuy2.draw(g);
-		
+		for(Entity e:guys){
+		    e.draw(g);
+		}
 		test_win.draw(g);
 	}
 }
