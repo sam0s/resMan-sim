@@ -15,17 +15,18 @@ public class StateGame extends BasicGameState {
 	Image bg;
 	Input input;
 	java.awt.Font fontRaw;
-	Font f_32;
-	Font f_18;
-	Font f_24;
-	Font f_16;
+	public static Font f_32;
+	public static Font f_18;
+	public static Font f_24;
+	public static Font f_16;
+	public static Font f_14;
 	long frameTime = 0;
 	int[] mouse_pos;
 	Random b = new Random();
-	Entity testGuy = new Entity("TestGuy",600,100);
-	Entity testGuy2 = new Entity("TestGuy",600,200);
+	Entity testGuy = new Entity("Frank",600,100);
+	Entity testGuy2 = new Entity("Joe",600,200);
 	
-	Window win;
+	EntityWindow test_win;
 	
 	// Sound soundbyte;
 
@@ -78,19 +79,22 @@ public class StateGame extends BasicGameState {
 		f_24 = new TrueTypeFont(fontRaw.deriveFont(24f), false);
 		f_18 = new TrueTypeFont(fontRaw.deriveFont(18f), false);
 		f_16 = new TrueTypeFont(fontRaw.deriveFont(16f), false);
+		f_14 = new TrueTypeFont(fontRaw.deriveFont(14f), false);
+
 
 		
 		/* init containers */
 		Container cont = new Container(100, 100, 0, 0, pad, pad, window_inner, window_outer, 2);
 		
 		try {
-			win = new Window(300, 500, 100, 100, pad, pad, window_inner, window_outer, 2, f_24, "window");
-			win.add_container(cont);
+			test_win = new EntityWindow(300, 500, 100, 100, pad, pad, window_inner, window_outer, 2, f_24);
+			//win.add_container(cont);
 		} catch (NoSuchMethodException | SecurityException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
+		test_win.setEntity(testGuy2);
 	}
 
 	// public void coom() {
@@ -133,7 +137,7 @@ public class StateGame extends BasicGameState {
 		
 		/* update windows */
 		try {
-			win.update(input, delta);
+			test_win.update(input, delta);
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -154,6 +158,6 @@ public class StateGame extends BasicGameState {
 		testGuy.draw(g);
 		testGuy2.draw(g);
 		
-		win.draw(g);
+		test_win.draw(g);
 	}
 }

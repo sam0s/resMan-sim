@@ -13,6 +13,7 @@ public class Label extends Container {
 
 		this.text = text;
 		this.borders = borders;
+		this.f = f;
 	}
 	
 	
@@ -20,8 +21,9 @@ public class Label extends Container {
 	public void set_text(String text) {
 		this.text = text;
 	}
-
+	
 	public void update() {
+		set_size(f.getWidth(text) + padx*2, f.getHeight(text) + pady*2);	
 	}
 
 	public void draw(Graphics surface) {
@@ -30,7 +32,7 @@ public class Label extends Container {
 		surface.fillRect(x, y, sizex, sizey);
 		surface.setColor(outer);
 		surface.drawRect(x, y, sizex, sizey);
-		surface.drawString(text, this.x + padx, this.y + pady);
+		f.drawString(x + padx, y + pady, text, outer);
 	}
 
 }
