@@ -28,6 +28,12 @@ public class StateGame extends BasicGameState {
 	Entity[] guys;
 	
 	EntityWindow test_win;
+	
+	Color window_inner = new Color(40, 40, 40, 225);
+	Color window_outer = Color.orange;
+	
+	Container misc_renders[];
+	
 	// Sound soundbyte;
 
 	public static final int ID = 0;
@@ -56,8 +62,6 @@ public class StateGame extends BasicGameState {
 		i = new Image("hogBoss.jpg");
 		bg = new Image("testBack.png");
 		// soundbyte = new Sound("cooom.ogg");
-		Color window_inner = new Color(40, 40, 40, 225);
-		Color window_outer = Color.orange;
 		theta = 0;
 		int pad = 4;
 		input = gc.getInput();
@@ -85,14 +89,19 @@ public class StateGame extends BasicGameState {
 		
 		/* init containers */
 		Container cont = new Container(100, 100, 0, 0, pad, pad, window_inner, window_outer, 2);
-		
+
 		try {
 			test_win = new EntityWindow(300, 200, 100, 100, pad, pad, window_inner, window_outer, 2, f_24);
+			misc_renders = new Container[] {
+					new DialogBox("This is a public service announcement.", f_32, window_inner, window_outer, 2),
+			};
 			//win.add_container(cont);
 		} catch (NoSuchMethodException | SecurityException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
 		
 		test_win.setEntity(testGuy2);
 	}
@@ -138,6 +147,9 @@ public class StateGame extends BasicGameState {
 		/* update windows */
 		try {
 			test_win.update(input, delta);
+			for (Container c: misc_renders) {
+				c.update(input);
+			}
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -163,6 +175,9 @@ public class StateGame extends BasicGameState {
 		f_32.drawString(32, 32, String.format("(%d, %d)", mouse_pos[0], mouse_pos[1]), Color.orange);
 		for(Entity e:guys){
 		    e.draw(g);
+		}
+		for (Container c : misc_renders) {
+			c.draw(g);
 		}
 		test_win.draw(g);
 	}
