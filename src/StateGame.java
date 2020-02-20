@@ -87,7 +87,7 @@ public class StateGame extends BasicGameState {
 		Container cont = new Container(100, 100, 0, 0, pad, pad, window_inner, window_outer, 2);
 		
 		try {
-			test_win = new EntityWindow(300, 500, 100, 100, pad, pad, window_inner, window_outer, 2, f_24);
+			test_win = new EntityWindow(300, 200, 100, 100, pad, pad, window_inner, window_outer, 2, f_24);
 			//win.add_container(cont);
 		} catch (NoSuchMethodException | SecurityException e) {
 			// TODO Auto-generated catch block

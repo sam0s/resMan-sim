@@ -69,6 +69,10 @@ public class Container {
 		this.relx = x;
 		this.rely = y;
 	}
+	
+	public void clear_containers() {
+		containers = new Container[] {};
+	}
 
 	public void add_container(Container... containerz) {
 		for (Container new_container : containerz) {
