@@ -14,6 +14,7 @@ public class Button extends Container {
 	boolean triggered;
 	Method func;
 	Object gc;
+	Object args[];
 
 	public Button(int sizex, int sizey, float x, float y, Color inner, Color outer, double weight, String text, Font fnt, Method func, Object gc) {
 		super(sizex, sizey, x, y, 0,0,weight);
@@ -22,7 +23,16 @@ public class Button extends Container {
 		this.hi_color = new Color(inner.getRed() + 40, inner.getGreen() + 40, inner.getBlue() + 40, inner.getAlpha() + 40);
 		this.func = func;
 		this.gc = gc;
+		this.args = null;
 
+	}
+	
+	public void set_func(Method func) {
+		this.func = func;
+	}
+	
+	public void set_args(Object...args) {
+		this.args = args;
 	}
 
 	public void update(Input i) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -32,7 +42,7 @@ public class Button extends Container {
 		if (mx > x && mx < x + sizex) {
 			if (my > y && my < y + sizey) {
 				if (i.isMousePressed(0)) {
-					func.invoke(gc);
+					func.invoke(gc, this.args);
 				}
 
 				if (hi == false) {

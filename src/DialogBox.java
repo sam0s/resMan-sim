@@ -7,6 +7,7 @@ public class DialogBox extends Container {
 	Font f;
 	String text;
 	boolean hidden;
+	Container render_list[];
 
 	public DialogBox(String text, Font f, double weight) throws NoSuchMethodException, SecurityException {
 		super(f.getWidth(text) + 80, f.getHeight(text) + 70, Game.WIDTH / 2 - (f.getWidth(text) + 20) / 2, Game.HEIGHT / 2, 0, 0,weight);
@@ -14,8 +15,14 @@ public class DialogBox extends Container {
 		this.text = text;
 		this.f = f;
 		this.hidden = false;
+		//this.render_list = ;LKJFDSA;LKJFDSA';
 
-		Button exit = new Button(StateGame.f_24.getWidth("Ok") + 16, StateGame.f_24.getHeight("Ok") + 8, sizex / 2 - (StateGame.f_24.getWidth("Ok") + 16) / 2, 5 * sizey / 7 - (StateGame.f_24.getHeight("Ok") + 8) / 2, inner, outer, 2, "Ok", StateGame.f_24, fgetMethod("hide"), this);
+		Button exit = new Button(StateGame.f_24.getWidth("Ok") + 16, 
+				StateGame.f_24.getHeight("Ok") + 8, 
+				sizex / 2 - (StateGame.f_24.getWidth("Ok") + 16) / 2, 
+				5 * sizey / 7 - (StateGame.f_24.getHeight("Ok") + 8) / 2, 
+				inner, outer, 2, "Ok", StateGame.f_24, fgetMethod("hide"), 
+				this);
 
 		this.add_container(exit);
 

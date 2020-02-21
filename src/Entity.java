@@ -32,6 +32,10 @@ public class Entity {
 
 	}
 	
+	public void set_name(String name) {
+		this.name = name;
+	}
+	
 	public void setSize(float size){
 		this.size = size;
 	}
