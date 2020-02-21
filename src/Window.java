@@ -37,12 +37,12 @@ public class Window extends Container {
 		moving = false;
 	}
 
-	public Window(int sizex, int sizey, int x, int y, int padx, int pady, Color inner, Color outer, double weight, Font f, String title) throws NoSuchMethodException, SecurityException {
-		super(sizex, sizey, x, y, padx, pady, inner, outer, weight);
+	public Window(int sizex, int sizey, int x, int y, int padx, int pady, double weight, Font f, String title) throws NoSuchMethodException, SecurityException {
+		super(sizex, sizey, x, y, padx, pady, weight);
 		this.moving_cursor_x_offset = 0;
 		this.moving_cursor_y_offset = 0;
 		titlebar_height = f.getHeight(title) + 2;
-		titlebar = new Container(this.sizex, titlebar_height, this.x, this.y, 2, 2, inner, outer, weight);
+		titlebar = new Container(this.sizex, titlebar_height, this.x, this.y, 2, 2, weight);
 		hidebutton = new Button(30, titlebar_height, sizex - 30-padx, -titlebar.sizey-pady, inner, outer, weight, "H", f, fgetMethod("hide"), this);
 		moving = false;
 		this.title = title;
@@ -67,10 +67,15 @@ public class Window extends Container {
 				titlebar.move(xoffset, yoffset);
 
 			}
+			
+			
+			for (Container c : containers) {
+				c.update(i);
+			}
 
 			if (mx > x && mx < x + sizex) {
 				if (my > y && my < y + titlebar_height) {
-					if (!moving) {
+					if (!moving && i.isMousePressed(0)) {
 						moving = i.isMouseButtonDown(0);
 						if (moving) {
 							moving_cursor_x_offset = mx - x;
@@ -78,10 +83,6 @@ public class Window extends Container {
 						}
 					}
 				}
-			}
-			
-			for (Container c : containers) {
-				c.update(i);
 			}
 			
 		}

@@ -29,9 +29,6 @@ public class StateGame extends BasicGameState {
 	
 	EntityWindow test_win;
 	
-	Color window_inner = new Color(40, 40, 40, 225);
-	Color window_outer = Color.orange;
-	
 	Container misc_renders[];
 	
 	// Sound soundbyte;
@@ -88,12 +85,12 @@ public class StateGame extends BasicGameState {
 
 		
 		/* init containers */
-		Container cont = new Container(100, 100, 0, 0, pad, pad, window_inner, window_outer, 2);
+		Container cont = new Container(100, 100, 0, 0, pad, pad, 2);
 
 		try {
-			test_win = new EntityWindow(300, 200, 100, 100, pad, pad, window_inner, window_outer, 2, f_24);
+			test_win = new EntityWindow(300, 200, 100, 100, pad, pad, 2, f_24);
 			misc_renders = new Container[] {
-					new DialogBox("This is a public service announcement.", f_32, window_inner, window_outer, 2),
+					new DialogBox("This is a public service announcement.", f_32, 2),
 			};
 			//win.add_container(cont);
 		} catch (NoSuchMethodException | SecurityException e) {
@@ -159,6 +156,9 @@ public class StateGame extends BasicGameState {
 		if (input.isMousePressed(0)) {
 		    for(Entity e:guys){
 		    	if (e.isClicked(input)){
+		    		if(test_win.hidden){
+		    			test_win.show();
+		    		}
 		    		test_win.setEntity(e);
 		    		break;
 		    	}

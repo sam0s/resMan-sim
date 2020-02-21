@@ -9,10 +9,9 @@ public class Label extends Container {
 	public Font f;
 
 	public Label(float x, float y, int padx, int pady, Color inner, Color outer, double weight, String text, Font f) {
-		super(f.getWidth(text) + padx* 2, f.getHeight(text) + pady*2, x, y, padx, pady, inner, outer, weight);
+		super(f.getWidth(text) + padx* 2, f.getHeight(text) + pady*2, x, y, padx, pady,weight);
 
 		this.text = text;
-		this.borders = borders;
 		this.f = f;
 	}
 	
