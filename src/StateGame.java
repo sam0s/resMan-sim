@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Vector;
+import java.util.Arrays;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
@@ -26,11 +27,10 @@ public class StateGame extends BasicGameState {
 	long frameTime = 0;
 	int[] mouse_pos;
 	Random b = new Random();
-	Entity testGuy = new Entity("Frank",600,100);
-	Entity testGuy2 = new Entity("Joe",600,200);
 	Entity[] guys;
-	
+	Room rooms[]; 
 	EntityWindow test_win;
+	Image sheet1;
 	
 	Vector<Container> misc_renders = new Vector<Container>();
 	
@@ -59,14 +59,21 @@ public class StateGame extends BasicGameState {
 		misc_renders.addElement(temp);
 	}
 
+	public void addGuy(Room r) throws SlickException{
+		Entity e =new Entity("ea",(int)r.x,(int)r.y);
+		e.setSpriteLoad(new SpriteSheet(sheet1,32,64));
+		rooms[0].add_entity(e);
+		guys = Arrays.copyOf(guys, guys.length+1);
+		guys[guys.length-1] = e;
+	}
+
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		
-		Image sheet1 = new Image("gfx//testChar.png");
+		guys=new Entity[]{};
+		sheet1 = new Image("gfx//testChar.png");
 		sheet1.setFilter(Image.FILTER_NEAREST);
-		testGuy.setSpriteLoad(new SpriteSheet(sheet1,32,64));
-		testGuy2.setSpriteLoad(new SpriteSheet(sheet1,32,64));
-		guys=new  Entity[] {testGuy2,testGuy};
+		rooms = new Room[]{new Room(320,Game.HEIGHT-200)};
+		addGuy(rooms[0]);
 		i = new Image("hogBoss.jpg");
 		bg = new Image("testBack.png");
 		// soundbyte = new Sound("cooom.ogg");
@@ -104,10 +111,6 @@ public class StateGame extends BasicGameState {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
-		test_win.setEntity(testGuy2);
 	}
 
 	// public void coom() {
@@ -163,6 +166,10 @@ public class StateGame extends BasicGameState {
 			e.printStackTrace();
 		}
 		
+		for(Entity e:guys){
+		    e.update(delta);
+		}
+		
 		// eat mouse input
 		if (input.isMousePressed(0)) {
 		    for(Entity e:guys){
@@ -184,8 +191,9 @@ public class StateGame extends BasicGameState {
 		bg.draw(0,0);
 		i.draw(210, 140, 200, 200);
 		f_32.drawString(32, 32, String.format("(%d, %d)", mouse_pos[0], mouse_pos[1]), Color.orange);
-		for(Entity e:guys){
-		    e.draw(g);
+		
+		for(Room r:rooms){
+			r.draw(g);
 		}
 		for (Iterator<Container> iter = misc_renders.iterator();iter.hasNext(); ) {
 			Container cont = iter.next();

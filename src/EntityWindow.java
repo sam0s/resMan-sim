@@ -40,7 +40,7 @@ public class EntityWindow extends Window {
 				StateGame.f_18.getHeight("Rename") + 8, 0, 
 				horizontal_rule.rely + 4 + pady, inner, outer, 2, "Rename", 
 				StateGame.f_18, fgetMethod("do_nothing"), this);
-		rename.set_args("Mr. Hog Boss");
+		rename.set_args((Object[])null);
 		this.add_container(rename);
 
 	}
