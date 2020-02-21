@@ -4,7 +4,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Iterator;
 import java.util.Random;
+import java.util.Vector;
+
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -29,7 +32,7 @@ public class StateGame extends BasicGameState {
 	
 	EntityWindow test_win;
 	
-	Container misc_renders[];
+	Vector<Container> misc_renders = new Vector<Container>();
 	
 	// Sound soundbyte;
 
@@ -46,6 +49,15 @@ public class StateGame extends BasicGameState {
 
 	public Method fgetMethod(String methodName, Class... args) throws NoSuchMethodException, SecurityException {
 		return this.getClass().getMethod(methodName, args);
+	}
+	
+	public void add_dialog(String text) throws NoSuchMethodException, SecurityException {
+		Random r = new Random();
+		DialogBox temp = new DialogBox(text,0,0, f_32, 2);
+		int x = r.nextInt(Game.WIDTH-temp.sizex);
+		int y = r.nextInt(Game.HEIGHT-temp.sizey);
+		temp.set_pos(x, y);
+		misc_renders.addElement(temp);
 	}
 
 	@Override
@@ -81,17 +93,13 @@ public class StateGame extends BasicGameState {
 		f_18 = new TrueTypeFont(fontRaw.deriveFont(18f), false);
 		f_16 = new TrueTypeFont(fontRaw.deriveFont(16f), false);
 		f_14 = new TrueTypeFont(fontRaw.deriveFont(14f), false);
-
-
 		
 		/* init containers */
 		Container cont = new Container(100, 100, 0, 0, pad, pad, 2);
 
 		try {
-			test_win = new EntityWindow(300, 200, 100, 100, pad, pad, 2, f_24);
-			misc_renders = new Container[] {
-					new DialogBox("This is a public service announcement.", f_32, 2),
-			};
+			test_win = new EntityWindow(300, 200, 100, 100, pad, pad, 2, f_24, this);
+
 			//win.add_container(cont);
 		} catch (NoSuchMethodException | SecurityException e) {
 			// TODO Auto-generated catch block
@@ -144,8 +152,12 @@ public class StateGame extends BasicGameState {
 		/* update windows */
 		try {
 			test_win.update(input, delta);
-			for (Container c: misc_renders) {
-				c.update(input);
+			for (Iterator<Container> iter = misc_renders.iterator();iter.hasNext(); ) {
+				Container cont = iter.next();
+				cont.update(input);
+				if(cont.destroy) {
+					iter.remove();
+				}
 			}
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			// TODO Auto-generated catch block
@@ -162,7 +174,7 @@ public class StateGame extends BasicGameState {
 		    		test_win.setEntity(e);
 		    		break;
 		    	}
-		    	//test_win.setEntity(null);
+		    	test_win.setEntity(null);
 			}
 		}
 
@@ -176,8 +188,9 @@ public class StateGame extends BasicGameState {
 		for(Entity e:guys){
 		    e.draw(g);
 		}
-		for (Container c : misc_renders) {
-			c.draw(g);
+		for (Iterator<Container> iter = misc_renders.iterator();iter.hasNext(); ) {
+			Container cont = iter.next();
+			cont.draw(g);
 		}
 		test_win.draw(g);
 	}

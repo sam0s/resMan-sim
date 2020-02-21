@@ -27,8 +27,9 @@ public class Button extends Container {
 
 	}
 	
-	public void set_func(Method func) {
+	public void set_func(Method func, Object obj) {
 		this.func = func;
+		this.gc = obj;
 	}
 	
 	public void set_args(Object...args) {

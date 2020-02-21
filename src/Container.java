@@ -20,6 +20,7 @@ public class Container {
 	public boolean hidden = false;
 	float relx;
 	float rely;
+	Boolean destroy;
 
 	// Use to get method reference to a method of this class!
 	public Method fgetMethod(String methodName, Class... args) throws NoSuchMethodException, SecurityException {
@@ -35,8 +36,8 @@ public class Container {
 	}
 
 	public void set_pos(float x, float y) {
-		x = x + relx;
-		y = y + rely;
+		this.x = x + relx;
+		this.y = y + rely;
 
 		for (Container c : containers) {
 			c.set_pos(x, y);
@@ -68,6 +69,7 @@ public class Container {
 		this.containers = new Container[] {};
 		this.relx = x;
 		this.rely = y;
+		this.destroy = false;
 	}
 	
 	public void setTheme(Color in, Color out){

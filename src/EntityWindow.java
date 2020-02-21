@@ -7,14 +7,17 @@ import org.newdawn.slick.Input;
 public class EntityWindow extends Window {
 
 	Entity activeEnt;
+	StateGame s; 
+	Button rename;
 
 	Container person_containers[];
 	Container generic_containers[];
 
-	public EntityWindow(int sizex, int sizey, int x, int y, int padx, int pady, double weight, Font f) throws NoSuchMethodException, SecurityException {
+	public EntityWindow(int sizex, int sizey, int x, int y, int padx, int pady, double weight, Font f, StateGame s) throws NoSuchMethodException, SecurityException {
 		super(sizex, sizey, x, y, padx, pady, weight, f, "NULL");
 
 		this.activeEnt = null;
+		this.s = s;
 		Color clear = new Color(0, 0, 0, 0);
 
 		Label age = new Label(0, 0, 2, 2, 0, "Age: NULL", StateGame.f_18);
@@ -33,7 +36,7 @@ public class EntityWindow extends Window {
 		horizontal_rule.setTheme(clear,  outer);
 		this.add_container(horizontal_rule);
 
-		Button rename = new Button(StateGame.f_18.getWidth("Rename") + 16, 
+		this.rename = new Button(StateGame.f_18.getWidth("Rename") + 16, 
 				StateGame.f_18.getHeight("Rename") + 8, 0, 
 				horizontal_rule.rely + 4 + pady, inner, outer, 2, "Rename", 
 				StateGame.f_18, fgetMethod("do_nothing"), this);
@@ -42,21 +45,22 @@ public class EntityWindow extends Window {
 
 	}
 	
-	public void do_nothing() {
+	public void do_nothing() throws NoSuchMethodException, SecurityException {
+		s.add_dialog("No entity currently selected!");
 		return;
 	}
 
 	public void setEntity(Entity e) {
 		activeEnt = e;		
-		if (activeEnt != null) {
-			try {
-				((Button)this.containers[6]).gc = activeEnt;
-				((Button)this.containers[6]).set_func(activeEnt.fgetMethod("set_name", String.class));
-			} catch (NoSuchMethodException | SecurityException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+		try {
+			if (activeEnt != null) {
+					rename.set_args("hog boss");
+					rename.set_func(activeEnt.fgetMethod("set_name", String.class), activeEnt);
+			} else {
+				rename.set_args((Object[])null);
+				rename.set_func(fgetMethod("do_nothing"), this);
 			}
-		}		
+		} catch (NoSuchMethodException | SecurityException e1) {}
 	}
 
 	public void update(Input i, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
