@@ -55,7 +55,7 @@ public class Window extends Container {
 		if (!hidden) {
 			int mx = i.getMouseX();
 			int my = i.getMouseY();
-
+		
 			if (!i.isMouseButtonDown(0)) {
 				moving = false;
 			}
@@ -63,6 +63,16 @@ public class Window extends Container {
 			if (moving) {
 				float xoffset = mx - moving_cursor_x_offset - x;
 				float yoffset = my - moving_cursor_y_offset - y;
+				if ( Math.abs(Game.WIDTH - (x + sizex + xoffset)) < 8) {
+					xoffset = Game.WIDTH - x - sizex - (int)weight + 1;
+				} else if (Math.abs(x + xoffset) < 8) {
+					xoffset = -x + (int)weight -1;
+				}
+				if (Math.abs(Game.HEIGHT - (y + sizey + yoffset)) < 8) {
+					yoffset = Game.HEIGHT - y - sizey - (int)weight;
+				} else if (Math.abs(y + yoffset) < 8) {
+					yoffset = -y;
+				}
 				move(xoffset, yoffset);
 				titlebar.move(xoffset, yoffset);
 
