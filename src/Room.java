@@ -1,5 +1,6 @@
 import java.util.Arrays;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 
@@ -44,6 +45,8 @@ public class Room {
 		for(Entity e:ents){
 			e.draw(surface);
 		}
+		surface.setColor(Color.red);
+		surface.setLineWidth(2);
 		surface.drawRect(x,y, hitbox.getWidth(), hitbox.getHeight());
 		
 	}

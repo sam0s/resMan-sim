@@ -100,6 +100,7 @@ public class Entity {
 	public void draw(Graphics surface) {
 		sprite.draw(x-sizex*origin[0]+origin[0], y-sizey*origin[1]+origin[1], sprite.getWidth() * sizex, sprite.getHeight() * sizey);
 		surface.setColor(Color.red);
+		surface.setLineWidth(2);
 		surface.drawRect(x,y, hitbox.getWidth(), hitbox.getHeight());
 	}
 

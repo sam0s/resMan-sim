@@ -15,6 +15,9 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class StateGame extends BasicGameState {
 	double theta;
+	public static String[] namesM = {"Glenn","Jerry","Joe","Jack","Paul","Nick","Trevor","Mathew","Todd","Linus","Harry","Walter","Ryan","Bob","Henry","Brian","Dennis"};
+	public static String[] namesF = {"Stephanie","Susan","Patricia","Kim","Rachel","Rebecca","Alice","Jackie","Judy","Heidi","Skylar","Anna","Paige"};
+	public static String[] namesL = {"Rollins","Howard","Zalman","Bell","Newell","Caiafa","Finnegan","Hall","Howell","Kernighan","Wilson","Ritchie"};
 	Image i;
 	Image bg;
 	Input input;
@@ -30,6 +33,7 @@ public class StateGame extends BasicGameState {
 	Entity[] guys;
 	Room rooms[]; 
 	EntityWindow test_win;
+	ControlWindow contrl;
 	Image sheet1;
 	
 	Vector<Container> misc_renders = new Vector<Container>();
@@ -51,6 +55,14 @@ public class StateGame extends BasicGameState {
 		return this.getClass().getMethod(methodName, args);
 	}
 	
+	public static String random_name(int gender){
+		Random r = new Random();
+		String name = "";
+		name += (gender==0)?namesM[r.nextInt(namesM.length)]:namesF[r.nextInt(namesM.length)];
+		name += " "+namesL[r.nextInt(namesL.length)];
+		return name;
+	}
+	
 	public void add_dialog(String text) throws NoSuchMethodException, SecurityException {
 		DialogBox temp = new DialogBox(text,0,0, f_32, 2);
 		int x = (32 * misc_renders.size()) % (1280-temp.sizex) + (misc_renders.size() % (1280/temp.sizex));
@@ -59,8 +71,8 @@ public class StateGame extends BasicGameState {
 		misc_renders.addElement(temp);
 	}
 
-	public void addGuy(Room r) throws SlickException{
-		Entity e =new Entity("ea",(int)r.x,(int)r.y);
+	public void add_guy(Room r) throws SlickException{
+		Entity e =new Entity(random_name(0),(int)r.x,(int)r.y);
 		e.setSpriteLoad(new SpriteSheet(sheet1,32,64));
 		rooms[0].add_entity(e);
 		guys = Arrays.copyOf(guys, guys.length+1);
@@ -73,7 +85,7 @@ public class StateGame extends BasicGameState {
 		sheet1 = new Image("gfx//testChar.png");
 		sheet1.setFilter(Image.FILTER_NEAREST);
 		rooms = new Room[]{new Room(320,Game.HEIGHT-200)};
-		addGuy(rooms[0]);
+		add_guy(rooms[0]);
 		i = new Image("hogBoss.jpg");
 		bg = new Image("testBack.png");
 		// soundbyte = new Sound("cooom.ogg");
@@ -104,6 +116,7 @@ public class StateGame extends BasicGameState {
 		Container cont = new Container(100, 100, 0, 0, pad, pad, 2);
 
 		try {
+			contrl = new ControlWindow(400, 100, 0, 0, 4, 4, 2, f_18,this);
 			test_win = new EntityWindow(300, 200, 100, 100, pad, pad, 2, f_24, this);
 
 			//win.add_container(cont);
@@ -134,26 +147,11 @@ public class StateGame extends BasicGameState {
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 		mouse_pos = getMouse();
-
-		// handle bottom menu
-		/*
-		float new_point[] = travel_to_point(menu.x, menu.y, mouse_pos[0], mouse_pos[1], 4, delta);
-		float diff_avg = ((menu.x - mouse_pos[0]) + (menu.y - mouse_pos[1])) / 4;
-
-		if (mouse_pos[1] > 600) {
-			new_point = travel_to_point(menu.x, menu.y, 0, 620, 4, delta);
-			menu.y = new_point[1];
-		} else {
-			new_point = travel_to_point(menu.x, menu.y, Game.WIDTH / 2 - menu.sizex / 2, Game.HEIGHT, 3, delta);
-			menu.x = new_point[0];
-			menu.y = new_point[1];
-		}
-		
-		*/
 		
 		/* update windows */
 		try {
 			test_win.update(input, delta);
+			contrl.update(input,delta);
 			for (Iterator<Container> iter = misc_renders.iterator();iter.hasNext(); ) {
 				Container cont = iter.next();
 				cont.update(input);
@@ -200,5 +198,6 @@ public class StateGame extends BasicGameState {
 			cont.draw(g);
 		}
 		test_win.draw(g);
+		contrl.draw(g);
 	}
 }

@@ -34,8 +34,7 @@ public class EntityWindow extends Window {
 
 		this.rename = new Button(StateGame.f_18.getWidth("Rename") + 16, 
 				StateGame.f_18.getHeight("Rename") + 8, 0, 
-				horizontal_rule.rely + (int)horizontal_rule.weight/2 + pady, 
-				inner, outer, 2, "Rename", StateGame.f_18, 
+				horizontal_rule.rely + (int)horizontal_rule.weight/2 + pady,2, "Rename", StateGame.f_18, 
 				fgetMethod("do_nothing"), this);
 		rename.set_args((Object[])null);
 		this.add_container(rename);

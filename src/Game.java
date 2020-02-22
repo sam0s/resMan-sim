@@ -22,7 +22,7 @@ public class Game extends StateBasedGame {
 	public static final Color innerDefault = new Color(40, 40, 40, 225);
 	public static final Color outerDefault = Color.orange;
 	// major.minor(patch)
-	public static final double VERSION = 1.3;
+	public static final double VERSION = 1.32;
 
 	public void initStatesList(GameContainer gc) throws SlickException {
 		this.addState(new StateGame());
