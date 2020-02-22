@@ -65,8 +65,8 @@ public class StateGame extends BasicGameState {
 	
 	public void add_dialog(String text) throws NoSuchMethodException, SecurityException {
 		DialogBox temp = new DialogBox(text,0,0, f_32, 2);
-		int x = (32 * misc_renders.size()) % (1280-temp.sizex) + (misc_renders.size() % (1280/temp.sizex));
-		int y = (32 * misc_renders.size()) % (720-temp.sizey) + (misc_renders.size() % (720/temp.sizey));
+		int x = (32 * misc_renders.size()) % (Game.WIDTH-temp.sizex) + (misc_renders.size() % (Game.WIDTH/temp.sizex));
+		int y = (32 * misc_renders.size()) % (Game.HEIGHT-temp.sizey) + (misc_renders.size() % (Game.HEIGHT/temp.sizey));
 		temp.set_pos(x, y);
 		misc_renders.addElement(temp);
 	}
