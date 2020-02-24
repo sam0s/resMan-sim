@@ -28,23 +28,18 @@ public class StateGame extends BasicGameState {
 	public static Font f_16;
 	public static Font f_14;
 	long frameTime = 0;
-	int[] mouse_pos;
 	Random b = new Random();
 	Entity[] guys;
 	Room rooms[]; 
 	EntityWindow test_win;
 	ControlWindow contrl;
 	Image sheet1;
-	
+	Entity grabbed;
 	Vector<Container> misc_renders = new Vector<Container>();
 	
 	// Sound soundbyte;
 
 	public static final int ID = 0;
-
-	public int[] getMouse() {
-		return new int[] { input.getMouseX(), input.getMouseY() };
-	}
 
 	@Override
 	public int getID() {
@@ -70,7 +65,11 @@ public class StateGame extends BasicGameState {
 		temp.set_pos(x, y);
 		misc_renders.addElement(temp);
 	}
-
+	
+	public void grab_entity(Entity e){
+		grabbed = e;
+	}
+	
 	public void add_guy(Room r) throws SlickException{
 		Entity e =new Entity(random_name(0),(int)r.x,(int)r.y);
 		e.setSpriteLoad(new SpriteSheet(sheet1,32,64));
@@ -94,7 +93,6 @@ public class StateGame extends BasicGameState {
 		input = gc.getInput();
 		//menu = new Container(500, 64, 200, 500, pad, pad, inner, outer, 2.5);
 		fontRaw = null;
-		mouse_pos = getMouse();
 
 		try {
 			fontRaw = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new java.io.File("TerminusTTF-Bold-4.47.0.ttf"));
@@ -146,7 +144,6 @@ public class StateGame extends BasicGameState {
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
-		mouse_pos = getMouse();
 		
 		/* update windows */
 		try {
@@ -166,6 +163,12 @@ public class StateGame extends BasicGameState {
 		
 		for(Entity e:guys){
 		    e.update(delta);
+		}
+		
+		//drag guy if he is grabbed
+		if(grabbed!=null){
+			grabbed.x=input.getMouseX();
+			grabbed.y=input.getMouseY();
 		}
 		
 		// eat mouse input
@@ -188,7 +191,7 @@ public class StateGame extends BasicGameState {
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		bg.draw(0,0);
 		i.draw(210, 140, 200, 200);
-		f_32.drawString(32, 32, String.format("(%d, %d)", mouse_pos[0], mouse_pos[1]), Color.orange);
+		f_32.drawString(32, 32, String.format("(%d, %d)", input.getMouseX(), input.getMouseY()), Color.orange);
 		
 		for(Room r:rooms){
 			r.draw(g);

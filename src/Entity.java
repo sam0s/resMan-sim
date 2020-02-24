@@ -23,9 +23,8 @@ public class Entity {
 	public Room curRoom;
 	public boolean moving = false;
 	public int roamDir = 1;
-	public int[] origin = {16,32};
-	
-	
+	public int[] origin = { 16, 32 };
+
 	public Method fgetMethod(String methodName, Class... args) throws NoSuchMethodException, SecurityException {
 		return this.getClass().getMethod(methodName, args);
 	}
@@ -34,19 +33,18 @@ public class Entity {
 		this.name = name;
 		this.x = x;
 		this.y = y;
-		curRoom = new Room(x-5,y);
-		
+		curRoom = new Room(x - 5, y);
 
 	}
-	
+
 	public void set_name(String name) {
 		this.name = name;
 	}
-	
-	public void setRoom(Room r){
+
+	public void setRoom(Room r) {
 		curRoom = r;
-		x=r.x;
-		y=r.y+r.sizey-sprite.getHeight()*sizey;
+		x = r.x;
+		y = r.y + r.sizey - sprite.getHeight() * sizey;
 	}
 
 	public void setSize(float size) {
@@ -57,7 +55,7 @@ public class Entity {
 		setSize(sizey - 1);
 	}
 
-	public void upSize() {
+	public void up_size() {
 		setSize(sizey + 1);
 	}
 
@@ -69,9 +67,9 @@ public class Entity {
 	public void roam(int delta) {
 		if (roamDir == 1) {
 			x += 40 * (delta / 1000f);
-			if (x+sprite.getWidth()*sizex >= curRoom.x+curRoom.sizex) {
+			if (x + sprite.getWidth() * sizex >= curRoom.x + curRoom.sizex) {
 				roamDir = 0;
-				sizex=-1;
+				sizex = -1;
 				return;
 			}
 		} else {
@@ -82,7 +80,6 @@ public class Entity {
 				return;
 			}
 		}
-
 	}
 
 	public void setSpriteLoad(SpriteSheet spr) throws SlickException {
@@ -98,10 +95,10 @@ public class Entity {
 	}
 
 	public void draw(Graphics surface) {
-		sprite.draw(x-sizex*origin[0]+origin[0], y-sizey*origin[1]+origin[1], sprite.getWidth() * sizex, sprite.getHeight() * sizey);
+		sprite.draw(x - sizex * origin[0] + origin[0], y - sizey * origin[1] + origin[1], sprite.getWidth() * sizex, sprite.getHeight() * sizey);
 		surface.setColor(Color.red);
 		surface.setLineWidth(2);
-		surface.drawRect(x,y, hitbox.getWidth(), hitbox.getHeight());
+		surface.drawRect(x, y, hitbox.getWidth(), hitbox.getHeight());
 	}
 
 }
