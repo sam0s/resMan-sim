@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.SlickException;
 
 public class Container {
 	int sizex;
@@ -117,7 +118,7 @@ public class Container {
 		return new float[] { curx, cury };
 	}
 
-	public void draw(Graphics surface) {
+	public void draw(Graphics surface) throws SlickException {
 		surface.setLineWidth(weight);
 		surface.setColor(inner);
 		surface.fillRect(x, y, sizex, sizey);

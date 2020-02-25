@@ -1,6 +1,7 @@
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Font;
+import org.newdawn.slick.SlickException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -98,7 +99,7 @@ public class Window extends Container {
 		}
 	}
 
-	public void draw(Graphics surface) {
+	public void draw(Graphics surface) throws SlickException {
 		if (!hidden) {
 			surface.setLineWidth(weight);
 			surface.setColor(inner);

@@ -2,6 +2,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
@@ -19,8 +20,8 @@ public class EntityWindow extends Window {
 	Image grab_icon;
 	ImageButton grab;
 
-	public EntityWindow(int sizex, int sizey, int x, int y, int padx, int pady, double weight, Font f, StateGame s) throws NoSuchMethodException, SecurityException, SlickException {
-		super(sizex, sizey, x, y, padx, pady, weight, f, "NULL");
+	public EntityWindow(int padx, int pady, double weight, Font f, StateGame s) throws NoSuchMethodException, SecurityException, SlickException {
+		super(300, 350, 100, 100, padx, pady, weight, f, "NULL");
 
 		this.activeEnt = null;
 		this.s = s;
@@ -36,19 +37,19 @@ public class EntityWindow extends Window {
 		this.add_container(happiness);
 		Container horizontal_rule = new Container(sizex, 0, -padx, sex.rely + sex.sizey + pady, 0, 0, 2);
 		this.add_container(horizontal_rule);
-		
+
 		// rename button
 		rename = new Button(StateGame.f_18.getWidth("Rename") + 16, StateGame.f_18.getHeight("Rename") + 8, 0, horizontal_rule.rely + (int) horizontal_rule.weight / 2 + pady, 2, "Rename", StateGame.f_18, fgetMethod("do_nothing"), this);
 		rename.set_args((Object[]) null);
-		
-		//resize button (temporary)
-		sizeb = new Button(StateGame.f_18.getWidth("Sizem") + 16, StateGame.f_18.getHeight("Sizem") + 2, rename.sizex+32, horizontal_rule.rely + (int) horizontal_rule.weight / 2 + pady, 2, "Sizem", StateGame.f_18, fgetMethod("do_nothing"), this);
+
+		// resize button (temporary)
+		sizeb = new Button(StateGame.f_18.getWidth("Sizem") + 16, StateGame.f_18.getHeight("Sizem") + 2, rename.sizex + 32, horizontal_rule.rely + (int) horizontal_rule.weight / 2 + pady, 2, "Sizem", StateGame.f_18, fgetMethod("do_nothing"), this);
 		sizeb.set_args((Object[]) null);
-		
-		//grab button
-		grab = new ImageButton(64,64,sizex-72,sizeb.y,new Image("gfx//tweezIcon.png"),fgetMethod("do_nothing"), this);
+
+		// grab button
+		grab = new ImageButton(64, 64, sizex - 72, sizeb.y, new Image("gfx//tweezIcon.png"), fgetMethod("do_nothing"), this);
 		grab.set_args((Object[]) null);
-		
+
 		this.add_container(rename);
 		this.add_container(grab);
 		this.add_container(sizeb);
@@ -97,6 +98,22 @@ public class EntityWindow extends Window {
 			debug_ln1.set_text(String.format("(%.0f, %.0f) | Dir: %d", activeEnt.x, activeEnt.y, activeEnt.roamDir));
 		} else {
 			debug_ln1.set_text("null");
+		}
+	}
+
+	@Override
+	public void hide(){
+		super.hide();
+		activeEnt = null;
+	}
+	
+	@Override
+	public void draw(Graphics surface) throws SlickException {
+		super.draw(surface);
+		if (activeEnt!=null) {
+			Image i = new Image(150, 150);
+			surface.copyArea(i, (int) activeEnt.x - activeEnt.sprite.getWidth()*2, (int) activeEnt.y - activeEnt.sprite.getHeight()/2);
+			i.draw(x+padx, y+150,100,100);
 		}
 	}
 

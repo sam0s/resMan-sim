@@ -115,7 +115,7 @@ public class StateGame extends BasicGameState {
 
 		try {
 			contrl = new ControlWindow(400, 100, 0, 0, 4, 4, 2, f_18,this);
-			test_win = new EntityWindow(300, 200, 100, 100, pad, pad, 2, f_24, this);
+			test_win = new EntityWindow(pad, pad, 2, f_24, this);
 
 			//win.add_container(cont);
 		} catch (NoSuchMethodException | SecurityException e) {

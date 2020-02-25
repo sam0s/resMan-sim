@@ -3,6 +3,7 @@ import java.util.Vector;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
 
 public class DialogBox extends Container {
 
@@ -33,7 +34,7 @@ public class DialogBox extends Container {
 		destroy = true;
 	}
 
-	public void draw(Graphics surface) {
+	public void draw(Graphics surface) throws SlickException {
 		if (!hidden) {
 			surface.setLineWidth(weight);
 			surface.setColor(inner);
