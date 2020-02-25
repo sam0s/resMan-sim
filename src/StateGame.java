@@ -122,7 +122,7 @@ public class StateGame extends BasicGameState {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		e = new InputBox(250, 64, 200, 32, 2, input);
+		e = new InputBox(250, 64, 200, 32, 2, f_18, input);
 		
 	}
 
