@@ -36,7 +36,7 @@ public class StateGame extends BasicGameState {
 	Image sheet1;
 	Entity grabbed;
 	Vector<Container> misc_renders = new Vector<Container>();
-	
+	InputBox e;
 	// Sound soundbyte;
 
 	public static final int ID = 0;
@@ -81,6 +81,7 @@ public class StateGame extends BasicGameState {
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		guys=new Entity[]{};
+		input = gc.getInput();
 		sheet1 = new Image("gfx//testChar.png");
 		sheet1.setFilter(Image.FILTER_NEAREST);
 		rooms = new Room[]{new Room(320,Game.HEIGHT-200)};
@@ -90,7 +91,6 @@ public class StateGame extends BasicGameState {
 		// soundbyte = new Sound("cooom.ogg");
 		theta = 0;
 		int pad = 4;
-		input = gc.getInput();
 		//menu = new Container(500, 64, 200, 500, pad, pad, inner, outer, 2.5);
 		fontRaw = null;
 
@@ -122,6 +122,8 @@ public class StateGame extends BasicGameState {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		e = new InputBox(250, 64, 200, 32, 2, input);
+		
 	}
 
 	// public void coom() {
@@ -192,7 +194,7 @@ public class StateGame extends BasicGameState {
 		bg.draw(0,0);
 		i.draw(210, 140, 200, 200);
 		f_32.drawString(32, 32, String.format("(%d, %d)", input.getMouseX(), input.getMouseY()), Color.orange);
-		
+		e.draw(g);
 		for(Room r:rooms){
 			r.draw(g);
 		}

@@ -47,7 +47,7 @@ public class EntityWindow extends Window {
 		sizeb.set_args((Object[]) null);
 
 		// grab button
-		grab = new ImageButton(64, 64, sizex - 72, sizeb.y, new Image("gfx//tweezIcon.png"), fgetMethod("do_nothing"), this);
+		grab = new ImageButton(64, 64, sizex - 72, sizeb.y, new Image("gfx//tweezicon.png"), fgetMethod("do_nothing"), this);
 		grab.set_args((Object[]) null);
 
 		this.add_container(rename);
