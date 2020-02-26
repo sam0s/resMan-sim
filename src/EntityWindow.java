@@ -59,7 +59,7 @@ public class EntityWindow extends Window {
 		this.add_container(debug_label);
 		debug_ln1 = new Label(0, sizey - 100 + debug_label.sizey, 2, 2, 0, "null", StateGame.f_16);
 		add_container(debug_ln1);
-
+		
 		for (Container c : containers) {
 			c.setTheme(clear, outer);
 		}
@@ -70,7 +70,7 @@ public class EntityWindow extends Window {
 		return;
 	}
 	
-	public void rename(Entity e) throws NoSuchMethodException, SecurityException {
+	public void rename() throws NoSuchMethodException, SecurityException {
 		if (entry_box == null) {
 			entry_box = s.add_input_box();
 		} 
@@ -80,14 +80,12 @@ public class EntityWindow extends Window {
 		activeEnt = e;
 		try {
 			if (activeEnt != null) {
-				rename.set_args(activeEnt);
-				rename.set_func(fgetMethod("rename", Entity.class), this);
+				rename.set_func(fgetMethod("rename"), this);
 				sizeb.set_func(activeEnt.fgetMethod("up_size"), activeEnt);
 				grab.set_func(s.fgetMethod("grab_entity", Entity.class), s);
 				grab.set_args(activeEnt);
 
 			} else {
-				rename.set_args((Object[]) null);
 				rename.set_func(fgetMethod("do_nothing"), this);
 				sizeb.set_args((Object[]) null);
 				sizeb.set_func(fgetMethod("do_nothing"), this);
