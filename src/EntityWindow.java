@@ -13,6 +13,7 @@ public class EntityWindow extends Window {
 	StateGame s;
 	Button rename;
 	Button sizeb;
+	Button deselect;
 	Label debug_ln1;
 
 	Container person_containers[];
@@ -40,24 +41,35 @@ public class EntityWindow extends Window {
 		this.add_container(horizontal_rule);
 
 		// rename button
-		rename = new Button(StateGame.f_18.getWidth("Rename") + 16, StateGame.f_18.getHeight("Rename") + 8, 0, horizontal_rule.rely + (int) horizontal_rule.weight / 2 + pady, 2, "Rename", StateGame.f_18, fgetMethod("do_nothing"), this);
+		int width = StateGame.f_18.getWidth("Rename") + 16;
+		int height = StateGame.f_18.getHeight("Rename") + 8;
+		rename = new Button(width, height, 0, horizontal_rule.rely + (int) horizontal_rule.weight / 2 + pady, 2, "Rename", StateGame.f_18, fgetMethod("do_nothing"), this);
 		rename.set_args((Object[]) null);
 
 		// resize button (temporary)
+		width = StateGame.f_18.getWidth("Sizem") + 16;
+		height = StateGame.f_18.getHeight("Sizem") + 2;
 		sizeb = new Button(StateGame.f_18.getWidth("Sizem") + 16, StateGame.f_18.getHeight("Sizem") + 2, rename.sizex + 32, horizontal_rule.rely + (int) horizontal_rule.weight / 2 + pady, 2, "Sizem", StateGame.f_18, fgetMethod("do_nothing"), this);
 		sizeb.set_args((Object[]) null);
 
 		// grab button
 		grab = new ImageButton(64, 64, sizex - 72, sizeb.y, new Image("gfx//tweezicon.png"), fgetMethod("do_nothing"), this);
 		grab.set_args((Object[]) null);
+		
+		// deselect button
+		width = StateGame.f_18.getWidth("Deselect") + 16;
+		height = StateGame.f_18.getHeight("Deselect") + 8;
+		deselect = new Button(width, height, 0, sizey-height-pady-titlebar_height-(int)weight*2, 2, "Deselect", StateGame.f_18, fgetMethod("deselect_entity"), this);
+		
 
 		this.add_container(rename);
 		this.add_container(grab);
 		this.add_container(sizeb);
+		this.add_container(deselect);
 
-		Label debug_label = new Label(0, sizey - 100, 2, 2, 0, "debug", StateGame.f_18);
+		Label debug_label = new Label(0, sizey - 120, 2, 2, 0, "debug", StateGame.f_18);
 		this.add_container(debug_label);
-		debug_ln1 = new Label(0, sizey - 100 + debug_label.sizey, 2, 2, 0, "null", StateGame.f_16);
+		debug_ln1 = new Label(0, sizey - 120 + debug_label.sizey, 2, 2, 0, "null", StateGame.f_16);
 		add_container(debug_ln1);
 		
 		for (Container c : containers) {
@@ -74,6 +86,10 @@ public class EntityWindow extends Window {
 		if (entry_box == null) {
 			entry_box = s.add_input_box();
 		} 
+	}
+	
+	public void deselect_entity() {
+		activeEnt = null;
 	}
 
 	public void setEntity(Entity e) {

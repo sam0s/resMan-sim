@@ -189,7 +189,7 @@ public class StateGame extends BasicGameState {
 		    		test_win.setEntity(e);
 		    		break;
 		    	}
-		    	test_win.setEntity(null);
+		    	//test_win.setEntity(null);
 			}
 		}
 
