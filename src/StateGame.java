@@ -15,9 +15,9 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class StateGame extends BasicGameState {
 	double theta;
-	public static String[] namesM = {"Glenn","Jerry","Joe","Jack","Paul","Nick","Trevor","Mathew","Todd","Linus","Harry","Walter","Ryan","Bob","Henry","Brian","Dennis"};
-	public static String[] namesF = {"Stephanie","Susan","Patricia","Kim","Rachel","Rebecca","Alice","Jackie","Judy","Heidi","Skylar","Anna","Paige"};
-	public static String[] namesL = {"Rollins","Howard","Zalman","Bell","Newell","Caiafa","Finnegan","Hall","Howell","Kernighan","Wilson","Ritchie"};
+	public static String[] namesM = { "Glenn", "Jerry", "Joe", "Jack", "Paul", "Nick", "Trevor", "Mathew", "Todd", "Linus", "Harry", "Walter", "Ryan", "Bob", "Henry", "Brian", "Dennis" };
+	public static String[] namesF = { "Stephanie", "Susan", "Patricia", "Kim", "Rachel", "Rebecca", "Alice", "Jackie", "Judy", "Heidi", "Skylar", "Anna", "Paige" };
+	public static String[] namesL = { "Rollins", "Howard", "Zalman", "Bell", "Newell", "Caiafa", "Finnegan", "Hall", "Howell", "Kernighan", "Wilson", "Ritchie" };
 	Image i;
 	Image bg;
 	Input input;
@@ -30,13 +30,12 @@ public class StateGame extends BasicGameState {
 	long frameTime = 0;
 	Random b = new Random();
 	Entity[] guys;
-	Room rooms[]; 
+	Room rooms[];
 	EntityWindow test_win;
 	ControlWindow contrl;
 	Image sheet1;
 	Entity grabbed;
 	Vector<Container> misc_renders = new Vector<Container>();
-	InputBox e;
 	// Sound soundbyte;
 
 	public static final int ID = 0;
@@ -49,55 +48,55 @@ public class StateGame extends BasicGameState {
 	public Method fgetMethod(String methodName, Class... args) throws NoSuchMethodException, SecurityException {
 		return this.getClass().getMethod(methodName, args);
 	}
-	
-	public static String random_name(int gender){
+
+	public static String random_name(int gender) {
 		Random r = new Random();
 		String name = "";
-		name += (gender==0)?namesM[r.nextInt(namesM.length)]:namesF[r.nextInt(namesM.length)];
-		name += " "+namesL[r.nextInt(namesL.length)];
+		name += (gender == 0) ? namesM[r.nextInt(namesM.length)] : namesF[r.nextInt(namesM.length)];
+		name += " " + namesL[r.nextInt(namesL.length)];
 		return name;
 	}
-	
+
 	public void add_dialog(String text) throws NoSuchMethodException, SecurityException {
-		DialogBox temp = new DialogBox(text,0,0, f_32, 2);
-		int x = (32 * misc_renders.size()) % (Game.WIDTH-temp.sizex) + (misc_renders.size() % (Game.WIDTH/temp.sizex));
-		int y = (32 * misc_renders.size()) % (Game.HEIGHT-temp.sizey) + (misc_renders.size() % (Game.HEIGHT/temp.sizey));
+		DialogBox temp = new DialogBox(text, 0, 0, f_32, 2);
+		int x = (32 * misc_renders.size()) % (Game.WIDTH - temp.sizex) + (misc_renders.size() % (Game.WIDTH / temp.sizex));
+		int y = (32 * misc_renders.size()) % (Game.HEIGHT - temp.sizey) + (misc_renders.size() % (Game.HEIGHT / temp.sizey));
 		temp.set_pos(x, y);
 		misc_renders.addElement(temp);
 	}
-	
-	public InputBox add_input_box() {
-		InputBox temp = new InputBox(200, 100, Game.WIDTH/2-100, Game.HEIGHT/2-50, 2, f_18, input);
+
+	public InputBox add_input_box(Method okb,Object target) throws NoSuchMethodException, SecurityException {
+		InputBox temp = new InputBox("Entry box!", Game.WIDTH / 2 - 100, Game.HEIGHT / 2 - 50, f_18, 2, input,okb,target);
 		misc_renders.addElement(temp);
 		return temp;
 	}
-	
-	public void grab_entity(Entity e){
+
+	public void grab_entity(Entity e) {
 		grabbed = e;
 	}
-	
-	public void add_guy(Room r) throws SlickException{
-		Entity e =new Entity(random_name(0),(int)r.x,(int)r.y);
-		e.setSpriteLoad(new SpriteSheet(sheet1,32,64));
+
+	public void add_guy(Room r) throws SlickException {
+		Entity e = new Entity(random_name(0), (int) r.x, (int) r.y);
+		e.setSpriteLoad(new SpriteSheet(sheet1, 32, 64));
 		rooms[0].add_entity(e);
-		guys = Arrays.copyOf(guys, guys.length+1);
-		guys[guys.length-1] = e;
+		guys = Arrays.copyOf(guys, guys.length + 1);
+		guys[guys.length - 1] = e;
 	}
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		guys=new Entity[]{};
+		guys = new Entity[] {};
 		input = gc.getInput();
 		sheet1 = new Image("gfx//testChar.png");
 		sheet1.setFilter(Image.FILTER_NEAREST);
-		rooms = new Room[]{new Room(320,Game.HEIGHT-200)};
+		rooms = new Room[] { new Room(320, Game.HEIGHT - 200) };
 		add_guy(rooms[0]);
 		i = new Image("hogBoss.jpg");
 		bg = new Image("testBack.png");
 		// soundbyte = new Sound("cooom.ogg");
 		theta = 0;
 		int pad = 4;
-		//menu = new Container(500, 64, 200, 500, pad, pad, inner, outer, 2.5);
+		// menu = new Container(500, 64, 200, 500, pad, pad, inner, outer, 2.5);
 		fontRaw = null;
 
 		try {
@@ -115,26 +114,22 @@ public class StateGame extends BasicGameState {
 		f_18 = new TrueTypeFont(fontRaw.deriveFont(18f), false);
 		f_16 = new TrueTypeFont(fontRaw.deriveFont(16f), false);
 		f_14 = new TrueTypeFont(fontRaw.deriveFont(14f), false);
-		
+
 		/* init containers */
 		Container cont = new Container(100, 100, 0, 0, pad, pad, 2);
 
 		try {
-			contrl = new ControlWindow(400, 100, 0, 0, 4, 4, 2, f_18,this);
+			contrl = new ControlWindow(400, 100, 0, 0, 4, 4, 2, f_18, this);
 			test_win = new EntityWindow(pad, pad, 2, f_24, this);
 
-			//win.add_container(cont);
+			// win.add_container(cont);
 		} catch (NoSuchMethodException | SecurityException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		e = new InputBox(250, 64, 200, 32, 2, f_18, input);
-		
-	}
 
-	// public void coom() {
-	// soundbyte.play();
-	// }
+		}
+
+	}
 
 	public float[] travel_to_point(float curx, float cury, float destx, float desty, float speed, int delta) {
 		/*
@@ -152,15 +147,15 @@ public class StateGame extends BasicGameState {
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
-		
+
 		/* update windows */
 		try {
 			test_win.update(input, delta);
-			contrl.update(input,delta);
-			for (Iterator<Container> iter = misc_renders.iterator();iter.hasNext(); ) {
+			contrl.update(input, delta);
+			for (Iterator<Container> iter = misc_renders.iterator(); iter.hasNext();) {
 				Container cont = iter.next();
 				cont.update(input);
-				if(cont.destroy) {
+				if (cont.destroy) {
 					iter.remove();
 				}
 			}
@@ -168,28 +163,28 @@ public class StateGame extends BasicGameState {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		for(Entity e:guys){
-		    e.update(delta);
+
+		for (Entity e : guys) {
+			e.update(delta);
 		}
-		
-		//drag guy if he is grabbed
-		if(grabbed!=null){
-			grabbed.x=input.getMouseX();
-			grabbed.y=input.getMouseY();
+
+		// drag guy if he is grabbed
+		if (grabbed != null) {
+			grabbed.x = input.getMouseX();
+			grabbed.y = input.getMouseY();
 		}
-		
+
 		// eat mouse input
 		if (input.isMousePressed(0)) {
-		    for(Entity e:guys){
-		    	if (e.isClicked(input)){
-		    		if(test_win.hidden){
-		    			test_win.show();
-		    		}
-		    		test_win.setEntity(e);
-		    		break;
-		    	}
-		    	//test_win.setEntity(null);
+			for (Entity e : guys) {
+				if (e.isClicked(input)) {
+					if (test_win.hidden) {
+						test_win.show();
+					}
+					test_win.setEntity(e);
+					break;
+				}
+				// test_win.setEntity(null);
 			}
 		}
 
@@ -197,16 +192,15 @@ public class StateGame extends BasicGameState {
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		bg.draw(0,0);
+		bg.draw(0, 0);
 		i.draw(210, 140, 200, 200);
 		f_32.drawString(32, 32, String.format("(%d, %d)", input.getMouseX(), input.getMouseY()), Color.orange);
-		e.draw(g);
-		for(Room r:rooms){
+		for (Room r : rooms) {
 			r.draw(g);
 		}
 		test_win.draw(g);
 		contrl.draw(g);
-		for (Iterator<Container> iter = misc_renders.iterator();iter.hasNext(); ) {
+		for (Iterator<Container> iter = misc_renders.iterator(); iter.hasNext();) {
 			Container cont = iter.next();
 			cont.draw(g);
 		}

@@ -20,7 +20,6 @@ public class EntityWindow extends Window {
 	Container generic_containers[];
 	Image grab_icon;
 	ImageButton grab;
-	InputBox entry_box;
 
 	public EntityWindow(int padx, int pady, double weight, Font f, StateGame s) throws NoSuchMethodException, SecurityException, SlickException {
 		super(300, 350, 100, 100, padx, pady, weight, f, "NULL");
@@ -83,9 +82,11 @@ public class EntityWindow extends Window {
 	}
 	
 	public void rename() throws NoSuchMethodException, SecurityException {
-		if (entry_box == null) {
-			entry_box = s.add_input_box();
-		} 
+		InputBox ib = s.add_input_box(this.fgetMethod("set_ent_name",String.class),this);
+	}
+	
+	public void set_ent_name(String name){
+		activeEnt.set_name(name);
 	}
 	
 	public void deselect_entity() {
@@ -120,22 +121,22 @@ public class EntityWindow extends Window {
 		} else {
 			debug_ln1.set_text("null");
 		}
-		if (entry_box != null && activeEnt != null) {
-			int length = entry_box.text.length();
-			if (length > 0 && entry_box.text.charAt(length-1) == '\n') {
-				if (entry_box.text.charAt(0) == '\n') {
-					try {
-						s.add_dialog("You must enter at least one character");
-					} catch (NoSuchMethodException | SecurityException e) {
-						e.printStackTrace();
-					}
-				} else {
-					activeEnt.set_name(entry_box.text.substring(0, length-1));
-				}
-				entry_box.destroy = true;
-				entry_box = null;
-			}
-		}
+//		if (entry_box != null && activeEnt != null) {
+//			int length = entry_box.text.length();
+//			if (length > 0 && entry_box.text.charAt(length-1) == '\n') {
+//				if (entry_box.text.charAt(0) == '\n') {
+//					try {
+//						s.add_dialog("You must enter at least one character");
+//					} catch (NoSuchMethodException | SecurityException e) {
+//						e.printStackTrace();
+//					}
+//				} else {
+//					activeEnt.set_name(entry_box.text.substring(0, length-1));
+//				}
+//				entry_box.destroy = true;
+//				entry_box = null;
+//			}
+//		}
 	}
 
 	@Override

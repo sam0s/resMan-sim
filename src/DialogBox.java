@@ -11,18 +11,14 @@ public class DialogBox extends Container {
 	String text;
 	boolean hidden;
 
-	public DialogBox(String text, int x, int y, Font f, double weight)
-			throws NoSuchMethodException, SecurityException {
+	public DialogBox(String text, int x, int y, Font f, double weight) throws NoSuchMethodException, SecurityException {
 		super(f.getWidth(text) + 80, f.getHeight(text) + 70, x, y, 0, 0, weight);
 
 		this.text = text;
 		this.f = f;
 		this.hidden = false;
 
-		Button exit = new Button(StateGame.f_24.getWidth("Ok") + 16,
-				StateGame.f_24.getHeight("Ok") + 8, sizex / 2
-						- (StateGame.f_24.getWidth("Ok") + 16) / 2, 5 * sizey
-						/ 7 - (StateGame.f_24.getHeight("Ok") + 8) / 2,2, "Ok", StateGame.f_24, fgetMethod("hide"), this);
+		Button exit = new Button(StateGame.f_24.getWidth("Ok") + 16, StateGame.f_24.getHeight("Ok") + 8, sizex / 2 - (StateGame.f_24.getWidth("Ok") + 16) / 2, 5 * sizey / 7 - (StateGame.f_24.getHeight("Ok") + 8) / 2, 2, "Ok", StateGame.f_24, fgetMethod("hide"), this);
 
 		this.add_container(exit);
 
@@ -42,8 +38,7 @@ public class DialogBox extends Container {
 			surface.setColor(outer);
 			surface.drawRect(x, y, sizex, sizey);
 
-			f.drawString(x + (sizex - f.getWidth(text)) / 2,
-					y + (sizey - f.getHeight(text)) / 4, text, outer);
+			f.drawString(x + (sizex - f.getWidth(text)) / 2, y + (sizey - f.getHeight(text)) / 4, text, outer);
 
 			for (Container c : containers) {
 				c.draw(surface);
