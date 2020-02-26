@@ -204,11 +204,11 @@ public class StateGame extends BasicGameState {
 		for(Room r:rooms){
 			r.draw(g);
 		}
+		test_win.draw(g);
+		contrl.draw(g);
 		for (Iterator<Container> iter = misc_renders.iterator();iter.hasNext(); ) {
 			Container cont = iter.next();
 			cont.draw(g);
 		}
-		test_win.draw(g);
-		contrl.draw(g);
 	}
 }
