@@ -19,6 +19,7 @@ public class EntityWindow extends Window {
 	Container generic_containers[];
 	Image grab_icon;
 	ImageButton grab;
+	InputBox entry_box;
 
 	public EntityWindow(int padx, int pady, double weight, Font f, StateGame s) throws NoSuchMethodException, SecurityException, SlickException {
 		super(300, 350, 100, 100, padx, pady, weight, f, "NULL");
@@ -68,13 +69,19 @@ public class EntityWindow extends Window {
 		s.add_dialog("No entity currently selected!");
 		return;
 	}
+	
+	public void rename(Entity e) throws NoSuchMethodException, SecurityException {
+		if (entry_box == null) {
+			entry_box = s.add_input_box();
+		} 
+	}
 
 	public void setEntity(Entity e) {
 		activeEnt = e;
 		try {
 			if (activeEnt != null) {
-				rename.set_args("hog boss");
-				rename.set_func(activeEnt.fgetMethod("set_name", String.class), activeEnt);
+				rename.set_args(activeEnt);
+				rename.set_func(fgetMethod("rename", Entity.class), this);
 				sizeb.set_func(activeEnt.fgetMethod("up_size"), activeEnt);
 				grab.set_func(s.fgetMethod("grab_entity", Entity.class), s);
 				grab.set_args(activeEnt);
@@ -98,6 +105,22 @@ public class EntityWindow extends Window {
 			debug_ln1.set_text(String.format("(%.0f, %.0f) | Dir: %d", activeEnt.x, activeEnt.y, activeEnt.roamDir));
 		} else {
 			debug_ln1.set_text("null");
+		}
+		if (entry_box != null && activeEnt != null) {
+			int length = entry_box.text.length();
+			if (length > 0 && entry_box.text.charAt(length-1) == '\n') {
+				if (entry_box.text.charAt(0) == '\n') {
+					try {
+						s.add_dialog("You must enter at least one character");
+					} catch (NoSuchMethodException | SecurityException e) {
+						e.printStackTrace();
+					}
+				} else {
+					activeEnt.set_name(entry_box.text.substring(0, length-1));
+				}
+				entry_box.destroy = true;
+				entry_box = null;
+			}
 		}
 	}
 

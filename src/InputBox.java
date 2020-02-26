@@ -8,6 +8,7 @@ public class InputBox extends Container implements KeyListener{
 	Input i;
 	String text = "";
 	Font f;
+	Boolean done;
 	
 	public static final int BACKSPACE = 14;
 	public static final int RSHIFT = 56;
@@ -95,6 +96,7 @@ public class InputBox extends Container implements KeyListener{
 			break;
 		case RSHIFT:
 		case LSHIFT:
+			break;
 		case ENTER:
 			text+="\n";
 			break;

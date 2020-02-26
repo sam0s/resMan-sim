@@ -66,6 +66,12 @@ public class StateGame extends BasicGameState {
 		misc_renders.addElement(temp);
 	}
 	
+	public InputBox add_input_box() {
+		InputBox temp = new InputBox(200, 100, Game.WIDTH/2-100, Game.HEIGHT/2-50, 2, f_18, input);
+		misc_renders.addElement(temp);
+		return temp;
+	}
+	
 	public void grab_entity(Entity e){
 		grabbed = e;
 	}
