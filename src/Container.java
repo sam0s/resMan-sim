@@ -22,6 +22,7 @@ public class Container {
 	float relx;
 	float rely;
 	Boolean destroy;
+	Boolean is_focused;
 
 	// Use to get method reference to a method of this class!
 	public Method fgetMethod(String methodName, Class... args) throws NoSuchMethodException, SecurityException {
@@ -44,6 +45,23 @@ public class Container {
 			c.set_pos(x, y);
 		}
 
+	}
+	
+	public Boolean overlaps(Container b) {
+		float l[] = new float[] {x, y};
+		float r[] = new float[] {x + sizex, y + sizey};
+		float lb[] = new float[] {b.x, b.y};
+		float rb[] = new float[] {b.x + b.sizex, b.y + b.sizey};
+		
+		if (l[0] > rb[0] || r[0] < lb[0]) {
+			return false;
+		}
+		
+		if (l[1] > rb[1] || r[1] < lb[1]) {
+			return false;
+		}
+		
+		return true;
 	}
 
 	public void move(float xoffset, float yoffset) {
@@ -71,6 +89,7 @@ public class Container {
 		this.relx = x;
 		this.rely = y;
 		this.destroy = false;
+		this.is_focused = false;
 	}
 	
 	public void setTheme(Color in, Color out){
@@ -91,9 +110,13 @@ public class Container {
 		}
 	}
 
-	public void update(Input i) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public void update(Input i, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		int mouse_pos[] = new int[] {i.getMouseX(), i.getMouseY()};
+		
+		is_focused = mouse_pos[0] >= x && mouse_pos[0] <= x + sizex  && mouse_pos[1] >= y && mouse_pos[1] <= y + sizey;
+		
 		for (Container c : containers) {
-			c.update(i);
+			c.update(i, delta);
 			c.x = x + c.relx + padx;
 			c.y = y + c.rely + pady;
 		}

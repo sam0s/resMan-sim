@@ -81,7 +81,7 @@ public class Window extends Container {
 			
 			
 			for (Container c : containers) {
-				c.update(i);
+				c.update(i, delta);
 			}
 
 			if (mx > x && mx < x + sizex) {

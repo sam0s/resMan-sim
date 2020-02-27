@@ -31,11 +31,13 @@ public class StateGame extends BasicGameState {
 	Random b = new Random();
 	Entity[] guys;
 	Room rooms[];
-	EntityWindow test_win;
-	ControlWindow contrl;
 	Image sheet1;
 	Entity grabbed;
 	Vector<Container> misc_renders = new Vector<Container>();
+	Vector<Container> ui = new Vector<Container>();
+	EntityWindow ewin;
+	ControlWindow cwin;
+	int overlaps;
 	// Sound soundbyte;
 
 	public static final int ID = 0;
@@ -119,8 +121,11 @@ public class StateGame extends BasicGameState {
 		Container cont = new Container(100, 100, 0, 0, pad, pad, 2);
 
 		try {
-			contrl = new ControlWindow(400, 100, 0, 0, 4, 4, 2, f_18, this);
-			test_win = new EntityWindow(pad, pad, 2, f_24, this);
+			cwin = new ControlWindow(400, 100, 0, 0, 4, 4, 2, f_18, this);
+			ui.addElement(cwin);
+			ewin = new EntityWindow(pad, pad, 2, f_24, this);
+			ui.addElement(ewin);
+			
 
 			// win.add_container(cont);
 		} catch (NoSuchMethodException | SecurityException e) {
@@ -145,16 +150,53 @@ public class StateGame extends BasicGameState {
 		return new float[] { curx, cury };
 	}
 
+	class container_pairs {
+		
+		Vector<Container[]> pairs;
+		
+		public container_pairs() {
+			this.pairs = new Vector<Container[]>();
+		}
+		
+		public void add_pair(Container a, Container b) {
+			pairs.addElement(new Container[] {a, b});
+		}
+		
+		public Boolean contains_pair(Container a, Container b) {
+			for (Iterator<Container[]> iter = pairs.iterator(); iter.hasNext();) {
+				Container[] pair = iter.next();
+				if ((pair[0] == a && pair[1] == b) || (pair[0] == b && pair[1] == a)) {
+					return true;
+				}
+			}
+			return false;
+		}
+		
+	}
+	
 	@Override
-	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
-
+	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {		
 		/* update windows */
+		container_pairs cp = new container_pairs();
 		try {
-			test_win.update(input, delta);
-			contrl.update(input, delta);
+			for (Iterator<Container> iter = ui.iterator(); iter.hasNext();) {
+				Container cont = iter.next();
+				cont.update(input, delta);
+				if (cont.destroy) {
+					iter.remove();
+				}
+				
+				for (Iterator<Container> iter_b = ui.iterator(); iter_b.hasNext();) {
+					Container cont_b = iter_b.next();
+					if (cont != cont_b && !cp.contains_pair(cont, cont_b) && cont.overlaps(cont_b)) {
+						overlaps++;
+						cp.add_pair(cont, cont_b);
+					}
+				}
+			}			
 			for (Iterator<Container> iter = misc_renders.iterator(); iter.hasNext();) {
 				Container cont = iter.next();
-				cont.update(input);
+				cont.update(input, delta);
 				if (cont.destroy) {
 					iter.remove();
 				}
@@ -178,10 +220,10 @@ public class StateGame extends BasicGameState {
 		if (input.isMousePressed(0)) {
 			for (Entity e : guys) {
 				if (e.isClicked(input)) {
-					if (test_win.hidden) {
-						test_win.show();
+					if (ewin.hidden) {
+						ewin.show();
 					}
-					test_win.setEntity(e);
+					ewin.setEntity(e);
 					break;
 				}
 				// test_win.setEntity(null);
@@ -194,12 +236,15 @@ public class StateGame extends BasicGameState {
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		bg.draw(0, 0);
 		i.draw(210, 140, 200, 200);
-		f_32.drawString(32, 32, String.format("(%d, %d)", input.getMouseX(), input.getMouseY()), Color.orange);
+		f_32.drawString(32, 32, String.format("(%d, %d), Overlaps: %d", input.getMouseX(), input.getMouseY(), overlaps), Color.orange);
+		overlaps = 0;
 		for (Room r : rooms) {
 			r.draw(g);
 		}
-		test_win.draw(g);
-		contrl.draw(g);
+		for (Iterator<Container> iter = ui.iterator(); iter.hasNext();) {
+			Container cont = iter.next();
+			cont.draw(g);
+		}
 		for (Iterator<Container> iter = misc_renders.iterator(); iter.hasNext();) {
 			Container cont = iter.next();
 			cont.draw(g);

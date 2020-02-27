@@ -36,19 +36,16 @@ public class Button extends Container {
 		this.args = args;
 	}
 
-	public void update(Input i) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public void update(Input i, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		super.update(i, delta);
 		hi = false;
-		int mx = i.getMouseX();
-		int my = i.getMouseY();
-		if (mx > x && mx < x + sizex) {
-			if (my > y && my < y + sizey) {
-				if (i.isMousePressed(0)) {
-					func.invoke(gc, this.args);
-				}
+		if (is_focused) {
+			if (i.isMousePressed(0)) {
+				func.invoke(gc, this.args);
+			}
 
-				if (hi == false) {
-					hi = true;
-				}
+			if (hi == false) {
+				hi = true;
 			}
 		}
 	}
