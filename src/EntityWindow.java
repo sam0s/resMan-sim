@@ -121,22 +121,6 @@ public class EntityWindow extends Window {
 		} else {
 			debug_ln1.set_text("null");
 		}
-//		if (entry_box != null && activeEnt != null) {
-//			int length = entry_box.text.length();
-//			if (length > 0 && entry_box.text.charAt(length-1) == '\n') {
-//				if (entry_box.text.charAt(0) == '\n') {
-//					try {
-//						s.add_dialog("You must enter at least one character");
-//					} catch (NoSuchMethodException | SecurityException e) {
-//						e.printStackTrace();
-//					}
-//				} else {
-//					activeEnt.set_name(entry_box.text.substring(0, length-1));
-//				}
-//				entry_box.destroy = true;
-//				entry_box = null;
-//			}
-//		}
 	}
 
 	@Override

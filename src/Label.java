@@ -1,6 +1,9 @@
+import java.lang.reflect.InvocationTargetException;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 
 public class Label extends Container {
 
@@ -21,8 +24,12 @@ public class Label extends Container {
 		this.text = text;
 	}
 	
-	public void update() {
+	public void update(Input i, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		super.update(i, delta);
 		set_size(f.getWidth(text) + padx*2, f.getHeight(text) + pady*2);	
+		for (Container c: containers) {
+			c.update(i, delta);
+		}
 	}
 
 	public void draw(Graphics surface) {

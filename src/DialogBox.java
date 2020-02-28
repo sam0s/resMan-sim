@@ -1,8 +1,10 @@
+import java.lang.reflect.InvocationTargetException;
 import java.util.Vector;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 public class DialogBox extends Container {
@@ -28,6 +30,14 @@ public class DialogBox extends Container {
 	public void hide() {
 		hidden = true;
 		destroy = true;
+	}
+	
+	public void update(Input i, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		super.update(i, delta);
+		
+		for (Container c: containers) {
+			c.update(i, delta);
+		}
 	}
 
 	public void draw(Graphics surface) throws SlickException {

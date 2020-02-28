@@ -53,6 +53,7 @@ public class Window extends Container {
 	}
 
 	public void update(Input i, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		super.update(i, delta);
 		if (!hidden) {
 			int mx = i.getMouseX();
 			int my = i.getMouseY();
@@ -79,7 +80,6 @@ public class Window extends Container {
 
 			}
 			
-			
 			for (Container c : containers) {
 				c.update(i, delta);
 			}
@@ -95,7 +95,6 @@ public class Window extends Container {
 					}
 				}
 			}
-			
 		}
 	}
 

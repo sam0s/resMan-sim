@@ -174,37 +174,51 @@ public class StateGame extends BasicGameState {
 		
 	}
 	
+	public void update_containers(Vector<Container> elements, int delta, Boolean mousepress, Boolean check_overlaps) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		container_pairs cp = check_overlaps ? new container_pairs() : null;
+		Vector<Container> pushed = new Vector<Container>();
+		
+		
+		
+		for (Iterator<Container> iter = elements.iterator(); iter.hasNext();) {
+			Container cont = iter.next();
+			cont.update(input, delta);
+			if (!cont.destroy && cont.is_focused && mousepress) {
+				pushed.addElement(cont);
+			}
+			if (cont.destroy) {
+				iter.remove();
+			}
+			
+			
+			for (Iterator<Container> iter_b = elements.iterator(); iter_b.hasNext() && check_overlaps;) {
+				Container cont_b = iter_b.next();
+				if (cont != cont_b && !cp.contains_pair(cont, cont_b) && cont.overlaps(cont_b)) {
+					overlaps++;
+					cp.add_pair(cont, cont_b);
+				}
+			}
+		}
+		
+		for (Iterator<Container> iter = pushed.iterator(); iter.hasNext();) {
+			Container cont = iter.next();
+			elements.remove(cont);
+			elements.addElement(cont);
+		}
+	}
+	
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {		
 		/* update windows */
-		container_pairs cp = new container_pairs();
+		
+		Boolean mousepress = input.isMouseButtonDown(0);
+		
 		try {
-			for (Iterator<Container> iter = ui.iterator(); iter.hasNext();) {
-				Container cont = iter.next();
-				cont.update(input, delta);
-				if (cont.destroy) {
-					iter.remove();
-				}
-				
-				for (Iterator<Container> iter_b = ui.iterator(); iter_b.hasNext();) {
-					Container cont_b = iter_b.next();
-					if (cont != cont_b && !cp.contains_pair(cont, cont_b) && cont.overlaps(cont_b)) {
-						overlaps++;
-						cp.add_pair(cont, cont_b);
-					}
-				}
-			}			
-			for (Iterator<Container> iter = misc_renders.iterator(); iter.hasNext();) {
-				Container cont = iter.next();
-				cont.update(input, delta);
-				if (cont.destroy) {
-					iter.remove();
-				}
-			}
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			update_containers(ui, delta, mousepress, true);
+			update_containers(misc_renders, delta, mousepress, false);
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
+			e1.printStackTrace();
+		}		
 
 		for (Entity e : guys) {
 			e.update(delta);

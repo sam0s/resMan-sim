@@ -114,12 +114,6 @@ public class Container {
 		int mouse_pos[] = new int[] {i.getMouseX(), i.getMouseY()};
 		
 		is_focused = mouse_pos[0] >= x && mouse_pos[0] <= x + sizex  && mouse_pos[1] >= y && mouse_pos[1] <= y + sizey;
-		
-		for (Container c : containers) {
-			c.update(i, delta);
-			c.x = x + c.relx + padx;
-			c.y = y + c.rely + pady;
-		}
 	}
 
 	public void set_size(int sizex, int sizey) {
