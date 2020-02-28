@@ -40,6 +40,14 @@ public class InputBox extends Container implements KeyListener {
 		this.add_container(exit);
 
 	}
+	
+	public void update(Input i, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		super.update(i, delta);
+		
+		for (Container c: containers) {
+			c.update(i, delta);
+		}
+	}
 
 	@Override
 	public void finalize() {

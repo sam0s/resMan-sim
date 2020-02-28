@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.Vector;
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
@@ -177,19 +178,12 @@ public class StateGame extends BasicGameState {
 	public void update_containers(Vector<Container> elements, int delta, Boolean mousepress, Boolean check_overlaps) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		container_pairs cp = check_overlaps ? new container_pairs() : null;
 		Vector<Container> pushed = new Vector<Container>();
+		Collections.reverse(elements);
 		
 		
 		
 		for (Iterator<Container> iter = elements.iterator(); iter.hasNext();) {
 			Container cont = iter.next();
-			cont.update(input, delta);
-			if (!cont.destroy && cont.is_focused && mousepress) {
-				pushed.addElement(cont);
-			}
-			if (cont.destroy) {
-				iter.remove();
-			}
-			
 			
 			for (Iterator<Container> iter_b = elements.iterator(); iter_b.hasNext() && check_overlaps;) {
 				Container cont_b = iter_b.next();
@@ -198,7 +192,18 @@ public class StateGame extends BasicGameState {
 					cp.add_pair(cont, cont_b);
 				}
 			}
+			
+			
+			cont.update(input, delta);
+			if (!cont.destroy && cont.is_focused && mousepress && overlaps == 0) {
+				pushed.addElement(cont);
+			}
+			if (cont.destroy) {
+				iter.remove();
+			}
 		}
+		
+		Collections.reverse(elements);
 		
 		for (Iterator<Container> iter = pushed.iterator(); iter.hasNext();) {
 			Container cont = iter.next();
