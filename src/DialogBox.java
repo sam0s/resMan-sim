@@ -34,7 +34,6 @@ public class DialogBox extends Container {
 	
 	public void update(Input i, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		super.update(i, delta);
-		
 		for (Container c: containers) {
 			c.update(i, delta);
 		}

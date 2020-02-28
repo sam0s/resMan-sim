@@ -151,7 +151,7 @@ public class StateGame extends BasicGameState {
 		return new float[] { curx, cury };
 	}
 	
-	public void update_containers(Vector<Container> elements, int delta, Boolean mousepress, Boolean check_overlaps) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public void update_containers(Vector<Container> elements, int delta, Boolean mousepress) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Vector<Container> pushed = new Vector<Container>();
 		Collections.reverse(elements);
 		
@@ -160,7 +160,7 @@ public class StateGame extends BasicGameState {
 			Container temp = null;
 			Boolean overlap = false;
 			
-			for (Iterator<Container> iter_b = elements.iterator(); iter_b.hasNext() && check_overlaps;) {
+			for (Iterator<Container> iter_b = elements.iterator(); iter_b.hasNext();) {
 				Container cont_b = iter_b.next();
 				if (cont != cont_b && cont.overlaps(cont_b)) {
 					overlap = true;
@@ -200,8 +200,8 @@ public class StateGame extends BasicGameState {
 		Boolean mousepress = input.isMouseButtonDown(0);
 		
 		try {
-			update_containers(ui, delta, mousepress, true);
-			update_containers(misc_renders, delta, mousepress, false);
+			update_containers(ui, delta, mousepress);
+			update_containers(misc_renders, delta, mousepress);
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
 			e1.printStackTrace();
 		}		
