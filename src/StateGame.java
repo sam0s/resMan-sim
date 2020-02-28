@@ -38,7 +38,7 @@ public class StateGame extends BasicGameState {
 	Vector<Container> ui = new Vector<Container>();
 	EntityWindow ewin;
 	ControlWindow cwin;
-	int overlaps;
+	Boolean both_focused = false;
 	// Sound soundbyte;
 
 	public static final int ID = 0;
@@ -150,52 +150,33 @@ public class StateGame extends BasicGameState {
 
 		return new float[] { curx, cury };
 	}
-
-	class container_pairs {
-		
-		Vector<Container[]> pairs;
-		
-		public container_pairs() {
-			this.pairs = new Vector<Container[]>();
-		}
-		
-		public void add_pair(Container a, Container b) {
-			pairs.addElement(new Container[] {a, b});
-		}
-		
-		public Boolean contains_pair(Container a, Container b) {
-			for (Iterator<Container[]> iter = pairs.iterator(); iter.hasNext();) {
-				Container[] pair = iter.next();
-				if ((pair[0] == a && pair[1] == b) || (pair[0] == b && pair[1] == a)) {
-					return true;
-				}
-			}
-			return false;
-		}
-		
-	}
 	
 	public void update_containers(Vector<Container> elements, int delta, Boolean mousepress, Boolean check_overlaps) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		container_pairs cp = check_overlaps ? new container_pairs() : null;
 		Vector<Container> pushed = new Vector<Container>();
 		Collections.reverse(elements);
 		
-		
-		
 		for (Iterator<Container> iter = elements.iterator(); iter.hasNext();) {
 			Container cont = iter.next();
+			Container temp = null;
+			Boolean overlap = false;
 			
 			for (Iterator<Container> iter_b = elements.iterator(); iter_b.hasNext() && check_overlaps;) {
 				Container cont_b = iter_b.next();
-				if (cont != cont_b && !cp.contains_pair(cont, cont_b) && cont.overlaps(cont_b)) {
-					overlaps++;
-					cp.add_pair(cont, cont_b);
+				if (cont != cont_b && cont.overlaps(cont_b)) {
+					overlap = true;
+					temp = cont_b;
 				}
-			}
-			
+			}	
 			
 			cont.update(input, delta);
-			if (!cont.destroy && cont.is_focused && mousepress && overlaps == 0) {
+			if (overlap) { 
+				temp.update(input, delta); 
+				both_focused = cont.is_focused && temp.is_focused;
+				
+				System.out.printf("%s\n", (!overlap || !both_focused) ? "yes": "no");
+			}
+			
+			if (!cont.destroy && cont.is_focused && mousepress && (!overlap || !both_focused)) {
 				pushed.addElement(cont);
 			}
 			if (cont.destroy) {
@@ -255,8 +236,7 @@ public class StateGame extends BasicGameState {
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		bg.draw(0, 0);
 		i.draw(210, 140, 200, 200);
-		f_32.drawString(32, 32, String.format("(%d, %d), Overlaps: %d", input.getMouseX(), input.getMouseY(), overlaps), Color.orange);
-		overlaps = 0;
+		f_32.drawString(32, 32, String.format("(%d, %d)", input.getMouseX(), input.getMouseY()), Color.orange);
 		for (Room r : rooms) {
 			r.draw(g);
 		}
