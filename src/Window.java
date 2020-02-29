@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.geom.Rectangle;
 
 public class Window extends Container {
 
@@ -22,6 +23,7 @@ public class Window extends Container {
 
 	float moving_cursor_x_offset;
 	float moving_cursor_y_offset;
+
 	@Override
 	public void add_container(Container... containerz) {
 		for (Container new_container : containerz) {
@@ -44,14 +46,14 @@ public class Window extends Container {
 		this.moving_cursor_y_offset = 0;
 		titlebar_height = f.getHeight(title) + 2;
 		titlebar = new Container(this.sizex, titlebar_height, this.x, this.y, 2, 2, weight);
-		hidebutton = new Button(30, titlebar_height, sizex - 30-padx, -titlebar.sizey-pady, weight, "H", f, fgetMethod("hide"), this);
+		hidebutton = new Button(30, titlebar_height, sizex - 30 - padx, -titlebar.sizey - pady, weight, "H", f, fgetMethod("hide"), this);
 		moving = false;
 		this.title = title;
 		this.f = f;
 		this.title_color = outer;
 		this.add_container(hidebutton);
-		this.is_focused=false;
-		this.s=s;
+		this.is_focused = false;
+		this.s = s;
 	}
 
 	public void update(Input i, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -59,7 +61,7 @@ public class Window extends Container {
 		if (!hidden) {
 			int mx = i.getMouseX();
 			int my = i.getMouseY();
-		
+
 			if (!i.isMouseButtonDown(0)) {
 				moving = false;
 			}
@@ -67,13 +69,13 @@ public class Window extends Container {
 			if (moving) {
 				float xoffset = mx - moving_cursor_x_offset - x;
 				float yoffset = my - moving_cursor_y_offset - y;
-				if ( Math.abs(Game.WIDTH - (x + sizex + xoffset)) < 8) {
-					xoffset = Game.WIDTH - x - sizex - (int)weight + 1;
+				if (Math.abs(Game.WIDTH - (x + sizex + xoffset)) < 8) {
+					xoffset = Game.WIDTH - x - sizex - (int) weight + 1;
 				} else if (Math.abs(x + xoffset) < 8) {
-					xoffset = -x + (int)weight -1;
+					xoffset = -x + (int) weight - 1;
 				}
 				if (Math.abs(Game.HEIGHT - (y + sizey + yoffset)) < 8) {
-					yoffset = Game.HEIGHT - y - sizey - (int)weight;
+					yoffset = Game.HEIGHT - y - sizey - (int) weight;
 				} else if (Math.abs(y + yoffset) < 8) {
 					yoffset = -y;
 				}
@@ -81,25 +83,39 @@ public class Window extends Container {
 				titlebar.move(xoffset, yoffset);
 
 			}
-			
-			if(is_focused){
+
 			for (Container c : containers) {
 				c.update(i, delta);
 			}
-			}
-
+			
 			if (mx > x && mx < x + sizex) {
 				if (my > y && my < y + titlebar_height) {
 					if (!moving && i.isMousePressed(0)) {
 						moving = i.isMouseButtonDown(0);
-						s.set_window_focus(this);
+						
 						if (moving) {
+							s.set_window_focus(this);
 							moving_cursor_x_offset = mx - x;
 							moving_cursor_y_offset = my - y;
 						}
 					}
 				}
 			}
+
+			if (mx > x && mx < x + sizex) {
+				if (my > y && my < y + sizey) {
+					if (is_focused) {
+						if (i.isMousePressed(0)) {
+							System.out.printf("yeah buddy, it's me, the focused window. You can stop clicking me now ya clutz.\n");
+						}
+					} else {
+						if (i.isMousePressed(0)) {
+							s.set_window_focus(this);
+						}
+					}
+				}
+			}
+
 		}
 	}
 
@@ -108,9 +124,9 @@ public class Window extends Container {
 			surface.setLineWidth(weight);
 			surface.setColor(inner);
 			surface.fillRect(x, y, sizex, sizey);
-			if(!is_focused){
-			surface.setColor(outer);
-			}else{
+			if (!is_focused) {
+				surface.setColor(outer);
+			} else {
 				surface.setColor(Color.red);
 			}
 			surface.drawRect(x, y, sizex, sizey);

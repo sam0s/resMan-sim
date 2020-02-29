@@ -26,7 +26,7 @@ public class EntityWindow extends Window {
 
 		this.activeEnt = null;
 		Color clear = new Color(0, 0, 0, 0);
-
+		this.s=s;
 		Label age = new Label(0, 0, 2, 2, 0, "Age: NULL", StateGame.f_18);
 		this.add_container(age);
 		Label sex = new Label(0, age.rely + age.sizey, 2, 2, 0, "Sex: MALE", StateGame.f_18);
