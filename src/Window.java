@@ -18,10 +18,10 @@ public class Window extends Container {
 	boolean moving;
 	Color title_color;
 	Button hidebutton;
+	StateGame s;
 
 	float moving_cursor_x_offset;
 	float moving_cursor_y_offset;
-
 	@Override
 	public void add_container(Container... containerz) {
 		for (Container new_container : containerz) {
@@ -38,7 +38,7 @@ public class Window extends Container {
 		moving = false;
 	}
 
-	public Window(int sizex, int sizey, int x, int y, int padx, int pady, double weight, Font f, String title) throws NoSuchMethodException, SecurityException {
+	public Window(int sizex, int sizey, int x, int y, int padx, int pady, double weight, Font f, String title, StateGame s) throws NoSuchMethodException, SecurityException {
 		super(sizex, sizey, x, y, padx, pady, weight);
 		this.moving_cursor_x_offset = 0;
 		this.moving_cursor_y_offset = 0;
@@ -50,6 +50,8 @@ public class Window extends Container {
 		this.f = f;
 		this.title_color = outer;
 		this.add_container(hidebutton);
+		this.is_focused=false;
+		this.s=s;
 	}
 
 	public void update(Input i, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -80,14 +82,17 @@ public class Window extends Container {
 
 			}
 			
+			if(is_focused){
 			for (Container c : containers) {
 				c.update(i, delta);
+			}
 			}
 
 			if (mx > x && mx < x + sizex) {
 				if (my > y && my < y + titlebar_height) {
 					if (!moving && i.isMousePressed(0)) {
 						moving = i.isMouseButtonDown(0);
+						s.set_window_focus(this);
 						if (moving) {
 							moving_cursor_x_offset = mx - x;
 							moving_cursor_y_offset = my - y;
@@ -103,7 +108,11 @@ public class Window extends Container {
 			surface.setLineWidth(weight);
 			surface.setColor(inner);
 			surface.fillRect(x, y, sizex, sizey);
+			if(!is_focused){
 			surface.setColor(outer);
+			}else{
+				surface.setColor(Color.red);
+			}
 			surface.drawRect(x, y, sizex, sizey);
 			titlebar.draw(surface);
 			for (Container c : containers) {

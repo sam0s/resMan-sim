@@ -22,10 +22,9 @@ public class EntityWindow extends Window {
 	ImageButton grab;
 
 	public EntityWindow(int padx, int pady, double weight, Font f, StateGame s) throws NoSuchMethodException, SecurityException, SlickException {
-		super(300, 350, 100, 100, padx, pady, weight, f, "NULL");
+		super(300, 350, 100, 100, padx, pady, weight, f, "NULL",s);
 
 		this.activeEnt = null;
-		this.s = s;
 		Color clear = new Color(0, 0, 0, 0);
 
 		Label age = new Label(0, 0, 2, 2, 0, "Age: NULL", StateGame.f_18);

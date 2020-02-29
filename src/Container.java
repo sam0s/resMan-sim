@@ -22,7 +22,7 @@ public class Container {
 	float relx;
 	float rely;
 	Boolean destroy;
-	Boolean is_focused;
+	Boolean is_focused=false;
 
 	// Use to get method reference to a method of this class!
 	public Method fgetMethod(String methodName, Class... args) throws NoSuchMethodException, SecurityException {
@@ -45,23 +45,6 @@ public class Container {
 			c.set_pos(x, y);
 		}
 
-	}
-	
-	public Boolean overlaps(Container b) {
-		float l[] = new float[] {x, y};
-		float r[] = new float[] {x + sizex, y + sizey};
-		float lb[] = new float[] {b.x, b.y};
-		float rb[] = new float[] {b.x + b.sizex, b.y + b.sizey};
-		
-		if (l[0] > rb[0] || r[0] < lb[0]) {
-			return false;
-		}
-		
-		if (l[1] > rb[1] || r[1] < lb[1]) {
-			return false;
-		}
-		
-		return true;
 	}
 
 	public void move(float xoffset, float yoffset) {
@@ -89,7 +72,6 @@ public class Container {
 		this.relx = x;
 		this.rely = y;
 		this.destroy = false;
-		this.is_focused = false;
 	}
 	
 	public void setTheme(Color in, Color out){
@@ -111,28 +93,13 @@ public class Container {
 	}
 
 	public void update(Input i, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		int mouse_pos[] = new int[] {i.getMouseX(), i.getMouseY()};
-		
-		is_focused = mouse_pos[0] >= x && mouse_pos[0] <= x + sizex  && mouse_pos[1] >= y && mouse_pos[1] <= y + sizey;
+		//int mouse_pos[] = new int[] {i.getMouseX(), i.getMouseY()};
+		//is_focused = mouse_pos[0] >= x && mouse_pos[0] <= x + sizex  && mouse_pos[1] >= y && mouse_pos[1] <= y + sizey;
 	}
 
 	public void set_size(int sizex, int sizey) {
 		this.sizex = sizex;
 		this.sizey = sizey;
-	}
-
-	public float[] travel_to_point(float curx, float cury, float destx, float desty, float speed, int delta) {
-		/*
-		 * delta is in miliseconds, so divide by 1000 to get seconds. multiply
-		 * by speed (pixels/s) to get number of pixels we need to move. finally,
-		 * multiply by curpos - destpos to make movement proportional to
-		 * distance from target.
-		 */
-
-		curx -= Math.ceil(speed * (delta / 1000f) * (curx - destx));
-		cury -= Math.ceil(speed * (delta / 1000f) * (cury - desty));
-
-		return new float[] { curx, cury };
 	}
 
 	public void draw(Graphics surface) throws SlickException {

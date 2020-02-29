@@ -39,6 +39,7 @@ public class StateGame extends BasicGameState {
 	EntityWindow ewin;
 	ControlWindow cwin;
 	Boolean both_focused = false;
+	Window focused_win;
 	// Sound soundbyte;
 
 	public static final int ID = 0;
@@ -68,8 +69,8 @@ public class StateGame extends BasicGameState {
 		misc_renders.addElement(temp);
 	}
 
-	public InputBox add_input_box(Method okb,Object target) throws NoSuchMethodException, SecurityException {
-		InputBox temp = new InputBox("Entry box!", Game.WIDTH / 2 - 100, Game.HEIGHT / 2 - 50, f_18, 2, input,okb,target);
+	public InputBox add_input_box(Method okb, Object target) throws NoSuchMethodException, SecurityException {
+		InputBox temp = new InputBox("Entry box!", Game.WIDTH / 2 - 100, Game.HEIGHT / 2 - 50, f_18, 2, input, okb, target);
 		misc_renders.addElement(temp);
 		return temp;
 	}
@@ -125,8 +126,8 @@ public class StateGame extends BasicGameState {
 			cwin = new ControlWindow(400, 100, 0, 0, 4, 4, 2, f_18, this);
 			ui.addElement(cwin);
 			ewin = new EntityWindow(pad, pad, 2, f_24, this);
+			focused_win = cwin;
 			ui.addElement(ewin);
-			
 
 			// win.add_container(cont);
 		} catch (NoSuchMethodException | SecurityException e) {
@@ -134,7 +135,13 @@ public class StateGame extends BasicGameState {
 			e.printStackTrace();
 
 		}
+		set_window_focus(ewin);
+	}
 
+	public void set_window_focus(Window f) {
+		focused_win.is_focused = false;
+		f.is_focused = true;
+		focused_win = f;
 	}
 
 	public float[] travel_to_point(float curx, float cury, float destx, float desty, float speed, int delta) {
@@ -150,61 +157,33 @@ public class StateGame extends BasicGameState {
 
 		return new float[] { curx, cury };
 	}
-	
+
 	public void update_containers(Vector<Container> elements, int delta, Boolean mousepress) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		Vector<Container> pushed = new Vector<Container>();
-		Collections.reverse(elements);
-		
 		for (Iterator<Container> iter = elements.iterator(); iter.hasNext();) {
 			Container cont = iter.next();
-			Container temp = null;
-			Boolean overlap = false;
-			
-			for (Iterator<Container> iter_b = elements.iterator(); iter_b.hasNext();) {
-				Container cont_b = iter_b.next();
-				if (cont != cont_b && cont.overlaps(cont_b)) {
-					overlap = true;
-					temp = cont_b;
-				}
-			}	
-			
-			cont.update(input, delta);
-			if (overlap) { 
-				temp.update(input, delta); 
-				both_focused = cont.is_focused && temp.is_focused;
-				
-				System.out.printf("%s\n", (!overlap || !both_focused) ? "yes": "no");
+			focused_win.update(input, delta);
+			if (!cont.is_focused) {
+				cont.update(input, delta);
 			}
-			
-			if (!cont.destroy && cont.is_focused && mousepress && (!overlap || !both_focused)) {
-				pushed.addElement(cont);
-			}
+
 			if (cont.destroy) {
 				iter.remove();
 			}
 		}
-		
-		Collections.reverse(elements);
-		
-		for (Iterator<Container> iter = pushed.iterator(); iter.hasNext();) {
-			Container cont = iter.next();
-			elements.remove(cont);
-			elements.addElement(cont);
-		}
 	}
-	
+
 	@Override
-	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {		
+	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 		/* update windows */
-		
+
 		Boolean mousepress = input.isMouseButtonDown(0);
-		
+
 		try {
 			update_containers(ui, delta, mousepress);
 			update_containers(misc_renders, delta, mousepress);
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
 			e1.printStackTrace();
-		}		
+		}
 
 		for (Entity e : guys) {
 			e.update(delta);
@@ -240,13 +219,18 @@ public class StateGame extends BasicGameState {
 		for (Room r : rooms) {
 			r.draw(g);
 		}
+		
 		for (Iterator<Container> iter = ui.iterator(); iter.hasNext();) {
 			Container cont = iter.next();
-			cont.draw(g);
+			if (!cont.is_focused) {
+				cont.draw(g);
+			}
+			
 		}
 		for (Iterator<Container> iter = misc_renders.iterator(); iter.hasNext();) {
 			Container cont = iter.next();
 			cont.draw(g);
 		}
+		focused_win.draw(g);
 	}
 }
