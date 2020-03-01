@@ -70,8 +70,9 @@ public class StateGame extends BasicGameState {
 	}
 
 	public InputBox add_input_box(Method okb, Object target) throws NoSuchMethodException, SecurityException {
-		InputBox temp = new InputBox("Entry box!", Game.WIDTH / 2 - 100, Game.HEIGHT / 2 - 50, f_18, 2, input, okb, target);
+		InputBox temp = new InputBox("Entry box!", Game.WIDTH / 2 - 100, Game.HEIGHT / 2 - 50, f_24, 2, input, okb, target, this);
 		misc_renders.addElement(temp);
+		set_window_focus(temp);
 		return temp;
 	}
 
@@ -123,7 +124,7 @@ public class StateGame extends BasicGameState {
 		Container cont = new Container(100, 100, 0, 0, pad, pad, 2);
 
 		try {
-			cwin = new ControlWindow(400, 100, 0, 0, 4, 4, 2, f_18, this);
+			cwin = new ControlWindow(400, 100, 0, 0, 4, 4, 2, f_24, this);
 			ui.addElement(cwin);
 			ewin = new EntityWindow(pad, pad, 2, f_24, this);
 			focused_win = cwin;
@@ -139,7 +140,9 @@ public class StateGame extends BasicGameState {
 	}
 
 	public void set_window_focus(Window f) {
-		focused_win.is_focused = false;
+		if (focused_win != null) {
+			focused_win.is_focused = false;
+		}
 		f.is_focused = true;
 		focused_win = f;
 	}
@@ -161,12 +164,18 @@ public class StateGame extends BasicGameState {
 	public void update_containers(Vector<Container> elements, int delta, Boolean mousepress) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		for (Iterator<Container> iter = elements.iterator(); iter.hasNext();) {
 			Container cont = iter.next();
-			focused_win.update(input, delta);
+			if (focused_win != null) {
+				focused_win.update(input, delta);
+			}
+			
 			if (!cont.is_focused) {
 				cont.update(input, delta);
 			}
-
+			
 			if (cont.destroy) {
+				if (cont.is_focused) {
+					focused_win = null;
+				}
 				iter.remove();
 			}
 		}
@@ -231,6 +240,8 @@ public class StateGame extends BasicGameState {
 			Container cont = iter.next();
 			cont.draw(g);
 		}
-		focused_win.draw(g);
+		if (focused_win != null) {
+			focused_win.draw(g);
+		}
 	}
 }

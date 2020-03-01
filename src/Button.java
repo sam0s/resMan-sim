@@ -54,10 +54,10 @@ public class Button extends Container {
 		surface.setLineWidth(weight);
 		surface.setColor((hi) ? hi_color : inner);
 		surface.fillRect(x, y, sizex, sizey);
-		surface.setColor(outer);
+		surface.setColor(is_focused ? outer_f : outer);
 		surface.drawRect(x, y, sizex, sizey);
 		surface.setFont(f);
-		surface.setColor(outer);
+		surface.setColor(is_focused ? outer_f : outer);
 		surface.drawString(text, (x + sizex / 2) - f.getWidth(text) / 2, (y + sizey / 2) - f.getHeight(text) / 2);
 
 	}

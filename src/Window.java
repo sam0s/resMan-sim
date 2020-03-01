@@ -83,10 +83,6 @@ public class Window extends Container {
 				titlebar.move(xoffset, yoffset);
 
 			}
-
-			for (Container c : containers) {
-				c.update(i, delta);
-			}
 			
 			if (mx > x && mx < x + sizex) {
 				if (my > y && my < y + titlebar_height) {
@@ -101,6 +97,13 @@ public class Window extends Container {
 					}
 				}
 			}
+			
+			for (Container c : containers) {
+				c.is_focused = is_focused;
+				c.update(i, delta);
+			}
+			titlebar.is_focused = is_focused;
+			titlebar.update(i, delta);
 
 			if (mx > x && mx < x + sizex) {
 				if (my > y && my < y + sizey) {
@@ -122,20 +125,16 @@ public class Window extends Container {
 	public void draw(Graphics surface) throws SlickException {
 		if (!hidden) {
 			surface.setLineWidth(weight);
-			surface.setColor(inner);
+			surface.setColor(is_focused ? inner_f : inner);
 			surface.fillRect(x, y, sizex, sizey);
-			if (!is_focused) {
-				surface.setColor(outer);
-			} else {
-				surface.setColor(Color.red);
-			}
+			surface.setColor(is_focused ? outer_f : outer);
 			surface.drawRect(x, y, sizex, sizey);
 			titlebar.draw(surface);
 			for (Container c : containers) {
 				c.draw(surface);
 			}
 			surface.setFont(f);
-			surface.setColor(title_color);
+			surface.setColor(is_focused ? outer_f : outer);
 			surface.drawString(title, x + 2, y + 2);
 		}
 	}

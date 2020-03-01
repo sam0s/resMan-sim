@@ -7,7 +7,7 @@ import org.newdawn.slick.SlickException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class InputBox extends Container implements KeyListener {
+public class InputBox extends Window implements KeyListener {
 	Input i;
 	String text = "";
 	String header = "";
@@ -20,11 +20,9 @@ public class InputBox extends Container implements KeyListener {
 	public static final int RSHIFT = 56;
 	public static final int LSHIFT = 42;
 	public static final int ENTER = 28;
-	private int titlebar_height;
-	private Container titlebar;
 	
-	public InputBox(String text, int x, int y, Font f, double weight, Input i, Method okb, Object target) throws NoSuchMethodException, SecurityException {
-		super(f.getWidth(text) + 80, f.getHeight(text) + 170, x, y, 0, 0, weight);
+	public InputBox(String text, int x, int y, Font f, double weight, Input i, Method okb, Object target, StateGame s) throws NoSuchMethodException, SecurityException {
+		super(f.getWidth(text) + 80, f.getHeight(text) + 170, x, y, 0, 0, weight, f, "Enter Text", s);
 		this.i=i;
 		this.i.addKeyListener(this);
 		this.header = text;
@@ -32,9 +30,6 @@ public class InputBox extends Container implements KeyListener {
 		this.hidden = false;
 		this.okb=okb;
 		this.target=target;
-		
-		titlebar_height = f.getHeight(header) + 2;
-		titlebar = new Container(this.sizex, titlebar_height, this.x, this.y, 2, 2, weight);
 		
 		Button exit = new Button(StateGame.f_24.getWidth("Submit") + 16, StateGame.f_24.getHeight("Submit") + 8, sizex / 2 - (StateGame.f_24.getWidth("Submit") + 16) / 2, 5 * sizey / 7 - (StateGame.f_24.getHeight("Ok") + 8) / 2, 2, "Ok", StateGame.f_24, fgetMethod("submit"), this);
 		this.add_container(exit);
@@ -72,17 +67,7 @@ public class InputBox extends Container implements KeyListener {
 
 	@Override
 	public void draw(Graphics surface) throws SlickException {
-
-		
-		try {
-			super.draw(surface);
-		} catch (SlickException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		titlebar.draw(surface);
-		surface.setColor(outer);
-		f.drawString(x+2 ,y+2, header, outer);
+		super.draw(surface);
 		/* process string to see if it will extend beyond container */
 
 		String print_str = text;
@@ -130,6 +115,9 @@ public class InputBox extends Container implements KeyListener {
 	public void keyPressed(int arg0, char arg1) {
 		// backspace
 		System.out.printf("pressed, %d %c\n", arg0, arg1);
+		if (!is_focused) {
+			return;
+		}
 
 		StringBuilder sb = new StringBuilder(text);
 		switch (arg0) {

@@ -16,6 +16,8 @@ public class Container {
 	int pady;
 	Color inner;
 	Color outer;
+	Color inner_f;
+	Color outer_f;
 	float weight;
 	public Container containers[];
 	public boolean hidden = false;
@@ -65,8 +67,10 @@ public class Container {
 		this.y = y;
 		this.padx = padx;
 		this.pady = pady;
-		this.inner = Game.innerDefault;
-		this.outer = Game.outerDefault;
+		this.inner = Game.win_inner;
+		this.outer = Game.win_outer;
+		this.inner_f = Game.win_inner_f;
+		this.outer_f = Game.win_outer_f;
 		this.weight = (float) weight;
 		this.containers = new Container[] {};
 		this.relx = x;
@@ -74,7 +78,9 @@ public class Container {
 		this.destroy = false;
 	}
 	
-	public void setTheme(Color in, Color out){
+	public void setTheme(Color in_f, Color out_f, Color in, Color out){
+		inner_f = in_f;
+		outer_f = out_f;
 		inner = in;
 		outer = out;
 	}
@@ -93,8 +99,10 @@ public class Container {
 	}
 
 	public void update(Input i, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		//int mouse_pos[] = new int[] {i.getMouseX(), i.getMouseY()};
-		//is_focused = mouse_pos[0] >= x && mouse_pos[0] <= x + sizex  && mouse_pos[1] >= y && mouse_pos[1] <= y + sizey;
+		for (Container c: containers) {
+			c.is_focused = is_focused;
+			c.update(i, delta);
+		}
 	}
 
 	public void set_size(int sizex, int sizey) {
@@ -104,9 +112,9 @@ public class Container {
 
 	public void draw(Graphics surface) throws SlickException {
 		surface.setLineWidth(weight);
-		surface.setColor(inner);
+		surface.setColor(is_focused ? inner_f : inner);
 		surface.fillRect(x, y, sizex, sizey);
-		surface.setColor(outer);
+		surface.setColor(is_focused ? outer_f : outer);
 		surface.drawRect(x, y, sizex, sizey);
 
 		for (Container c : containers) {

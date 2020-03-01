@@ -34,11 +34,11 @@ public class Label extends Container {
 
 	public void draw(Graphics surface) {
 		surface.setLineWidth(weight);
-		surface.setColor(inner);
+		surface.setColor(is_focused ? inner_f : inner);
 		surface.fillRect(x, y, sizex, sizey);
-		surface.setColor(outer);
+		surface.setColor(is_focused ? outer_f : outer);
 		surface.drawRect(x, y, sizex, sizey);
-		f.drawString(x + padx, y + pady, text, outer);
+		f.drawString(x + padx, y + pady, text, is_focused ? outer_f : outer);
 	}
 
 }

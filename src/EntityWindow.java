@@ -16,8 +16,6 @@ public class EntityWindow extends Window {
 	Button deselect;
 	Label debug_ln1;
 
-	Container person_containers[];
-	Container generic_containers[];
 	Image grab_icon;
 	ImageButton grab;
 
@@ -71,7 +69,7 @@ public class EntityWindow extends Window {
 		add_container(debug_ln1);
 		
 		for (Container c : containers) {
-			c.setTheme(clear, outer);
+			c.setTheme(clear, outer_f, clear, outer);
 		}
 	}
 
