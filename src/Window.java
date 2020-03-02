@@ -76,8 +76,8 @@ public class Window extends Container {
 				}
 				if (Math.abs(Game.HEIGHT - (y + sizey + yoffset)) < 8) {
 					yoffset = Game.HEIGHT - y - sizey - (int) weight;
-				} else if (Math.abs(y + yoffset) < 8) {
-					yoffset = -y;
+				} else if (Math.abs(Game.MENU_BAR_HEIGHT - (y + yoffset)) < 8) {
+					yoffset = Game.MENU_BAR_HEIGHT - y;
 				}
 				move(xoffset, yoffset);
 				titlebar.move(xoffset, yoffset);

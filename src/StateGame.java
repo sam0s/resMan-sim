@@ -40,6 +40,7 @@ public class StateGame extends BasicGameState {
 	ControlWindow cwin;
 	Boolean both_focused = false;
 	Window focused_win;
+	MenuBar menu;
 	// Sound soundbyte;
 
 	public static final int ID = 0;
@@ -124,11 +125,16 @@ public class StateGame extends BasicGameState {
 		Container cont = new Container(100, 100, 0, 0, pad, pad, 2);
 
 		try {
+			menu = new MenuBar();
+			ui.addElement(menu);
 			cwin = new ControlWindow(400, 100, 0, 0, 4, 4, 2, f_24, this);
 			ui.addElement(cwin);
 			ewin = new EntityWindow(pad, pad, 2, f_24, this);
 			focused_win = cwin;
 			ui.addElement(ewin);
+			
+			menu = new MenuBar();
+			ui.addElement(menu);
 
 			// win.add_container(cont);
 		} catch (NoSuchMethodException | SecurityException e) {
