@@ -79,7 +79,11 @@ public class EntityWindow extends Window {
 	}
 	
 	public void rename() throws NoSuchMethodException, SecurityException {
-		InputBox ib = s.add_input_box(this.fgetMethod("set_ent_name",String.class),this);
+		if (activeEnt != null) {
+			InputBox ib = s.add_input_box(this.fgetMethod("set_ent_name",String.class),this);
+		} else {
+			s.add_dialog("No entity currently selected!");
+		}
 	}
 	
 	public void set_ent_name(String name){
@@ -112,7 +116,7 @@ public class EntityWindow extends Window {
 
 	public void update(Input i, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		super.update(i, delta);
-		title = (activeEnt != null) ? activeEnt.name : "";
+		set_title((activeEnt != null) ? activeEnt.name : "");
 		if (activeEnt != null) {
 			debug_ln1.set_text(String.format("(%.0f, %.0f) | Dir: %d", activeEnt.x, activeEnt.y, activeEnt.roamDir));
 		} else {

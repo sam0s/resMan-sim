@@ -121,6 +121,21 @@ public class Window extends Container {
 
 		}
 	}
+	
+	public void set_title(String text) {
+		int size_lim = sizex - (int)weight*2 - hidebutton.sizex - (int)hidebutton.weight *2;
+		if (f.getWidth(text) > size_lim) {
+			int i = 0;
+			for (i = text.length()-1; i >= 0; i--) {
+				if (f.getWidth(text.substring(0, i)) < size_lim - f.getWidth("...")) {
+					title = text.substring(0, i).concat("...");
+					return;
+				}
+			}
+		} else {
+			title = text;
+		}
+	}
 
 	public void draw(Graphics surface) throws SlickException {
 		if (!hidden) {
