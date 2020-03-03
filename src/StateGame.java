@@ -36,6 +36,9 @@ public class StateGame extends BasicGameState {
 	Boolean both_focused = false;
 	Window focused_win;
 	MenuBar menu;
+	String mode;
+	int camx;
+	int camy;
 	// Sound soundbyte;
 
 	public static final int ID = 0;
@@ -87,11 +90,15 @@ public class StateGame extends BasicGameState {
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+		mode = "general";
+		
 		guys = new Entity[] {};
 		input = gc.getInput();
+		input.addMouseListener(new MouseControls(this));
 		rooms = new Room[] { new Room(320, Game.HEIGHT - 200) };
 		add_person(rooms[0]);
 		bg = new Image("testBack.png");
+		bg2 = new Image("under.png");
 		// soundbyte = new Sound("cooom.ogg");
 		theta = 0;
 		int pad = 4;
@@ -218,10 +225,21 @@ public class StateGame extends BasicGameState {
 		}
 
 	}
-
+	public void set_mode(String m){
+		mode = m;
+	}
+	
+	
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		bg.draw(0, 0);
+		if(mode=="room_place"){
+			for (Room r : rooms) {
+				r.draw(g);
+			}
+			return;
+		}
+		bg.draw(0-camx, 0-camy);
+		bg2.draw(0-camx,bg.getHeight()-camy);
 		f_32.drawString(32, 32, String.format("(%d, %d)", input.getMouseX(), input.getMouseY()), Color.orange);
 		for (Room r : rooms) {
 			r.draw(g);
