@@ -67,7 +67,7 @@ public class EntityWindow extends Window {
 		this.add_container(debug_label);
 		debug_ln1 = new Label(0, sizey - 120 + debug_label.sizey, 2, 2, 0, "null", StateGame.f_16);
 		add_container(debug_ln1);
-		
+		prev= new Image(155,155);
 		for (Container c : containers) {
 			c.setTheme(clear, outer_f, clear, outer);
 		}
@@ -144,10 +144,8 @@ public class EntityWindow extends Window {
 	public void draw(Graphics surface) throws SlickException {
 		super.draw(surface);
 		if (activeEnt!=null) {
-			prev = new Image(150, 150);
 			surface.copyArea(prev, (int) activeEnt.x - activeEnt.sprite.getWidth()*2, (int) activeEnt.y - activeEnt.sprite.getHeight()/2);
 			prev.draw(x+padx, y+150,100,100);
-			prev=null;
 		}
 	}
 
