@@ -15,7 +15,7 @@ public class EntityWindow extends Window {
 	Button sizeb;
 	Button deselect;
 	Label debug_ln1;
-
+	Image prev;
 	Image grab_icon;
 	ImageButton grab;
 
@@ -90,8 +90,18 @@ public class EntityWindow extends Window {
 		activeEnt.set_name(name);
 	}
 	
-	public void deselect_entity() {
+	public void deselect_entity() throws NoSuchMethodException, SecurityException {
 		activeEnt = null;
+		disableButtons();
+	}
+	
+	//i thought already did this??
+	private void disableButtons() throws NoSuchMethodException, SecurityException {
+		rename.set_func(fgetMethod("do_nothing"), this);
+		sizeb.set_args((Object[]) null);
+		sizeb.set_func(fgetMethod("do_nothing"), this);
+		grab.set_args((Object[]) null);
+		grab.set_func(fgetMethod("do_nothing"), this);
 	}
 
 	public void setEntity(Entity e) {
@@ -134,9 +144,10 @@ public class EntityWindow extends Window {
 	public void draw(Graphics surface) throws SlickException {
 		super.draw(surface);
 		if (activeEnt!=null) {
-			Image i = new Image(150, 150);
-			surface.copyArea(i, (int) activeEnt.x - activeEnt.sprite.getWidth()*2, (int) activeEnt.y - activeEnt.sprite.getHeight()/2);
-			i.draw(x+padx, y+150,100,100);
+			prev = new Image(150, 150);
+			surface.copyArea(prev, (int) activeEnt.x - activeEnt.sprite.getWidth()*2, (int) activeEnt.y - activeEnt.sprite.getHeight()/2);
+			prev.draw(x+padx, y+150,100,100);
+			prev=null;
 		}
 	}
 

@@ -11,7 +11,7 @@ public class ControlWindow extends Window {
 	public ControlWindow(int sizex, int sizey, int x, int y, int padx, int pady, double weight, Font f, StateGame s) throws NoSuchMethodException, SecurityException {
 		super(sizex, sizey, x, y, padx, pady, weight, f, "Important window",s);
 		add_container(new Label(0, 0, 4, 4, 0, "sniff snoff", StateGame.f_18));
-		newGuy = new Button(100,32,0,32,2,"add 1",f,s.fgetMethod("add_guy",Room.class),s);
+		newGuy = new Button(100,32,0,32,2,"add 1",f,s.fgetMethod("add_person",Room.class),s);
 		newGuy.set_args(s.rooms[0]);
 		add_container(newGuy);
 

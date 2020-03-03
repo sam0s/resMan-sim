@@ -19,20 +19,15 @@ public class StateGame extends BasicGameState {
 	public static String[] namesM = { "Glenn", "Jerry", "Joe", "Jack", "Paul", "Nick", "Trevor", "Mathew", "Todd", "Linus", "Harry", "Walter", "Ryan", "Bob", "Henry", "Brian", "Dennis" };
 	public static String[] namesF = { "Stephanie", "Susan", "Patricia", "Kim", "Rachel", "Rebecca", "Alice", "Jackie", "Judy", "Heidi", "Skylar", "Anna", "Paige" };
 	public static String[] namesL = { "Rollins", "Howard", "Zalman", "Bell", "Newell", "Caiafa", "Finnegan", "Hall", "Howell", "Kernighan", "Wilson", "Ritchie" };
-	Image i;
-	Image bg;
+	Image bg,bg2;
 	Input input;
 	java.awt.Font fontRaw;
-	public static Font f_32;
-	public static Font f_18;
-	public static Font f_24;
-	public static Font f_16;
-	public static Font f_14;
+	public static Font f_32,f_18,f_24,f_16,f_14;
 	long frameTime = 0;
 	Random b = new Random();
 	Entity[] guys;
 	Room rooms[];
-	Image sheet1;
+	
 	Entity grabbed;
 	Vector<Container> misc_renders = new Vector<Container>();
 	Vector<Container> ui = new Vector<Container>();
@@ -54,10 +49,10 @@ public class StateGame extends BasicGameState {
 		return this.getClass().getMethod(methodName, args);
 	}
 
-	public static String random_name(int gender) {
+	public static String random_name(boolean gender) {
 		Random r = new Random();
 		String name = "";
-		name += (gender == 0) ? namesM[r.nextInt(namesM.length)] : namesF[r.nextInt(namesM.length)];
+		name += (gender) ? namesM[r.nextInt(namesM.length)] : namesF[r.nextInt(namesF.length)];
 		name += " " + namesL[r.nextInt(namesL.length)];
 		return name;
 	}
@@ -81,9 +76,10 @@ public class StateGame extends BasicGameState {
 		grabbed = e;
 	}
 
-	public void add_guy(Room r) throws SlickException {
-		Entity e = new Entity(random_name(0), (int) r.x, (int) r.y);
-		e.setSpriteLoad(new SpriteSheet(sheet1, 32, 64));
+	//change form of (add_guy) to be more progressive!
+	public void add_person(Room r) throws SlickException {
+		boolean gender = new Random().nextBoolean();
+		Entity e = new Human(random_name(gender), (int) r.x, (int) r.y,gender);
 		rooms[0].add_entity(e);
 		guys = Arrays.copyOf(guys, guys.length + 1);
 		guys[guys.length - 1] = e;
@@ -93,11 +89,8 @@ public class StateGame extends BasicGameState {
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		guys = new Entity[] {};
 		input = gc.getInput();
-		sheet1 = new Image("gfx//testChar.png");
-		sheet1.setFilter(Image.FILTER_NEAREST);
 		rooms = new Room[] { new Room(320, Game.HEIGHT - 200) };
-		add_guy(rooms[0]);
-		i = new Image("hogBoss.jpg");
+		add_person(rooms[0]);
 		bg = new Image("testBack.png");
 		// soundbyte = new Sound("cooom.ogg");
 		theta = 0;
@@ -229,7 +222,6 @@ public class StateGame extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		bg.draw(0, 0);
-		i.draw(210, 140, 200, 200);
 		f_32.drawString(32, 32, String.format("(%d, %d)", input.getMouseX(), input.getMouseY()), Color.orange);
 		for (Room r : rooms) {
 			r.draw(g);

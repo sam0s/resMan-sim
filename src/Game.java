@@ -17,12 +17,18 @@ public class Game extends StateBasedGame {
 
 	// Add more of these when there are more states
 	public static final int GAME = 0;
-
+	
+	//don't take this personally
+	public static final boolean MALE = true;
+	public static final boolean FEMALE = false;
+	
 	// Application Properties
-	public static final int WIDTH = (int) ss.getWidth();
-	public static final int HEIGHT = (int) ss.getHeight();
+	//public static final int WIDTH = (int) ss.getWidth();
+	//public static final int HEIGHT = (int) ss.getHeight();
+	public static final int WIDTH = 1280;
+	public static final int HEIGHT = 720;
 	public static final int MENU_BAR_HEIGHT = 68;
-	public static final int FPS = 120;
+	public static final int FPS = 1200;
 	public static final Color win_inner_f = new Color(40, 40, 40, 225);
 	public static final Color win_outer_f = Color.orange;
 	public static final Color win_inner = win_inner_f;
@@ -38,7 +44,7 @@ public class Game extends StateBasedGame {
 		try {
 			AppGameContainer app = new AppGameContainer(new Game("coomout_shelter indeb v" + VERSION));
 			app.setDisplayMode(WIDTH, HEIGHT, false);
-			app.setFullscreen(true);
+			app.setFullscreen(false);
 			app.setTargetFrameRate(FPS);
 			app.setShowFPS(true);
 			app.start();
