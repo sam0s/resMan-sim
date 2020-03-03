@@ -60,9 +60,9 @@ public class Entity {
 		setSize(sizey + 1);
 	}
 
-	public boolean isClicked(Input i) {
+	public boolean isClicked(int mx, int my) {
 
-		return ((i.getMouseX() > x && i.getMouseX() < x + hitbox.getWidth()) && (i.getMouseY() > y && i.getMouseY() < y + hitbox.getHeight()));
+		return ((mx > x && mx < x + hitbox.getWidth()) && (my > y && my < y + hitbox.getHeight()));
 	}
 
 	public void roam(int delta) {

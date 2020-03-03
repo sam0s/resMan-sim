@@ -67,10 +67,10 @@ public class MouseControls implements MouseListener{
 		System.out.println(arg0);
 		switch(arg0){
 		case 120:
-			s.camy-=32;
+			s.vp_zoom_scale -= .05;
 			break;
 		case -120:
-			s.camy+=32;
+			s.vp_zoom_scale += .05;
 			break;
 		}
 	}

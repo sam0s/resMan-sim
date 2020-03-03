@@ -17,7 +17,7 @@ public class InputBox extends Window implements KeyListener {
 	Object target;
 	
 	public static final int BACKSPACE = 14;
-	public static final int RSHIFT = 56;
+	public static final int RSHIFT = 54;
 	public static final int LSHIFT = 42;
 	public static final int ENTER = 28;
 	

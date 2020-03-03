@@ -8,6 +8,7 @@ public class ControlWindow extends Window {
 	StateGame s; 
 	Button newGuy;
 	Button placeRoom;
+	Button reset_vp;
 	
 	public ControlWindow(int sizex, int sizey, int x, int y, int padx, int pady, double weight, Font f, StateGame s) throws NoSuchMethodException, SecurityException {
 		super(300, 200, 420, 200, padx, pady, weight, f, "Important window",s);
@@ -16,7 +17,9 @@ public class ControlWindow extends Window {
 		newGuy.set_args(s.rooms[0]);
 		placeRoom = new Button(100,32,132,32,2,"add room",f,s.fgetMethod("set_mode",String.class),s);
 		placeRoom.set_args("room_place");
-		add_container(newGuy,placeRoom);
+		reset_vp = new Button(f.getWidth("reset_viewport")+10, 32, 0, 68, 2, "reset viewport", f, s.fgetMethod("reset_viewport"), s);
+		reset_vp.set_args((Object[])null);
+		add_container(newGuy,placeRoom, reset_vp);
 
 	}
 	

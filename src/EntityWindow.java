@@ -71,8 +71,9 @@ public class EntityWindow extends Window {
 		for (Container c : containers) {
 			c.setTheme(clear, outer_f, clear, outer);
 		}
+		
 	}
-
+	
 	public void do_nothing() throws NoSuchMethodException, SecurityException {
 		s.add_dialog("No entity currently selected!");
 		return;
