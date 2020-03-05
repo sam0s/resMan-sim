@@ -34,7 +34,7 @@ public class Game extends StateBasedGame {
 	public static final Color win_inner = win_inner_f;
 	public static final Color win_outer = win_outer_f;
 	// major.minor(patch)
-	public static final double VERSION = 1.35;
+	public static final double VERSION = 1.40;
 
 	public void initStatesList(GameContainer gc) throws SlickException {
 		this.addState(new StateGame());

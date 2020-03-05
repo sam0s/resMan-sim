@@ -61,6 +61,24 @@ public class Room {
 		}
 	}
 
+	public void drawFreeAdjacents(Graphics surface) {
+		surface.setColor(Color.white);
+		
+		//select one of these to add a room to. checks room size after this.
+		if (left == null) {
+			surface.drawRect(x-6, y, -100, 100);
+		}
+		if (right == null) {
+			surface.drawRect(x+sizex+6, y, 100, 100);
+		}
+		if (up == null) {
+			surface.drawRect(x, y-6, sizex, -100);
+		}
+		if (down == null) {
+			surface.drawRect(x, y+sizey+6, sizex, 100);
+		}
+	}
+
 	public void draw(Graphics surface) {
 		for (Entity e : ents) {
 			e.draw(surface);
