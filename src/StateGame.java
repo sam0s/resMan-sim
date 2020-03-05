@@ -37,8 +37,6 @@ public class StateGame extends BasicGameState {
 	Window focused_win;
 	MenuBar menu;
 	String mode;
-	int camx;
-	int camy;
 	
 	int vp_x = 0;
 	int vp_y = 0;
@@ -267,8 +265,8 @@ public class StateGame extends BasicGameState {
 			return;
 		}
 		
-		bg.draw(0-camx, 0-camy);
-		bg2.draw(0-camx,bg.getHeight()-camy);
+		bg.draw(0 , 0);
+		bg2.draw(0,bg.getHeight());
 		
 	
 		
