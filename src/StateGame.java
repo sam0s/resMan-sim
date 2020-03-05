@@ -255,6 +255,8 @@ public class StateGame extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		
+		g.scale(vp_zoom_scale,vp_zoom_scale);
+		g.translate(vp_x,  vp_y);
 		
 		if(mode=="room_place"){
 			for (Room r : rooms) {
@@ -264,9 +266,6 @@ public class StateGame extends BasicGameState {
 			}
 			return;
 		}
-		
-		g.scale(vp_zoom_scale,vp_zoom_scale);
-		g.translate(vp_x,  vp_y);
 		
 		bg.draw(0-camx, 0-camy);
 		bg2.draw(0-camx,bg.getHeight()-camy);

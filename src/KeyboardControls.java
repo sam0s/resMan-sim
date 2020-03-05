@@ -25,6 +25,9 @@ public class KeyboardControls implements KeyListener {
 		// TODO Auto-generated method stub
 		for (Iterator<Integer> iter = keys.iterator(); iter.hasNext();) {
 			switch(((Integer)iter.next()).intValue()) {
+			case 1: /* escape */
+				s.mode = "general"; 
+				break;
 			case 203: /* LARROW */
 				s.vp_x += 1;
 				break;
