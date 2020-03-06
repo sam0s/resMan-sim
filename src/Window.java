@@ -56,12 +56,9 @@ public class Window extends Container {
 		this.s = s;
 	}
 
-	public void update(Input i, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		super.update(i, delta);
+	public void update(Input i, int mx, int my, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		super.update(i, mx, my, delta);
 		if (!hidden) {
-			int mx = i.getMouseX();
-			int my = i.getMouseY();
-
 			if (!i.isMouseButtonDown(0)) {
 				moving = false;
 			}
@@ -83,12 +80,12 @@ public class Window extends Container {
 				titlebar.move(xoffset, yoffset);
 
 			}
-			
+
 			if (mx > x && mx < x + sizex) {
 				if (my > y && my < y + titlebar_height) {
 					if (!moving && i.isMousePressed(0)) {
 						moving = i.isMouseButtonDown(0);
-						
+
 						if (moving) {
 							s.set_window_focus(this);
 							moving_cursor_x_offset = mx - x;
@@ -97,13 +94,13 @@ public class Window extends Container {
 					}
 				}
 			}
-			
+
 			for (Container c : containers) {
 				c.is_focused = is_focused;
-				c.update(i, delta);
+				c.update(i, mx, my, delta);
 			}
 			titlebar.is_focused = is_focused;
-			titlebar.update(i, delta);
+			titlebar.update(i, mx, my, delta);
 
 			if (mx > x && mx < x + sizex) {
 				if (my > y && my < y + sizey) {
@@ -121,12 +118,12 @@ public class Window extends Container {
 
 		}
 	}
-	
+
 	public void set_title(String text) {
-		int size_lim = sizex - (int)weight*2 - hidebutton.sizex - (int)hidebutton.weight *2;
+		int size_lim = sizex - (int) weight * 2 - hidebutton.sizex - (int) hidebutton.weight * 2;
 		if (f.getWidth(text) > size_lim) {
 			int i = 0;
-			for (i = text.length()-1; i >= 0; i--) {
+			for (i = text.length() - 1; i >= 0; i--) {
 				if (f.getWidth(text.substring(0, i)) < size_lim - f.getWidth("...")) {
 					title = text.substring(0, i).concat("...");
 					return;

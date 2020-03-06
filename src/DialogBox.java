@@ -31,11 +31,11 @@ public class DialogBox extends Container {
 		hidden = true;
 		destroy = true;
 	}
-	
-	public void update(Input i, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		super.update(i, delta);
-		for (Container c: containers) {
-			c.update(i, delta);
+
+	public void update(Input i, int mx, int my, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		super.update(i, mx, my, delta);
+		for (Container c : containers) {
+			c.update(i, mx, my, delta);
 		}
 	}
 

@@ -5,7 +5,7 @@ import org.newdawn.slick.SpriteSheet;
 public class Human extends Entity{
 	//sheet1.setFilter(Image.FILTER_NEAREST);
 	
-	public Human(String name, int x, int y, boolean gender) throws SlickException {
+	public Human(String name, int x, int y, boolean gender) throws SlickException, NoSuchMethodException, SecurityException {
 		super(name, x, y, gender);
 		Image sprite;
 		if(gender==Game.MALE){

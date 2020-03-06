@@ -24,7 +24,7 @@ public class Container {
 	float relx;
 	float rely;
 	Boolean destroy;
-	Boolean is_focused=false;
+	Boolean is_focused = false;
 
 	// Use to get method reference to a method of this class!
 	public Method fgetMethod(String methodName, Class... args) throws NoSuchMethodException, SecurityException {
@@ -77,14 +77,14 @@ public class Container {
 		this.rely = y;
 		this.destroy = false;
 	}
-	
-	public void setTheme(Color in_f, Color out_f, Color in, Color out){
+
+	public void setTheme(Color in_f, Color out_f, Color in, Color out) {
 		inner_f = in_f;
 		outer_f = out_f;
 		inner = in;
 		outer = out;
 	}
-	
+
 	public void clear_containers() {
 		containers = new Container[] {};
 	}
@@ -98,10 +98,10 @@ public class Container {
 		}
 	}
 
-	public void update(Input i, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		for (Container c: containers) {
+	public void update(Input i, int mx, int my, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		for (Container c : containers) {
 			c.is_focused = is_focused;
-			c.update(i, delta);
+			c.update(i, mx, my, delta);
 		}
 	}
 

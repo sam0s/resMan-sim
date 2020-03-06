@@ -20,11 +20,11 @@ public class EntityWindow extends Window {
 	ImageButton grab;
 
 	public EntityWindow(int padx, int pady, double weight, Font f, StateGame s) throws NoSuchMethodException, SecurityException, SlickException {
-		super(300, 350, 100, 100, padx, pady, weight, f, "NULL",s);
+		super(300, 350, 100, 100, padx, pady, weight, f, "NULL", s);
 
 		this.activeEnt = null;
 		Color clear = new Color(0, 0, 0, 0);
-		this.s=s;
+		this.s = s;
 		Label age = new Label(0, 0, 2, 2, 0, "Age: NULL", StateGame.f_18);
 		this.add_container(age);
 		Label sex = new Label(0, age.rely + age.sizey, 2, 2, 0, "Sex: MALE", StateGame.f_18);
@@ -51,12 +51,11 @@ public class EntityWindow extends Window {
 		// grab button
 		grab = new ImageButton(64, 64, sizex - 72, sizeb.y, new Image("gfx//tweezicon.png"), fgetMethod("do_nothing"), this);
 		grab.set_args((Object[]) null);
-		
+
 		// deselect button
 		width = StateGame.f_18.getWidth("Deselect") + 16;
 		height = StateGame.f_18.getHeight("Deselect") + 8;
-		deselect = new Button(width, height, 0, sizey-height-pady-titlebar_height-(int)weight*2, 2, "Deselect", StateGame.f_18, fgetMethod("deselect_entity"), this);
-		
+		deselect = new Button(width, height, 0, sizey - height - pady - titlebar_height - (int) weight * 2, 2, "Deselect", StateGame.f_18, fgetMethod("deselect_entity"), this);
 
 		this.add_container(rename);
 		this.add_container(grab);
@@ -67,36 +66,36 @@ public class EntityWindow extends Window {
 		this.add_container(debug_label);
 		debug_ln1 = new Label(0, sizey - 120 + debug_label.sizey, 2, 2, 0, "null", StateGame.f_16);
 		add_container(debug_ln1);
-		prev= new Image(155,155);
+		prev = new Image(155, 155);
 		for (Container c : containers) {
 			c.setTheme(clear, outer_f, clear, outer);
 		}
-		
+
 	}
-	
+
 	public void do_nothing() throws NoSuchMethodException, SecurityException {
 		s.add_dialog("No entity currently selected!");
 		return;
 	}
-	
+
 	public void rename() throws NoSuchMethodException, SecurityException {
 		if (activeEnt != null) {
-			InputBox ib = s.add_input_box(this.fgetMethod("set_ent_name",String.class),this);
+			InputBox ib = s.add_input_box(this.fgetMethod("set_ent_name", String.class), this);
 		} else {
 			s.add_dialog("No entity currently selected!");
 		}
 	}
-	
-	public void set_ent_name(String name){
+
+	public void set_ent_name(String name) {
 		activeEnt.set_name(name);
 	}
-	
+
 	public void deselect_entity() throws NoSuchMethodException, SecurityException {
 		activeEnt = null;
 		disableButtons();
 	}
-	
-	//i thought already did this??
+
+	// i thought already did this??
 	private void disableButtons() throws NoSuchMethodException, SecurityException {
 		rename.set_func(fgetMethod("do_nothing"), this);
 		sizeb.set_args((Object[]) null);
@@ -125,8 +124,8 @@ public class EntityWindow extends Window {
 		}
 	}
 
-	public void update(Input i, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		super.update(i, delta);
+	public void update(Input i, int mx, int my, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		super.update(i, mx, my, delta);
 		set_title((activeEnt != null) ? activeEnt.name : "");
 		if (activeEnt != null) {
 			debug_ln1.set_text(String.format("(%.0f, %.0f) | Dir: %d", activeEnt.x, activeEnt.y, activeEnt.roamDir));
@@ -136,17 +135,17 @@ public class EntityWindow extends Window {
 	}
 
 	@Override
-	public void hide(){
+	public void hide() {
 		super.hide();
 		activeEnt = null;
 	}
-	
+
 	@Override
 	public void draw(Graphics surface) throws SlickException {
 		super.draw(surface);
-		if (activeEnt!=null) {
-			surface.copyArea(prev, (int) activeEnt.x - activeEnt.sprite.getWidth()*2, (int) activeEnt.y - activeEnt.sprite.getHeight()/2);
-			prev.draw(x+padx, y+150,100,100);
+		if (activeEnt != null) {
+			surface.copyArea(prev, (int) activeEnt.x - activeEnt.sprite.getWidth() * 2, (int) activeEnt.y - activeEnt.sprite.getHeight() / 2);
+			prev.draw(x + padx, y + 150, 100, 100);
 		}
 	}
 

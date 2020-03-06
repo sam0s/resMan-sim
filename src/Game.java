@@ -47,6 +47,7 @@ public class Game extends StateBasedGame {
 			app.setFullscreen(false);
 			app.setTargetFrameRate(FPS);
 			app.setShowFPS(true);
+			app.setUpdateOnlyWhenVisible(false);
 			app.start();
 		} catch (SlickException e) {
 			e.printStackTrace();

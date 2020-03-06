@@ -15,32 +15,32 @@ public class InputBox extends Window implements KeyListener {
 	Boolean done;
 	Method okb;
 	Object target;
-	
+
 	public static final int BACKSPACE = 14;
 	public static final int RSHIFT = 54;
 	public static final int LSHIFT = 42;
 	public static final int ENTER = 28;
-	
+
 	public InputBox(String text, int x, int y, Font f, double weight, Input i, Method okb, Object target, StateGame s) throws NoSuchMethodException, SecurityException {
 		super(f.getWidth(text) + 80, f.getHeight(text) + 170, x, y, 0, 0, weight, f, "Enter Text", s);
-		this.i=i;
+		this.i = i;
 		this.i.addKeyListener(this);
 		this.header = text;
 		this.f = f;
 		this.hidden = false;
-		this.okb=okb;
-		this.target=target;
-		
+		this.okb = okb;
+		this.target = target;
+
 		Button exit = new Button(StateGame.f_24.getWidth("Submit") + 16, StateGame.f_24.getHeight("Submit") + 8, sizex / 2 - (StateGame.f_24.getWidth("Submit") + 16) / 2, 5 * sizey / 7 - (StateGame.f_24.getHeight("Ok") + 8) / 2, 2, "Ok", StateGame.f_24, fgetMethod("submit"), this);
 		this.add_container(exit);
 
 	}
-	
-	public void update(Input i, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		super.update(i, delta);
-		
-		for (Container c: containers) {
-			c.update(i, delta);
+
+	public void update(Input i, int mx, int my, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		super.update(i, mx, my, delta);
+
+		for (Container c : containers) {
+			c.update(i, mx, my, delta);
 		}
 	}
 
@@ -49,10 +49,10 @@ public class InputBox extends Window implements KeyListener {
 		System.out.printf("shit");
 		this.i.removeKeyListener(this);
 	}
-	
-	public void submit() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+
+	public void submit() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		okb.invoke(target, text);
-		destroy=true;
+		destroy = true;
 		this.i.removeKeyListener(this);
 	}
 
@@ -85,8 +85,7 @@ public class InputBox extends Window implements KeyListener {
 		for (int j = 0; j < split_text.length && (j + 1) * f.getHeight(split_text[j]) < sizey; j++) {
 			f.drawString(x, y + (j * f.getHeight(split_text[j])) + titlebar_height, split_text[j]);
 		}
-		
-		
+
 	}
 
 	@Override

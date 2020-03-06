@@ -29,11 +29,10 @@ public class Entity {
 		return this.getClass().getMethod(methodName, args);
 	}
 
-	public Entity(String name, int x, int y, boolean gender) {
+	public Entity(String name, int x, int y, boolean gender) throws NoSuchMethodException, SecurityException {
 		this.name = name;
 		this.x = x;
 		this.y = y;
-		curRoom = new Room(x - 5, y);
 		this.gender = gender;
 		
 	}

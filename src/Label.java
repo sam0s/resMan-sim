@@ -12,23 +12,21 @@ public class Label extends Container {
 	public Font f;
 
 	public Label(float x, float y, int padx, int pady, double weight, String text, Font f) {
-		super(f.getWidth(text) + padx* 2, f.getHeight(text) + pady*2, x, y, padx, pady,weight);
+		super(f.getWidth(text) + padx * 2, f.getHeight(text) + pady * 2, x, y, padx, pady, weight);
 
 		this.text = text;
 		this.f = f;
 	}
-	
-	
 
 	public void set_text(String text) {
 		this.text = text;
 	}
-	
-	public void update(Input i, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		super.update(i, delta);
-		set_size(f.getWidth(text) + padx*2, f.getHeight(text) + pady*2);	
-		for (Container c: containers) {
-			c.update(i, delta);
+
+	public void update(Input i, int mx, int my, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		super.update(i, mx, my, delta);
+		set_size(f.getWidth(text) + padx * 2, f.getHeight(text) + pady * 2);
+		for (Container c : containers) {
+			c.update(i, mx, my, delta);
 		}
 	}
 
