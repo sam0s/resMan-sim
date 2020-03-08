@@ -33,6 +33,7 @@ public class Game extends StateBasedGame {
 	public static final Color win_outer_f = Color.orange;
 	public static final Color win_inner = win_inner_f;
 	public static final Color win_outer = win_outer_f;
+	public static final int win_pad = 4;
 	// major.minor(patch)
 	public static final double VERSION = 1.40;
 

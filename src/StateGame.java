@@ -15,28 +15,28 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class StateGame extends BasicGameState {
-	double theta;
+
 	public static String[] namesM = { "Glenn", "Jerry", "Joe", "Jack", "Paul", "Nick", "Trevor", "Mathew", "Todd", "Linus", "Harry", "Walter", "Ryan", "Bob", "Henry", "Brian", "Dennis" };
 	public static String[] namesF = { "Stephanie", "Susan", "Patricia", "Kim", "Rachel", "Rebecca", "Alice", "Jackie", "Judy", "Heidi", "Skylar", "Anna", "Paige" };
 	public static String[] namesL = { "Rollins", "Howard", "Zalman", "Bell", "Newell", "Caiafa", "Finnegan", "Hall", "Howell", "Kernighan", "Wilson", "Ritchie" };
+	
 	Image bg, bg2;
 	Input input;
-	java.awt.Font fontRaw;
+	java.awt.Font fontRaw = null;
 	public static Font f_32, f_18, f_24, f_16, f_14;
-	long frameTime = 0;
 	Random b = new Random();
-	Entity[] guys;
-	Room rooms[];
 	
-	//temp
 	Room incoming;
 	
 	Entity grabbed;
 	Vector<Container> misc_renders = new Vector<Container>();
 	Vector<Container> ui = new Vector<Container>();
+	
+	Vector<Room> rooms = new Vector<Room>();
+	Vector<Entity> guys = new Vector<Entity>();
+	
 	EntityWindow ewin;
 	ControlWindow cwin;
-	Boolean both_focused = false;
 	Window focused_win;
 	MenuBar menu;
 	String mode;
@@ -49,8 +49,6 @@ public class StateGame extends BasicGameState {
 
 	int mousex_rel;
 	int mousey_rel;
-
-	// Sound soundbyte;
 
 	public static final int ID = 0;
 
@@ -94,16 +92,33 @@ public class StateGame extends BasicGameState {
 	public void add_person(Room r) throws SlickException, NoSuchMethodException, SecurityException {
 		boolean gender = new Random().nextBoolean();
 		Entity e = new Human(random_name(gender), (int) r.x, (int) r.y, gender);
-		rooms[0].add_entity(e);
-		guys = Arrays.copyOf(guys, guys.length + 1);
-		guys[guys.length - 1] = e;
+		r.add_entity(e);
+		guys.addElement(e);
+	}
+	
+	public void init_fonts() {
+		try {
+			fontRaw = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new java.io.File("TerminusTTF-Bold-4.47.0.ttf"));
+		} catch (FontFormatException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		if (fontRaw == null) {
+			fontRaw = new java.awt.Font("Default", 0, 28);
+		}
+		
+		f_32 = new TrueTypeFont(fontRaw.deriveFont(32f), false);
+		f_24 = new TrueTypeFont(fontRaw.deriveFont(24f), false);
+		f_18 = new TrueTypeFont(fontRaw.deriveFont(18f), false);
+		f_16 = new TrueTypeFont(fontRaw.deriveFont(16f), false);
+		f_14 = new TrueTypeFont(fontRaw.deriveFont(14f), false);
 	}
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		mode = "general";
 
-		guys = new Entity[] {};
 		input = gc.getInput();
 		input.addMouseListener(new MouseControls(this));
 		input.addKeyListener(new KeyboardControls(this));
@@ -111,39 +126,21 @@ public class StateGame extends BasicGameState {
 		bg = new Image("testBack.png");
 		bg2 = new Image("under.png");
 		// soundbyte = new Sound("cooom.ogg");
-		theta = 0;
-		int pad = 4;
-		// menu = new Container(500, 64, 200, 500, pad, pad, inner, outer, 2.5);
-		fontRaw = null;
-
-		try {
-			fontRaw = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new java.io.File("TerminusTTF-Bold-4.47.0.ttf"));
-		} catch (FontFormatException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		if (fontRaw == null) {
-			fontRaw = new java.awt.Font("Default", 0, 28);
-		}
-		f_32 = new TrueTypeFont(fontRaw.deriveFont(32f), false);
-		f_24 = new TrueTypeFont(fontRaw.deriveFont(24f), false);
-		f_18 = new TrueTypeFont(fontRaw.deriveFont(18f), false);
-		f_16 = new TrueTypeFont(fontRaw.deriveFont(16f), false);
-		f_14 = new TrueTypeFont(fontRaw.deriveFont(14f), false);
-
+		
+		init_fonts();
+		
 		/* init containers */
-		Container cont = new Container(100, 100, 0, 0, pad, pad, 2);
+		Container cont = new Container(100, 100, 0, 0, Game.win_pad, Game.win_pad, 2);
 
 		try {
 			incoming = new Room(0,0,this);
-			rooms = new Room[] { new Room(320, Game.HEIGHT - 200,this) };
-			add_person(rooms[0]);
+			rooms.addElement(new Room(320, Game.HEIGHT - 200,this));
+			add_person(rooms.firstElement());
 			menu = new MenuBar();
 			ui.addElement(menu);
 			cwin = new ControlWindow(400, 100, 0, 0, 4, 4, 2, f_24, this);
 			ui.addElement(cwin);
-			ewin = new EntityWindow(pad, pad, 2, f_24, this);
+			ewin = new EntityWindow(Game.win_pad, Game.win_pad, 2, f_24, this);
 			focused_win = cwin;
 			ui.addElement(ewin);
 

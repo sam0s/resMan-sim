@@ -28,16 +28,20 @@ public class KeyboardControls implements KeyListener {
 			case 1: /* escape */
 				s.mode = "general"; 
 				break;
-			case 203: /* LARROW */
+			case 203: 	/* LARROW 	*/
+			case 30:  	/* w 		*/
 				s.vp_x += 1;
 				break;
-			case 205: /* RARROW */
+			case 205: 	/* RARROW 	*/
+			case 32:	/* d 		*/
 				s.vp_x -= 1;
 				break;
-			case 200: /* UPARROW */
+			case 200: 	/* UPARROW 	*/
+			case 17:	/* w		*/
 				s.vp_y += 1;
 				break;
-			case 208: /* DWNARROW  */
+			case 208: 	/* DWNARROW */
+			case 31:	/* s		*/
 				s.vp_y -= 1;
 				break;
 			}
