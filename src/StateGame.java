@@ -7,8 +7,6 @@ import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Vector;
-import java.util.Arrays;
-import java.util.Collections;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
@@ -102,7 +100,6 @@ public class StateGame extends BasicGameState {
 		try {
 			fontRaw = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new java.io.File("TerminusTTF-Bold-4.47.0.ttf"));
 		} catch (FontFormatException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	
@@ -127,7 +124,6 @@ public class StateGame extends BasicGameState {
 
 		bg = new Image("testBack.png");
 		bg2 = new Image("under.png");
-		// soundbyte = new Sound("cooom.ogg");
 		
 		init_fonts();
 		
@@ -147,11 +143,14 @@ public class StateGame extends BasicGameState {
 			ui.addElement(ewin);
 
 			menu = new MenuBar();
-			ui.addElement(menu);
+			menu.add_icon(new ImageButton(64, 64, 0, 0, new Image("gfx//tweezicon.png"), fgetMethod("reset_viewport"), this), "left");
+			menu.add_icon(new ImageButton(64, 64, 0, 0, new Image("gfx//tweezicon.png"), fgetMethod("reset_viewport"), this), "left");
+			menu.add_icon(new ImageButton(64, 64, 0, 0, new Image("gfx//tweezicon.png"), fgetMethod("reset_viewport"), this), "left");
+			menu.add_icon(new ImageButton(64, 64, 0, 0, new Image("gfx//tweezicon.png"), fgetMethod("reset_viewport"), this), "right");
+			menu.add_icon(new ImageButton(64, 64, 0, 0, new Image("gfx//tweezicon.png"), fgetMethod("reset_viewport"), this), "right");
 
-			// win.add_container(cont);
+			ui.addElement(menu);
 		} catch (NoSuchMethodException | SecurityException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 
 		}
