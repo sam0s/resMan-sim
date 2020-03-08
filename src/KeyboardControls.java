@@ -9,10 +9,17 @@ public class KeyboardControls implements KeyListener {
 
 	StateGame s;
 	
-	Vector<Integer> keys = new Vector<Integer>();
+	int delta;
+	Vector<Integer> keys;
 	
 	public KeyboardControls(StateGame s) {
 		this.s = s;
+		this.delta = 0;
+		this.keys = new Vector<Integer>();
+	}
+	
+	public void set_delta(int delta) {
+		this.delta = delta;
 	}
 	
 	@Override
@@ -30,19 +37,19 @@ public class KeyboardControls implements KeyListener {
 				break;
 			case 203: 	/* LARROW 	*/
 			case 30:  	/* w 		*/
-				s.vp_x += 1;
+				s.vp_x += Math.ceil(1 * (delta/1000f));
 				break;
 			case 205: 	/* RARROW 	*/
 			case 32:	/* d 		*/
-				s.vp_x -= 1;
+				s.vp_x -= Math.ceil(1 * (delta/1000f));
 				break;
 			case 200: 	/* UPARROW 	*/
 			case 17:	/* w		*/
-				s.vp_y += 1;
+				s.vp_y += Math.ceil(1 * (delta/1000f));
 				break;
 			case 208: 	/* DWNARROW */
 			case 31:	/* s		*/
-				s.vp_y -= 1;
+				s.vp_y -= Math.ceil(1 * (delta/1000f));
 				break;
 			}
 		}

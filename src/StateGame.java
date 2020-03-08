@@ -22,6 +22,8 @@ public class StateGame extends BasicGameState {
 	
 	Image bg, bg2;
 	Input input;
+	MouseControls mc = new MouseControls(this);
+	KeyboardControls kc = new KeyboardControls(this);
 	java.awt.Font fontRaw = null;
 	public static Font f_32, f_18, f_24, f_16, f_14;
 	Random b = new Random();
@@ -120,8 +122,8 @@ public class StateGame extends BasicGameState {
 		mode = "general";
 
 		input = gc.getInput();
-		input.addMouseListener(new MouseControls(this));
-		input.addKeyListener(new KeyboardControls(this));
+		input.addMouseListener(mc);
+		input.addKeyListener(kc);
 
 		bg = new Image("testBack.png");
 		bg2 = new Image("under.png");
@@ -201,6 +203,9 @@ public class StateGame extends BasicGameState {
 
 		mousex_rel = (int) Math.floor(input.getMouseX() / vp_zoom_scale) - vp_x;
 		mousey_rel = (int) Math.floor(input.getMouseY() / vp_zoom_scale) - vp_y;
+		
+		mc.set_delta(delta);
+		kc.set_delta(delta);
 
 		if (mode == "room_place") {
 			for (Room r : rooms) {

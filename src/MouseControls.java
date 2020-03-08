@@ -4,9 +4,18 @@ import org.newdawn.slick.MouseListener;
 
 public class MouseControls implements MouseListener{
 	StateGame s;
+	
+	int delta;
+	
 	public MouseControls(StateGame s){
 		this.s=s;
+		this.delta = 0;
 	}
+	
+	public void set_delta(int delta) {
+		this.delta = delta;
+	}
+	
 	@Override
 	public void inputEnded() {
 		// TODO Auto-generated method stub
