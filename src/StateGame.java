@@ -279,17 +279,16 @@ public class StateGame extends BasicGameState {
 
 		f_32.drawString(32, 64, String.format("(%d, %d), vp: (%d %d) %dx%d [%f], mr: (%d, %d)", input.getMouseX(), input.getMouseY(), vp_x, vp_y, vp_w, vp_h, vp_zoom_scale, mousex_rel, mousey_rel), Color.red);
 
-		for (Iterator<Container> iter = ui.iterator(); iter.hasNext();) {
-			Container cont = iter.next();
+		for (Container cont: ui) {
 			if (!cont.is_focused) {
 				cont.draw(g);
 			}
 
 		}
-		for (Iterator<Container> iter = misc_renders.iterator(); iter.hasNext();) {
-			Container cont = iter.next();
+		for (Container cont: misc_renders) {
 			cont.draw(g);
 		}
+		
 		if (focused_win != null) {
 			focused_win.draw(g);
 		}

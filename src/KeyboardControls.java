@@ -23,8 +23,8 @@ public class KeyboardControls implements KeyListener {
 	@Override
 	public void inputStarted() {
 		// TODO Auto-generated method stub
-		for (Iterator<Integer> iter = keys.iterator(); iter.hasNext();) {
-			switch(((Integer)iter.next()).intValue()) {
+		for (int k: keys) {
+			switch(k) {
 			case 1: /* escape */
 				s.mode = "general"; 
 				break;
