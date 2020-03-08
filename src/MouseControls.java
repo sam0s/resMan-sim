@@ -51,8 +51,16 @@ public class MouseControls implements MouseListener{
 
 	@Override
 	public void mousePressed(int arg0, int arg1, int arg2) {
-		// TODO Auto-generated method stub
-		
+		/* check if mouse is over entity */
+		for (Entity e : s.guys) {
+			if (e.isClicked(s.mousex_rel, s.mousey_rel)) {
+				if (s.ewin.hidden) {
+					s.ewin.show();
+				}
+				s.ewin.setEntity(e);
+				break;
+			}
+		}
 	}
 
 	@Override

@@ -230,21 +230,6 @@ public class StateGame extends BasicGameState {
 			grabbed.x = mousex_rel;
 			grabbed.y = mousey_rel;
 		}
-
-		// eat mouse input
-		if (input.isMousePressed(0)) {
-			for (Entity e : guys) {
-				if (e.isClicked(mousex_rel, mousey_rel)) {
-					if (ewin.hidden) {
-						ewin.show();
-					}
-					ewin.setEntity(e);
-					break;
-				}
-				// test_win.setEntity(null);
-			}
-		}
-
 	}
 
 	public void set_mode(String m) {
