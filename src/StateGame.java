@@ -147,7 +147,7 @@ public class StateGame extends BasicGameState {
 			menu.add_icon(new ImageButton(64, 64, 0, 0, new Image("gfx//tweezicon.png"), fgetMethod("reset_viewport"), this), "left");
 			menu.add_icon(new ImageButton(64, 64, 0, 0, new Image("gfx//tweezicon.png"), fgetMethod("reset_viewport"), this), "left");
 			menu.add_icon(new ImageButton(64, 64, 0, 0, new Image("gfx//tweezicon.png"), fgetMethod("reset_viewport"), this), "right");
-			menu.add_icon(new ImageButton(64, 64, 0, 0, new Image("gfx//tweezicon.png"), fgetMethod("reset_viewport"), this), "right");
+			menu.add_icon(new ImageButton(64, 64, 0, 0, new Image("gfx//icon_camera.png"), fgetMethod("reset_viewport"), this), "right");
 
 			ui.addElement(menu);
 		} catch (NoSuchMethodException | SecurityException e) {
@@ -266,7 +266,7 @@ public class StateGame extends BasicGameState {
 		g.translate(-vp_x, -vp_y);
 		g.scale(1 / vp_zoom_scale, 1 / vp_zoom_scale);
 
-		f_32.drawString(32, 64, String.format("(%d, %d), vp: (%d %d) %dx%d [%f], mr: (%d, %d)", input.getMouseX(), input.getMouseY(), vp_x, vp_y, vp_w, vp_h, vp_zoom_scale, mousex_rel, mousey_rel), Color.red);
+		f_32.drawString(32, menu.sizey, String.format("(%d, %d), vp: (%d %d) %dx%d [%f], mr: (%d, %d)", input.getMouseX(), input.getMouseY(), vp_x, vp_y, vp_w, vp_h, vp_zoom_scale, mousex_rel, mousey_rel), Color.red);
 
 		for (Container cont: ui) {
 			if (!cont.is_focused) {
