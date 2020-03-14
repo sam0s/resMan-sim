@@ -9,19 +9,33 @@ public class Human extends Entity{
 	public static String[] namesF = { "Stephanie", "Susan", "Patricia", "Kim", "Rachel", "Rebecca", "Alice", "Jackie", "Judy", "Heidi", "Skylar", "Anna", "Paige" };
 	public static String[] namesL = { "Rollins", "Howard", "Zalman", "Bell", "Newell", "Caiafa", "Finnegan", "Hall", "Howell", "Kernighan", "Wilson", "Ritchie" };
 	
+	Random r;
+	
 	String first_name;
 	String last_name;
 	boolean gender;
+	int age;
+	
+	int hair_color;
+	int eye_color;
+	int skin_color;
 	
 	public Human(int x, int y) throws SlickException, NoSuchMethodException, SecurityException {
 		super("temp", x, y, true);
-		Random r = new Random();
+		r = new Random();
 		
 		gender = r.nextInt(2) == 1;
 		first_name = gender ? namesM[r.nextInt(namesM.length)] : namesF[r.nextInt(namesF.length)];
 		last_name = namesL[r.nextInt(namesL.length)];
-		
 		name = first_name + " " + last_name;	
+		
+		do {
+			age = (int) Math.round(r.nextGaussian()*5 + 25);
+		} while (age <= 16);
+		System.out.printf("age: %d\n", age);
+		hair_color = r.nextInt(21);
+		eye_color = r.nextInt(21);
+		skin_color = r.nextInt(60);
 		
 		Image sprite = new Image(gender ? "gfx//testChar.png" : "gfx//testCharFem.png");
 		sprite.setFilter(Image.FILTER_NEAREST);
@@ -34,13 +48,28 @@ public class Human extends Entity{
 		this.name = first_name + " " + last_name;
 	}
 	
-	public void set_gender(int gender) {
-		
+	public void set_gender(boolean gender) {
+		this.gender = gender;
+	}
+	
+	public void set_age(int age) {
+		this.age = age;
+	}
+	
+	public void set_traits(int hair_color, int eye_color, int skin_color) {
+		this.hair_color = hair_color;
+		this.eye_color = eye_color;
+		this.skin_color = skin_color;
 	}
 	
 	public void create_offspring(Human father) throws NoSuchMethodException, SecurityException, SlickException {
-		Human child = new Human(0, 0);
-		father.curRoom.add_entity(child);
+		Human child = new Human((int)curRoom.x, (int)curRoom.y);
+		int hc = (int) (this.hair_color + father.hair_color)/2;
+		int ec = (int) (this.eye_color + father.eye_color)/2;
+		int sc = (int) (this.skin_color + father.skin_color)/2;
+		child.set_traits(hc + r.nextInt(7)-3, ec + r.nextInt(7)-3, sc + r.nextInt(7)-3);
+		child.set_age(0);
+		curRoom.add_entity(child);
 	}
 
 }

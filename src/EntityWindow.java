@@ -11,6 +11,11 @@ public class EntityWindow extends Window {
 
 	Entity activeEnt;
 	StateGame s;
+	
+	Label age;
+	Label sex;
+	Label hp;
+	
 	Button rename;
 	Button sizeb;
 	Button deselect;
@@ -25,11 +30,11 @@ public class EntityWindow extends Window {
 		this.activeEnt = null;
 		Color clear = new Color(0, 0, 0, 0);
 		this.s = s;
-		Label age = new Label(0, 0, 2, 2, 0, "Age: NULL", StateGame.f_18);
+		age = new Label(0, 0, 2, 2, 0, "Age: NULL", StateGame.f_18);
 		this.add_container(age);
-		Label sex = new Label(0, age.rely + age.sizey, 2, 2, 0, "Sex: MALE", StateGame.f_18);
+		sex = new Label(0, age.rely + age.sizey, 2, 2, 0, "Sex: MALE", StateGame.f_18);
 		this.add_container(sex);
-		Label hp = new Label(age.relx + age.sizex + 30, 0, 2, 2, 0, "HP: 100", StateGame.f_18);
+		hp = new Label(age.relx + age.sizex + 30, 0, 2, 2, 0, "HP: 100", StateGame.f_18);
 		this.add_container(hp);
 		Label happiness = new Label(hp.relx, hp.rely + hp.sizey, 2, 2, 0, "Happiness: 100", StateGame.f_18);
 		this.add_container(happiness);
@@ -129,6 +134,7 @@ public class EntityWindow extends Window {
 		set_title((activeEnt != null) ? activeEnt.name : "");
 		if (activeEnt != null) {
 			debug_ln1.set_text(String.format("(%.0f, %.0f) | Dir: %d", activeEnt.x, activeEnt.y, activeEnt.roamDir));
+			age.set_text(String.format("Age: %d", ((Human)activeEnt).age));
 		} else {
 			debug_ln1.set_text("null");
 		}

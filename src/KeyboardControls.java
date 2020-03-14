@@ -11,6 +11,14 @@ public class KeyboardControls implements KeyListener {
 	
 	int delta;
 	Vector<Integer> keys;
+	boolean shift;
+	
+	static final int LSHIFT = 54;
+	static final int RSHIFT = 58;
+	static final int LARROW = 203;
+	static final int RARROW = 205;
+	static final int UPARROW = 200;
+	static final int DWNARROW = 208;
 	
 	public KeyboardControls(StateGame s) {
 		this.s = s;
@@ -35,21 +43,21 @@ public class KeyboardControls implements KeyListener {
 			case 1: /* escape */
 				s.mode = "general"; 
 				break;
-			case 203: 	/* LARROW 	*/
-			case 30:  	/* w 		*/
-				s.vp_x += Math.ceil(1 * (delta/1000f));
+			case LARROW:
+			case 30:  		/* w 		*/
+				s.vp_x += 10;
 				break;
-			case 205: 	/* RARROW 	*/
-			case 32:	/* d 		*/
-				s.vp_x -= Math.ceil(1 * (delta/1000f));
+			case RARROW: 	
+			case 32:		/* d 		*/
+				s.vp_x -= 10;
 				break;
-			case 200: 	/* UPARROW 	*/
-			case 17:	/* w		*/
-				s.vp_y += Math.ceil(1 * (delta/1000f));
+			case UPARROW:
+			case 17:		/* w		*/
+				s.vp_y += 10;
 				break;
-			case 208: 	/* DWNARROW */
-			case 31:	/* s		*/
-				s.vp_y -= Math.ceil(1 * (delta/1000f));
+			case DWNARROW:
+			case 31:		/* s		*/
+				s.vp_y -= 10;
 				break;
 			}
 		}
@@ -71,11 +79,23 @@ public class KeyboardControls implements KeyListener {
 	public void keyPressed(int arg0, char arg1) {
 		System.out.println(arg0);
 		keys.addElement(arg0);
+		switch(arg0) {
+		case LSHIFT:
+		case RSHIFT:
+			shift = true;
+			break;
+		}
 	}
 
 	@Override
 	public void keyReleased(int arg0, char arg1) {
 		keys.removeIf(n -> ((Integer)n.intValue() == arg0));
+		switch (arg0) {
+		case LSHIFT:
+		case RSHIFT:
+			shift = false;
+			break;
+		}
 	}
 
 }
