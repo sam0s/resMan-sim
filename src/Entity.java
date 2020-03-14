@@ -24,7 +24,6 @@ public class Entity {
 	public boolean moving = false;
 	public int roamDir = 1;
 	public int[] origin = { 16, 32 };
-	public boolean gender;
 	public Method fgetMethod(String methodName, Class... args) throws NoSuchMethodException, SecurityException {
 		return this.getClass().getMethod(methodName, args);
 	}
@@ -32,9 +31,7 @@ public class Entity {
 	public Entity(String name, int x, int y, boolean gender) throws NoSuchMethodException, SecurityException {
 		this.name = name;
 		this.x = x;
-		this.y = y;
-		this.gender = gender;
-		
+		this.y = y;		
 	}
 
 	public void set_name(String name) {

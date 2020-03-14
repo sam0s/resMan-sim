@@ -90,8 +90,7 @@ public class StateGame extends BasicGameState {
 
 	// change form of (add_guy) to be more progressive!
 	public void add_person(Room r) throws SlickException, NoSuchMethodException, SecurityException {
-		boolean gender = new Random().nextBoolean();
-		Entity e = new Human(random_name(gender), (int) r.x, (int) r.y, gender);
+		Entity e = new Human((int) r.x, (int) r.y);
 		r.add_entity(e);
 		guys.addElement(e);
 	}
