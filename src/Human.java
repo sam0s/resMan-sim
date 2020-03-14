@@ -67,6 +67,8 @@ public class Human extends Entity{
 		int hc = (int) (this.hair_color + father.hair_color)/2;
 		int ec = (int) (this.eye_color + father.eye_color)/2;
 		int sc = (int) (this.skin_color + father.skin_color)/2;
+		child.set_name(child.gender ? namesM[r.nextInt(namesM.length)] : namesF[r.nextInt(namesF.length)],
+					   father.last_name);
 		child.set_traits(hc + r.nextInt(7)-3, ec + r.nextInt(7)-3, sc + r.nextInt(7)-3);
 		child.set_age(0);
 		return child;
