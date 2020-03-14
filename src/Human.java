@@ -20,6 +20,9 @@ public class Human extends Entity{
 	int eye_color;
 	int skin_color;
 	
+	Human father;
+	Human mother;
+	
 	public Human(int x, int y) throws SlickException, NoSuchMethodException, SecurityException {
 		super("temp", x, y, true);
 		r = new Random();
@@ -36,6 +39,9 @@ public class Human extends Entity{
 		hair_color = r.nextInt(21);
 		eye_color = r.nextInt(21);
 		skin_color = r.nextInt(60);
+		
+		father = null;
+		mother = null;
 		
 		Image sprite = new Image(gender ? "gfx//testChar.png" : "gfx//testCharFem.png");
 		sprite.setFilter(Image.FILTER_NEAREST);
@@ -71,6 +77,8 @@ public class Human extends Entity{
 					   father.last_name);
 		child.set_traits(hc + r.nextInt(7)-3, ec + r.nextInt(7)-3, sc + r.nextInt(7)-3);
 		child.set_age(0);
+		child.father = father;
+		child.mother = this;
 		return child;
 	}
 

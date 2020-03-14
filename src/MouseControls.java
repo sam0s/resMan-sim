@@ -48,7 +48,9 @@ public class MouseControls implements MouseListener{
 				if (s.ewin.hidden) {
 					s.ewin.show();
 				}
-				s.ewin.setEntity(e);
+				try {
+					s.ewin.setEntity(e);
+				} catch (NoSuchMethodException | SecurityException e1) {}
 				s.cwin.set_sel_person((Human)e);
 				break;
 			}

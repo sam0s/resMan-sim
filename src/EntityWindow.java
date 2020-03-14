@@ -16,6 +16,9 @@ public class EntityWindow extends Window {
 	Label sex;
 	Label hp;
 	
+	Label father;
+	Label mother;
+	
 	Button rename;
 	Button sizeb;
 	Button deselect;
@@ -30,13 +33,13 @@ public class EntityWindow extends Window {
 		this.activeEnt = null;
 		Color clear = new Color(0, 0, 0, 0);
 		this.s = s;
-		age = new Label(0, 0, 2, 2, 0, "Age: NULL", StateGame.f_18);
+		age = new Label(0, 0, 2, 2, 0, "Age: NULL", s.f_18);
 		this.add_container(age);
-		sex = new Label(0, age.rely + age.sizey, 2, 2, 0, "Sex: MALE", StateGame.f_18);
+		sex = new Label(0, age.rely + age.sizey, 2, 2, 0, "Sex: NULL", s.f_18);
 		this.add_container(sex);
-		hp = new Label(age.relx + age.sizex + 30, 0, 2, 2, 0, "HP: 100", StateGame.f_18);
+		hp = new Label(age.relx + age.sizex + 30, 0, 2, 2, 0, "HP: 100", s.f_18);
 		this.add_container(hp);
-		Label happiness = new Label(hp.relx, hp.rely + hp.sizey, 2, 2, 0, "Happiness: 100", StateGame.f_18);
+		Label happiness = new Label(hp.relx, hp.rely + hp.sizey, 2, 2, 0, "Happiness: 100", s.f_18);
 		this.add_container(happiness);
 		Container horizontal_rule = new Container(sizex, 0, -padx, sex.rely + sex.sizey + pady, 0, 0, 2);
 		this.add_container(horizontal_rule);
@@ -46,6 +49,10 @@ public class EntityWindow extends Window {
 		int height = StateGame.f_18.getHeight("Rename") + 8;
 		rename = new Button(width, height, 0, horizontal_rule.rely + (int) horizontal_rule.weight / 2 + pady, 2, "Rename", StateGame.f_18, fgetMethod("do_nothing"), this);
 		rename.set_args((Object[]) null);
+		
+		father = new Label(0, rename.rely + rename.sizey + pady, 2, 2, 0, "Father: NULL", s.f_18);
+		mother = new Label(0, father.rely + father.sizey + pady, 2, 2, 0, "Mother: NULL", s.f_18);
+		add_container(father, mother);
 
 		// resize button (temporary)
 		width = StateGame.f_18.getWidth("Sizem") + 16;
@@ -67,9 +74,7 @@ public class EntityWindow extends Window {
 		this.add_container(sizeb);
 		this.add_container(deselect);
 
-		Label debug_label = new Label(0, sizey - 120, 2, 2, 0, "debug", StateGame.f_18);
-		this.add_container(debug_label);
-		debug_ln1 = new Label(0, sizey - 120 + debug_label.sizey, 2, 2, 0, "null", StateGame.f_16);
+		debug_ln1 = new Label(0, sizey - 90, 2, 2, 0, "null", StateGame.f_16);
 		add_container(debug_ln1);
 		prev = new Image(155, 155);
 		for (Container c : containers) {
@@ -97,10 +102,11 @@ public class EntityWindow extends Window {
 
 	public void deselect_entity() throws NoSuchMethodException, SecurityException {
 		activeEnt = null;
+		father.set_text("Father: NULL");
+		mother.set_text("Mother: NULL");
 		disableButtons();
 	}
 
-	// i thought already did this??
 	private void disableButtons() throws NoSuchMethodException, SecurityException {
 		rename.set_func(fgetMethod("do_nothing"), this);
 		sizeb.set_args((Object[]) null);
@@ -109,24 +115,19 @@ public class EntityWindow extends Window {
 		grab.set_func(fgetMethod("do_nothing"), this);
 	}
 
-	public void setEntity(Entity e) {
+	public void setEntity(Entity e) throws NoSuchMethodException, SecurityException {
 		activeEnt = e;
-		try {
-			if (activeEnt != null) {
-				rename.set_func(fgetMethod("rename"), this);
-				sizeb.set_func(activeEnt.fgetMethod("up_size"), activeEnt);
-				grab.set_func(s.fgetMethod("grab_entity", Entity.class), s);
-				grab.set_args(activeEnt);
-
-			} else {
-				rename.set_func(fgetMethod("do_nothing"), this);
-				sizeb.set_args((Object[]) null);
-				sizeb.set_func(fgetMethod("do_nothing"), this);
-				grab.set_args((Object[]) null);
-				grab.set_func(fgetMethod("do_nothing"), this);
-			}
-		} catch (NoSuchMethodException | SecurityException e1) {
-		}
+		rename.set_func(fgetMethod("rename"), this);
+		sizeb.set_func(activeEnt.fgetMethod("up_size"), activeEnt);
+		grab.set_func(s.fgetMethod("grab_entity", Entity.class), s);
+		grab.set_args(activeEnt);
+		
+		father.set_text(((Human)activeEnt).father != null ? 
+						((Human)activeEnt).father.name :
+						"Father: NULL");
+		mother.set_text(((Human)activeEnt).mother != null ? 
+				((Human)activeEnt).mother.name :
+				"Mother: NULL");
 	}
 
 	public void update(Input i, int mx, int my, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -151,7 +152,7 @@ public class EntityWindow extends Window {
 		super.draw(surface);
 		if (activeEnt != null) {
 			surface.copyArea(prev, (int) activeEnt.x - activeEnt.sprite.getWidth() * 2, (int) activeEnt.y - activeEnt.sprite.getHeight() / 2);
-			prev.draw(x + padx, y + 150, 100, 100);
+			prev.draw(x + padx, y + 190, 100, 100);
 		}
 	}
 
