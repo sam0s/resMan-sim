@@ -49,6 +49,7 @@ public class MouseControls implements MouseListener{
 					s.ewin.show();
 				}
 				s.ewin.setEntity(e);
+				s.cwin.set_sel_person((Human)e);
 				break;
 			}
 		}
