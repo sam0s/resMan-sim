@@ -14,7 +14,7 @@ public class KeyboardControls implements KeyListener {
 	boolean shift;
 	boolean ctrl;
 	
-	static final int LSHIFT = 54;
+	static final int LSHIFT = 42;
 	static final int RSHIFT = 58;
 	static final int LARROW = 203;
 	static final int RARROW = 205;
@@ -53,19 +53,19 @@ public class KeyboardControls implements KeyListener {
 				break;
 			case LARROW:
 			case 30:  		/* w 		*/
-				s.vp_x += 10;
+				s.vp_x += 10 + (shift ? 10 : 0);
 				break;
 			case RARROW: 	
 			case KEY_D:		/* d 		*/
-				s.vp_x -= 10;
+				s.vp_x -= 10 + (shift ? 10 : 0);
 				break;
 			case UPARROW:
 			case 17:		/* w		*/
-				s.vp_y += 10;
+				s.vp_y += 10 + (shift ? 10 : 0);
 				break;
 			case DWNARROW:
 			case 31:		/* s		*/
-				s.vp_y -= 10;
+				s.vp_y -= 10 + (shift ? 10 : 0);
 				break;
 			}
 		}
