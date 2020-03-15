@@ -102,6 +102,7 @@ public class StateGame extends BasicGameState {
 		guys.removeAllElements();
 		ewin.deselect_entity();
 		cwin.sel_person = null;
+		cwin.clear_parents();
 	}
 	
 	public void init_fonts() {

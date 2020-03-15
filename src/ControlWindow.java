@@ -60,6 +60,13 @@ public class ControlWindow extends Window {
 		this.sel_person = h;
 	}
 	
+	public void clear_parents() {
+		mom = null;
+		mom_name.set_text("Mom: NULL");
+		dad = null;
+		dad_name.set_text("Dad: NULL");
+	}
+	
 	public void set_dad() throws NoSuchMethodException, SecurityException {
 		if (sel_person == null) {
 			s.add_dialog("no ent selected");
