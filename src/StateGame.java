@@ -95,6 +95,15 @@ public class StateGame extends BasicGameState {
 		guys.addElement(e);
 	}
 	
+	public void kill_all() throws NoSuchMethodException, SecurityException {
+		for (Entity e: guys) {
+			e.curRoom.ents.removeAllElements();
+		}
+		guys.removeAllElements();
+		ewin.deselect_entity();
+		cwin.sel_person = null;
+	}
+	
 	public void init_fonts() {
 		try {
 			fontRaw = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new java.io.File("TerminusTTF-Bold-4.47.0.ttf"));

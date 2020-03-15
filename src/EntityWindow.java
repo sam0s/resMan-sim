@@ -122,6 +122,8 @@ public class EntityWindow extends Window {
 		grab.set_func(s.fgetMethod("grab_entity", Entity.class), s);
 		grab.set_args(activeEnt);
 		
+		sex.set_text(String.format("Sex: %s", ((Human)activeEnt).gender ? "Male" : "Female"));
+		
 		father.set_text(((Human)activeEnt).father != null ? 
 						((Human)activeEnt).father.name :
 						"Father: NULL");

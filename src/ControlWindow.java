@@ -47,6 +47,8 @@ public class ControlWindow extends Window {
 		reset_vp = new Button(f.getWidth("reset_viewport") + 10, 32, 0, 68, 2, "reset viewport", f, s.fgetMethod("reset_viewport"), s);
 		reset_vp.set_args((Object[]) null);
 		add_container(newGuy, placeRoom, reset_vp);
+		
+		add_container(new Button(140, 32, 0, reset_vp.rely + reset_vp.sizey + pady, 2, "Exterminate", f, s.fgetMethod("kill_all"), s));
 
 	}
 

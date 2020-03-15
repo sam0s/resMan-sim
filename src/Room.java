@@ -1,6 +1,7 @@
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Vector;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -17,7 +18,7 @@ public class Room {
 	String name;
 	int id = 0;
 	Rectangle hitbox;
-	Entity ents[];
+	Vector<Entity> ents;
 	Room left;
 	Room right;
 	Room up;
@@ -59,7 +60,7 @@ public class Room {
 		name = "TestRoom";
 		hitbox = new Rectangle(x, y, sizex, sizey);
 		hitbox.setBounds(hitbox);
-		this.ents = new Entity[] {};
+		this.ents = new Vector<Entity>();
 
 		build_r = new Button(75, 100, (int) x + sizex + 6, (int) y, 2, "", StateGame.f_18, fgetMethod("build", Room.class, String.class), this);
 		build_r.set_args(null, "right");
@@ -72,8 +73,7 @@ public class Room {
 
 	public void add_entity(Entity e) {
 		e.setRoom(this);
-		ents = Arrays.copyOf(ents, ents.length + 1);
-		ents[ents.length - 1] = e;
+		ents.addElement(e);
 	}
 
 	public void update(int delta) {
