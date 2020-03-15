@@ -23,6 +23,9 @@ public class KeyboardControls implements KeyListener {
 	static final int LCTRL = 29;
 	static final int RCTRL = 157;
 	
+	static final int KEY_W = 17;
+	static final int KEY_A = 30;
+	static final int KEY_S = 31;
 	static final int KEY_D = 32;
 	
 	public KeyboardControls(StateGame s) {
@@ -52,19 +55,19 @@ public class KeyboardControls implements KeyListener {
 				s.mode = "general"; 
 				break;
 			case LARROW:
-			case 30:  		/* w 		*/
+			case KEY_A:
 				s.vp_x += 10 + (shift ? 10 : 0);
 				break;
 			case RARROW: 	
-			case KEY_D:		/* d 		*/
+			case KEY_D:
 				s.vp_x -= 10 + (shift ? 10 : 0);
 				break;
 			case UPARROW:
-			case 17:		/* w		*/
+			case KEY_W:
 				s.vp_y += 10 + (shift ? 10 : 0);
 				break;
 			case DWNARROW:
-			case 31:		/* s		*/
+			case KEY_S:
 				s.vp_y -= 10 + (shift ? 10 : 0);
 				break;
 			}
@@ -85,7 +88,7 @@ public class KeyboardControls implements KeyListener {
 
 	@Override
 	public void keyPressed(int arg0, char arg1) {
-		System.out.println(arg0);
+		System.out.println(String.format("%d %c", arg0, arg1));
 		switch(arg0) {
 		case LSHIFT:
 		case RSHIFT:
