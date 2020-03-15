@@ -49,6 +49,8 @@ public class StateGame extends BasicGameState {
 
 	int mousex_rel;
 	int mousey_rel;
+	
+	boolean debug_info = true;
 
 	public static final int ID = 0;
 
@@ -275,8 +277,11 @@ public class StateGame extends BasicGameState {
 		g.translate(-vp_x, -vp_y);
 		g.scale(1 / vp_zoom_scale, 1 / vp_zoom_scale);
 
-		f_32.drawString(32, menu.sizey, String.format("(%d, %d), vp: (%d %d) %dx%d [%f], mr: (%d, %d)", input.getMouseX(), input.getMouseY(), vp_x, vp_y, vp_w, vp_h, vp_zoom_scale, mousex_rel, mousey_rel), Color.red);
-
+		if (debug_info) {
+			f_32.drawString(32, menu.sizey, String.format("(%d, %d), vp: (%d %d) %dx%d [%f], mr: (%d, %d)", input.getMouseX(), input.getMouseY(), vp_x, vp_y, vp_w, vp_h, vp_zoom_scale, mousex_rel, mousey_rel), Color.red);
+			f_32.drawString(32, menu.sizey + 32, String.format("pop: %d", guys.size()), Color.red);
+		}
+		
 		for (Container cont: ui) {
 			if (!cont.is_focused) {
 				cont.draw(g);

@@ -12,6 +12,7 @@ public class KeyboardControls implements KeyListener {
 	int delta;
 	Vector<Integer> keys;
 	boolean shift;
+	boolean ctrl;
 	
 	static final int LSHIFT = 54;
 	static final int RSHIFT = 58;
@@ -19,11 +20,18 @@ public class KeyboardControls implements KeyListener {
 	static final int RARROW = 205;
 	static final int UPARROW = 200;
 	static final int DWNARROW = 208;
+	static final int LCTRL = 29;
+	static final int RCTRL = 157;
+	
+	static final int KEY_D = 32;
 	
 	public KeyboardControls(StateGame s) {
 		this.s = s;
 		this.delta = 0;
 		this.keys = new Vector<Integer>();
+		
+		this.shift = false;
+		this.ctrl = false;
 	}
 	
 	public void set_delta(int delta) {
@@ -48,7 +56,7 @@ public class KeyboardControls implements KeyListener {
 				s.vp_x += 10;
 				break;
 			case RARROW: 	
-			case 32:		/* d 		*/
+			case KEY_D:		/* d 		*/
 				s.vp_x -= 10;
 				break;
 			case UPARROW:
@@ -78,13 +86,23 @@ public class KeyboardControls implements KeyListener {
 	@Override
 	public void keyPressed(int arg0, char arg1) {
 		System.out.println(arg0);
-		keys.addElement(arg0);
 		switch(arg0) {
 		case LSHIFT:
 		case RSHIFT:
 			shift = true;
 			break;
+		case LCTRL:
+		case RCTRL:
+			ctrl = true;
+			break;
+		case KEY_D:
+			if (ctrl) {
+				s.debug_info ^= true;
+				return;
+			}
+			break;
 		}
+		keys.addElement(arg0);
 	}
 
 	@Override
@@ -94,6 +112,10 @@ public class KeyboardControls implements KeyListener {
 		case LSHIFT:
 		case RSHIFT:
 			shift = false;
+			break;
+		case LCTRL:
+		case RCTRL: 
+			ctrl = false;
 			break;
 		}
 	}

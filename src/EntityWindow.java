@@ -15,12 +15,12 @@ public class EntityWindow extends Window {
 	Label age;
 	Label sex;
 	Label hp;
+	Label morale;
 	
 	Label father;
 	Label mother;
 	
 	Button rename;
-	Button sizeb;
 	Button deselect;
 	Label debug_ln1;
 	Image prev;
@@ -35,13 +35,13 @@ public class EntityWindow extends Window {
 		this.s = s;
 		age = new Label(0, 0, 2, 2, 0, "Age: NULL", s.f_18);
 		this.add_container(age);
-		sex = new Label(0, age.rely + age.sizey, 2, 2, 0, "Sex: NULL", s.f_18);
+		sex = new Label(age.relx + age.sizex + 20, 0, 2, 2, 0, "Sex: NULL", s.f_18);
 		this.add_container(sex);
-		hp = new Label(age.relx + age.sizex + 30, 0, 2, 2, 0, "HP: 100", s.f_18);
+		hp = new Label(0, age.rely + age.sizey, 2, 2, 0, "HP: 100", s.f_18);
 		this.add_container(hp);
-		Label happiness = new Label(hp.relx, hp.rely + hp.sizey, 2, 2, 0, "Happiness: 100", s.f_18);
-		this.add_container(happiness);
-		Container horizontal_rule = new Container(sizex, 0, -padx, sex.rely + sex.sizey + pady, 0, 0, 2);
+		morale = new Label(sex.relx, hp.rely, 2, 2, 0, "Morale: NULL", s.f_18);
+		this.add_container(morale);
+		Container horizontal_rule = new Container(sizex, 0, -padx, hp.rely + hp.sizey + pady, 0, 0, 2);
 		this.add_container(horizontal_rule);
 
 		// rename button
@@ -54,14 +54,8 @@ public class EntityWindow extends Window {
 		mother = new Label(0, father.rely + father.sizey + pady, 2, 2, 0, "Mother: NULL", s.f_18);
 		add_container(father, mother);
 
-		// resize button (temporary)
-		width = StateGame.f_18.getWidth("Sizem") + 16;
-		height = StateGame.f_18.getHeight("Sizem") + 2;
-		sizeb = new Button(StateGame.f_18.getWidth("Sizem") + 16, StateGame.f_18.getHeight("Sizem") + 2, rename.sizex + 32, horizontal_rule.rely + (int) horizontal_rule.weight / 2 + pady, 2, "Sizem", StateGame.f_18, fgetMethod("do_nothing"), this);
-		sizeb.set_args((Object[]) null);
-
 		// grab button
-		grab = new ImageButton(64, 64, sizex - 72, sizeb.y, new Image("gfx//tweezicon.png"), fgetMethod("do_nothing"), this);
+		grab = new ImageButton(64, 64, sizex - 72, horizontal_rule.rely + pady, new Image("gfx//tweezicon.png"), fgetMethod("do_nothing"), this);
 		grab.set_args((Object[]) null);
 
 		// deselect button
@@ -69,10 +63,7 @@ public class EntityWindow extends Window {
 		height = StateGame.f_18.getHeight("Deselect") + 8;
 		deselect = new Button(width, height, 0, sizey - height - pady - titlebar_height - (int) weight * 2, 2, "Deselect", StateGame.f_18, fgetMethod("deselect_entity"), this);
 
-		this.add_container(rename);
-		this.add_container(grab);
-		this.add_container(sizeb);
-		this.add_container(deselect);
+		this.add_container(rename, grab, deselect);
 
 		debug_ln1 = new Label(0, sizey - 90, 2, 2, 0, "null", StateGame.f_16);
 		add_container(debug_ln1);
@@ -109,8 +100,6 @@ public class EntityWindow extends Window {
 
 	private void disableButtons() throws NoSuchMethodException, SecurityException {
 		rename.set_func(fgetMethod("do_nothing"), this);
-		sizeb.set_args((Object[]) null);
-		sizeb.set_func(fgetMethod("do_nothing"), this);
 		grab.set_args((Object[]) null);
 		grab.set_func(fgetMethod("do_nothing"), this);
 	}
@@ -118,11 +107,13 @@ public class EntityWindow extends Window {
 	public void setEntity(Entity e) throws NoSuchMethodException, SecurityException {
 		activeEnt = e;
 		rename.set_func(fgetMethod("rename"), this);
-		sizeb.set_func(activeEnt.fgetMethod("up_size"), activeEnt);
 		grab.set_func(s.fgetMethod("grab_entity", Entity.class), s);
 		grab.set_args(activeEnt);
 		
 		sex.set_text(String.format("Sex: %s", ((Human)activeEnt).gender ? "Male" : "Female"));
+		age.set_text(String.format("Age: %d", ((Human)activeEnt).age));
+		hp.set_text(String.format("HP: %d", ((Human)activeEnt).hp));
+		morale.set_text(String.format("Morale: %d", ((Human)activeEnt).morale));
 		
 		father.set_text(((Human)activeEnt).father != null ? 
 						((Human)activeEnt).father.name :

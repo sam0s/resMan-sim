@@ -20,6 +20,10 @@ public class Human extends Entity{
 	int eye_color;
 	int skin_color;
 	
+	int hp;
+	int morale;
+	int level;
+	
 	Human father;
 	Human mother;
 	
@@ -39,6 +43,10 @@ public class Human extends Entity{
 		hair_color = r.nextInt(21);
 		eye_color = r.nextInt(21);
 		skin_color = r.nextInt(60);
+		
+		hp = r.nextInt(101);
+		morale = r.nextInt(101);
+		level = r.nextInt(11);
 		
 		father = null;
 		mother = null;
