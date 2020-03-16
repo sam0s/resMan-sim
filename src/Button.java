@@ -15,6 +15,8 @@ public class Button extends Container {
 	Method func;
 	Object gc;
 	Object args[];
+	
+	boolean pause;
 
 	public Button(int sizex, int sizey, float x, float y, double weight, String text, Font fnt, Method func, Object gc) {
 		super(sizex, sizey, x, y, 0,0,weight);
@@ -24,7 +26,7 @@ public class Button extends Container {
 		this.func = func;
 		this.gc = gc;
 		this.args = null;
-
+		this.pause = false;
 	}
 	
 	public void set_func(Method func, Object obj) {
@@ -39,7 +41,7 @@ public class Button extends Container {
 	public void update(Input i, int mx, int my, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		super.update(i, mx,my, delta);
 		hi = false;
-		if (mx >= x && mx <= x + sizex  && my >= y && my <= y + sizey) {
+		if (!pause && mx >= x && mx <= x + sizex  && my >= y && my <= y + sizey) {
 			if (i.isMousePressed(0)) {
 				func.invoke(gc, this.args);
 			}

@@ -59,25 +59,29 @@ public class Room {
 		hitbox.setBounds(hitbox);
 		this.ents = new Vector<Entity>();
 		
-		build_u = new Button(sizex, 75, (int) x, (int) y, 2, "",
+		build_u = new Button(sizex, sizey, (int) x, (int) y, 2, "",
 				s.f_18,
 				fgetMethod("add_connection", Room.class, String.class), this);
 		build_u.set_args(null, "up");
+		build_u.pause = true;
 
-		build_d = new Button(sizex, 75, (int) x, (int) y - sizey, 2, "",
+		build_d = new Button(sizex, sizey, (int) x, (int) y - sizey, 2, "",
 				s.f_18,
 				fgetMethod("add_connection", Room.class, String.class), this);
 		build_d.set_args(null, "down");
+		build_d.pause = true;
 		
 		build_r = new Button(75, sizey, (int) x + sizex + 6, (int) y, 2, "", 
 				StateGame.f_18, 
 				fgetMethod("add_connection", Room.class, String.class), this);
 		build_r.set_args(null, "right");
+		build_r.pause = true;
 
 		build_l = new Button(75, sizey, -75 + x - 6, y, 2, "", 
 				StateGame.f_18, 
 				fgetMethod("add_connection", Room.class, String.class), this);
 		build_l.set_args(null, "left");
+		build_l.pause = true;
 
 
 	}
@@ -96,8 +100,8 @@ public class Room {
 	public void update(Input i, int mx, int my, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		build_u.set_args(s.new_room, "up");
 		build_d.set_args(s.new_room, "down");
-		build_r.set_args(s.new_room,"right");
-		build_l.set_args(s.new_room,"left");
+		build_r.set_args(s.new_room, "right");
+		build_l.set_args(s.new_room, "left");
 		
 		build_r.update(i, mx, my, delta);
 		build_u.update(i, mx, my, delta);
@@ -137,42 +141,53 @@ public class Room {
 	}
 	
 	public void draw_left_button(Graphics surface) {
-		build_l.x = x - 80;
+		build_l.x = x - build_l.sizex;
 		build_l.y = y;
 		build_l.draw(surface);
+		build_l.pause = false;
 	}
 	
 	public void draw_right_button(Graphics surface) {
-		build_r.x = x + sizex + 5;
+		build_r.x = x + sizex;
 		build_r.y = y;
 		build_r.draw(surface);
+		build_r.pause = false;
 	}
 	
 	public void draw_top_button(Graphics surface) {
 		build_u.x = x;
-		build_u.y = y - build_u.sizey - 5;
+		build_u.y = y - build_u.sizey;
 		build_u.draw(surface);
+		build_u.pause = false;
 	}
 	
 	public void draw_bottom_button(Graphics surface) {
 		build_d.x = x;
-		build_d.y = y + sizey + 5;
+		build_d.y = y + sizey;
 		build_d.draw(surface);
+		build_d.pause = false;
 	}
 
 	public void drawFreeAdjacents(Graphics surface) {
 		surface.setColor(Color.white);
-
+		
+		
 		switch (type) {
 		case "elevator":
 			switch (s.new_room.type) {
 			case "elevator":
-				if (up == null) {
+				if (up == null && !s.room_overlap(x, y-sizey, x + s.new_room.sizex, y - sizey + s.new_room.sizey)) {
 					draw_top_button(surface);
+				} else {
+					build_u.pause = true;
 				}
-				if (down == null) {
+				
+				if (down == null && !s.room_overlap(x, y + sizey, x + s.new_room.sizex, y + sizey + s.new_room.sizey)) {
 					draw_bottom_button(surface);
+				} else {
+					build_d.pause = true;
 				}
+				return;
 			}
 		default:
 			if (left == null) {
@@ -181,9 +196,9 @@ public class Room {
 			if (right == null) {
 				draw_right_button(surface);
 			}
-			break;
 		}
-
+		
+		
 	}
 
 	public void draw(Graphics surface) {

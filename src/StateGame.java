@@ -187,6 +187,20 @@ public class StateGame extends BasicGameState {
 		}
 	}
 	
+	public boolean overlaps(float a_tl_x, float a_tl_y, float a_br_x, float a_br_y, 
+			float b_tl_x, float b_tl_y, float b_br_x, float b_br_y) {
+		return !(a_br_x <= b_tl_x || b_tl_x >= a_br_x) && !(a_br_y <= b_tl_y || a_tl_y >= b_br_y);
+	}
+	
+	public boolean room_overlap(float b_tl_x, float b_tl_y, float b_br_x, float b_br_y) {
+		for (Room a: rooms) {
+			if (overlaps(a.x, a.y, a.x + a.sizex, a.y + a.sizey, b_tl_x, b_tl_y, b_br_x, b_br_y)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public void enter_placement_mode(String type) throws NoSuchMethodException, SecurityException {
 		new_room = new Room(0, 0, type, this);
 		mode = "room_place";
@@ -243,6 +257,29 @@ public class StateGame extends BasicGameState {
 		
 		mc.set_delta(delta);
 		kc.set_delta(delta);
+		
+		if (mode == "room_place") {
+			for (Iterator<Room> iter = rooms.iterator(); iter.hasNext();) {
+				Room r = iter.next();
+				try {
+					r.update(input,mousex_rel,mousey_rel, delta);
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
+					e1.printStackTrace();
+				}
+			}
+			if (placed) {
+				reset_mode();
+			} else {
+				return; 
+			}
+		}
+		
+		try {
+			update_containers(ui, delta, mousepress,input.getMouseX(),input.getMouseY());
+			update_containers(misc_renders, delta, mousepress,input.getMouseX(),input.getMouseY());
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
+			e1.printStackTrace();
+		}
 
 		for (Iterator<Room> iter = rooms.iterator(); iter.hasNext();) {
 			Room r = iter.next();
@@ -251,20 +288,6 @@ public class StateGame extends BasicGameState {
 			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
 				e1.printStackTrace();
 			}
-		}
-		if (mode == "room_place") {
-			if (placed) {
-				reset_mode();
-			} else {
-				return; 
-			}
-		}
-
-		try {
-			update_containers(ui, delta, mousepress,input.getMouseX(),input.getMouseY());
-			update_containers(misc_renders, delta, mousepress,input.getMouseX(),input.getMouseY());
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
-			e1.printStackTrace();
 		}
 
 		for (Entity e : guys) {
