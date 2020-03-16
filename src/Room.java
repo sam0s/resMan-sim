@@ -72,13 +72,13 @@ public class Room {
 		build_d.pause = true;
 		
 		build_r = new Button(75, sizey, (int) x + sizex + 6, (int) y, 2, "", 
-				StateGame.f_18, 
+				s.f_18, 
 				fgetMethod("add_connection", Room.class, String.class), this);
 		build_r.set_args(null, "right");
 		build_r.pause = true;
 
 		build_l = new Button(75, sizey, -75 + x - 6, y, 2, "", 
-				StateGame.f_18, 
+				s.f_18, 
 				fgetMethod("add_connection", Room.class, String.class), this);
 		build_l.set_args(null, "left");
 		build_l.pause = true;
@@ -190,11 +190,16 @@ public class Room {
 				return;
 			}
 		default:
-			if (left == null) {
+			if (left == null && !s.room_overlap(x-s.new_room.sizex, y, x, y + s.new_room.sizey)) {
 				draw_left_button(surface);
+			} else {
+				build_l.pause = true;
 			}
-			if (right == null) {
+			
+			if (right == null && !s.room_overlap(x + sizex,  y,  x + sizex + s.new_room.sizex,  y + s.new_room.sizey)) {
 				draw_right_button(surface);
+			} else {
+				build_r.pause = true;
 			}
 		}
 		

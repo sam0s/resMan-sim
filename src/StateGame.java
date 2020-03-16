@@ -189,7 +189,9 @@ public class StateGame extends BasicGameState {
 	
 	public boolean overlaps(float a_tl_x, float a_tl_y, float a_br_x, float a_br_y, 
 			float b_tl_x, float b_tl_y, float b_br_x, float b_br_y) {
-		return !(a_br_x <= b_tl_x || b_tl_x >= a_br_x) && !(a_br_y <= b_tl_y || a_tl_y >= b_br_y);
+			System.out.printf("%s\n", a_br_x <= b_tl_x || a_tl_x >= b_br_x ? "l/r" : "");
+			System.out.printf("%s\n", a_br_y <= b_tl_y || a_tl_y >= b_br_y ? "u/d" : "");
+		return !(a_br_x <= b_tl_x || a_tl_x >= b_br_x) && !(a_br_y <= b_tl_y || a_tl_y >= b_br_y);
 	}
 	
 	public boolean room_overlap(float b_tl_x, float b_tl_y, float b_br_x, float b_br_y) {
