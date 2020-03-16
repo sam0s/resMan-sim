@@ -10,6 +10,7 @@ public class ControlWindow extends Window {
 	StateGame s;
 	Button newGuy;
 	Button placeRoom;
+	Button placeElevator;
 	Button reset_vp;
 	
 	Label dad_name;
@@ -47,10 +48,13 @@ public class ControlWindow extends Window {
 		add_container(new Label(0, 0, 4, 4, 0, "sniff snoff", StateGame.f_18));
 		newGuy = new Button(100, 32, 0, 32, 2, "add 1", f, s.fgetMethod("add_person", Room.class), s);
 		newGuy.set_args(s.rooms.elementAt(r.nextInt(s.rooms.size())));
-		placeRoom = new Button(100, 32, 132, 32, 2, "add room", f, s.fgetMethod("enter_placement_mode"), s);
+		placeRoom = new Button(100, 32, 132, 32, 2, "add room", f, s.fgetMethod("enter_placement_mode", String.class), s);
+		placeRoom.set_args("default");
+		placeElevator = new Button(100, 32, 200, 32, 2, "add elevator", f, s.fgetMethod("enter_placement_mode", String.class), s);
+		placeElevator.set_args("elevator");
 		reset_vp = new Button(f.getWidth("reset_viewport") + 10, 32, 0, 68, 2, "reset viewport", f, s.fgetMethod("reset_viewport"), s);
 		reset_vp.set_args((Object[]) null);
-		add_container(newGuy, placeRoom, reset_vp);
+		add_container(newGuy, placeRoom, placeElevator, reset_vp);
 		
 		add_container(new Button(140, 32, 0, reset_vp.rely + reset_vp.sizey + pady, 2, "Exterminate", f, s.fgetMethod("kill_all"), s));
 

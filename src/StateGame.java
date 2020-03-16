@@ -140,10 +140,9 @@ public class StateGame extends BasicGameState {
 		init_fonts();
 		
 		/* init containers */
-		Container cont = new Container(100, 100, 0, 0, Game.win_pad, Game.win_pad, 2);
 
 		try {
-			rooms.addElement(new Room(320, Game.HEIGHT - 210,this));
+			rooms.addElement(new Room(320, Game.HEIGHT - 210, "default", this));
 			add_person(rooms.firstElement());
 			menu = new MenuBar();
 			ui.addElement(menu);
@@ -188,8 +187,8 @@ public class StateGame extends BasicGameState {
 		}
 	}
 	
-	public void enter_placement_mode() throws NoSuchMethodException, SecurityException {
-		new_room = new Room(0, 0, this);
+	public void enter_placement_mode(String type) throws NoSuchMethodException, SecurityException {
+		new_room = new Room(0, 0, type, this);
 		mode = "room_place";
 		placed = false;
 	}
