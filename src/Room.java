@@ -98,15 +98,17 @@ public class Room {
 	}
 
 	public void update(Input i, int mx, int my, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		build_u.set_args(s.new_room, "up");
-		build_d.set_args(s.new_room, "down");
-		build_r.set_args(s.new_room, "right");
-		build_l.set_args(s.new_room, "left");
-		
-		build_r.update(i, mx, my, delta);
-		build_u.update(i, mx, my, delta);
-		build_d.update(i, mx, my, delta);
-		build_l.update(i, mx, my, delta);
+		if (s.mode == "room_place") {
+			build_u.set_args(s.new_room, "up");
+			build_d.set_args(s.new_room, "down");
+			build_r.set_args(s.new_room, "right");
+			build_l.set_args(s.new_room, "left");
+			
+			build_r.update(i, mx, my, delta);
+			build_u.update(i, mx, my, delta);
+			build_d.update(i, mx, my, delta);
+			build_l.update(i, mx, my, delta);
+		}
 	}
 	
 	public void add_connection(Room r, String direction) {
@@ -214,6 +216,8 @@ public class Room {
 		surface.setColor(Color.red);
 		surface.setLineWidth(2);
 		surface.drawRect(x, y, hitbox.getWidth(), hitbox.getHeight());
+		surface.setColor(new Color(100, 100, 100, 100));
+		surface.fillRect(x,  y,  hitbox.getWidth(), hitbox.getHeight());
 
 	}
 
