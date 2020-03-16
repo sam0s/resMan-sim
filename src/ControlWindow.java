@@ -50,7 +50,7 @@ public class ControlWindow extends Window {
 		newGuy.set_args(s.rooms.elementAt(r.nextInt(s.rooms.size())));
 		placeRoom = new Button(100, 32, 132, 32, 2, "add room", f, s.fgetMethod("enter_placement_mode", String.class), s);
 		placeRoom.set_args("default");
-		placeElevator = new Button(100, 32, 200, 32, 2, "add elevator", f, s.fgetMethod("enter_placement_mode", String.class), s);
+		placeElevator = new Button(160, 32, 150, 120, 2, "add elevator", f, s.fgetMethod("enter_placement_mode", String.class), s);
 		placeElevator.set_args("elevator");
 		reset_vp = new Button(f.getWidth("reset_viewport") + 10, 32, 0, 68, 2, "reset viewport", f, s.fgetMethod("reset_viewport"), s);
 		reset_vp.set_args((Object[]) null);
