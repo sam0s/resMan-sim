@@ -143,7 +143,7 @@ public class StateGame extends BasicGameState {
 		Container cont = new Container(100, 100, 0, 0, Game.win_pad, Game.win_pad, 2);
 
 		try {
-			rooms.addElement(new Room(320, Game.HEIGHT - 200,this));
+			rooms.addElement(new Room(320, Game.HEIGHT - 210,this));
 			add_person(rooms.firstElement());
 			menu = new MenuBar();
 			ui.addElement(menu);

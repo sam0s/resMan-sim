@@ -1,4 +1,5 @@
 import java.lang.reflect.InvocationTargetException;
+import java.util.Random;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
@@ -18,6 +19,8 @@ public class ControlWindow extends Window {
 	Human dad;
 	Human sel_person;
 	
+	Random r;
+	
 	public ControlWindow(int sizex, int sizey, int x, int y, int padx, int pady, double weight, Font f, StateGame s) throws NoSuchMethodException, SecurityException {
 		super(300, 400, 420, 200, padx, pady, weight, f, "Important window", s);
 		
@@ -25,6 +28,8 @@ public class ControlWindow extends Window {
 		this.dad = null;
 		this.sel_person = null;
 		this.s = s;
+		
+		r = new Random();
 		
 		Button set_dad = new Button(100, 32, 0, 150, 2, "Set dad", f, fgetMethod("set_dad"), this);
 		add_container(set_dad);
@@ -41,7 +46,7 @@ public class ControlWindow extends Window {
 		
 		add_container(new Label(0, 0, 4, 4, 0, "sniff snoff", StateGame.f_18));
 		newGuy = new Button(100, 32, 0, 32, 2, "add 1", f, s.fgetMethod("add_person", Room.class), s);
-		newGuy.set_args(s.rooms.firstElement());
+		newGuy.set_args(s.rooms.elementAt(r.nextInt(s.rooms.size())));
 		placeRoom = new Button(100, 32, 132, 32, 2, "add room", f, s.fgetMethod("enter_placement_mode"), s);
 		reset_vp = new Button(f.getWidth("reset_viewport") + 10, 32, 0, 68, 2, "reset viewport", f, s.fgetMethod("reset_viewport"), s);
 		reset_vp.set_args((Object[]) null);
@@ -53,6 +58,7 @@ public class ControlWindow extends Window {
 
 	public void update(Input i, int mx, int my, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		super.update(i, mx, my, delta);
+		newGuy.set_args(s.rooms.elementAt(r.nextInt(s.rooms.size())));
 	}
 	
 	public void set_sel_person(Human h) {

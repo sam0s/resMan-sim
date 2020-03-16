@@ -56,19 +56,19 @@ public class Room {
 		this.x = x;
 		this.y = y;
 		this.s = s;
-		sizex = 300;
-		sizey = 100;
+		sizex = 400;
+		sizey = 110;
 		name = "TestRoom";
 		hitbox = new Rectangle(x, y, sizex, sizey);
 		hitbox.setBounds(hitbox);
 		this.ents = new Vector<Entity>();
 
-		build_r = new Button(75, 100, (int) x + sizex + 6, (int) y, 2, "", 
+		build_r = new Button(75, 110, (int) x + sizex + 6, (int) y, 2, "", 
 				StateGame.f_18, 
 				fgetMethod("add_connection", Room.class, String.class), this);
 		build_r.set_args(null, "right");
 
-		build_l = new Button(75, 100, -75 + x - 6, y, 2, "", 
+		build_l = new Button(75, 110, -75 + x - 6, y, 2, "", 
 				StateGame.f_18, 
 				fgetMethod("add_connection", Room.class, String.class), this);
 		build_l.set_args(null, "left");
