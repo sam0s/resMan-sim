@@ -26,7 +26,7 @@ public class StateGame extends BasicGameState {
 	public static Font f_32, f_18, f_24, f_16, f_14;
 	Random b = new Random();
 	
-	Room incoming;
+	Room new_room;
 	
 	Entity grabbed;
 	Vector<Container> misc_renders = new Vector<Container>();
@@ -51,6 +51,7 @@ public class StateGame extends BasicGameState {
 	int mousey_rel;
 	
 	boolean debug_info = true;
+	boolean placed = false;
 
 	public static final int ID = 0;
 
@@ -142,7 +143,6 @@ public class StateGame extends BasicGameState {
 		Container cont = new Container(100, 100, 0, 0, Game.win_pad, Game.win_pad, 2);
 
 		try {
-			incoming = new Room(0,0,this);
 			rooms.addElement(new Room(320, Game.HEIGHT - 200,this));
 			add_person(rooms.firstElement());
 			menu = new MenuBar();
@@ -182,6 +182,34 @@ public class StateGame extends BasicGameState {
 		vp_w = Game.WIDTH;
 		vp_h = Game.HEIGHT;
 		vp_zoom_scale = 1f;
+		/* TEMPORARY!!!! */
+		for (Container c: ui) {
+			c.hidden = false;
+		}
+	}
+	
+	public void enter_placement_mode() throws NoSuchMethodException, SecurityException {
+		new_room = new Room(0, 0, this);
+		mode = "room_place";
+		placed = false;
+	}
+	
+	public void exit_placement_mode() {
+		if (placed) {
+			rooms.addElement(new_room);
+		}
+		new_room = null;
+		mode = "general";
+	}
+	
+	public void reset_mode() {
+		switch (mode) {
+		case "room_place":
+			exit_placement_mode();
+			break;
+		case "general":
+			break;
+		}
 	}
 
 
@@ -217,16 +245,20 @@ public class StateGame extends BasicGameState {
 		mc.set_delta(delta);
 		kc.set_delta(delta);
 
-		if (mode == "room_place") {
-			for (Room r : rooms) {
-				try {
-					r.update(input,mousex_rel,mousey_rel, delta);
-				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+		for (Iterator<Room> iter = rooms.iterator(); iter.hasNext();) {
+			Room r = iter.next();
+			try {
+				r.update(input,mousex_rel,mousey_rel, delta);
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
+				e1.printStackTrace();
 			}
-			return;
+		}
+		if (mode == "room_place") {
+			if (placed) {
+				reset_mode();
+			} else {
+				return; 
+			}
 		}
 
 		try {
@@ -256,13 +288,12 @@ public class StateGame extends BasicGameState {
 
 		g.scale(vp_zoom_scale, vp_zoom_scale);
 		g.translate(vp_x, vp_y);
-
+		
 		if (mode == "room_place") {
-			for (Room r : rooms) {
+			for (Iterator<Room> iter = rooms.iterator(); iter.hasNext();) {
+				Room r = iter.next();
 				r.draw(g);
-				incoming.draw(g);
 				r.drawFreeAdjacents(g);
-				//g.drawRect(mousex_rel, mousey_rel, 300, 100);
 			}
 			return;
 		}
@@ -279,7 +310,7 @@ public class StateGame extends BasicGameState {
 
 		if (debug_info) {
 			f_32.drawString(32, menu.sizey, String.format("(%d, %d), vp: (%d %d) %dx%d [%f], mr: (%d, %d)", input.getMouseX(), input.getMouseY(), vp_x, vp_y, vp_w, vp_h, vp_zoom_scale, mousex_rel, mousey_rel), Color.red);
-			f_32.drawString(32, menu.sizey + 32, String.format("pop: %d", guys.size()), Color.red);
+			f_32.drawString(32, menu.sizey + 32, String.format("pop: %d, rms: %d", guys.size(), rooms.size()), Color.red);
 		}
 		
 		for (Container cont: ui) {

@@ -34,21 +34,22 @@ public class Room {
 		return this.getClass().getMethod(methodName, args);
 	}
 
-	public void build(Room r, String direction) {
+	public void add_connection(Room r, String direction) {
 		switch (direction) {
 		case "left":
 			left = r;
 			r.right = this;
 			r.x = this.x - r.sizex;
 			r.y = this.y;
-			return;
+			break;
 		case "right":
 			right = r;
 			r.left = this;
 			r.x = this.x + this.sizex;
 			r.y = this.y;
-			return;
+			break;
 		}
+		s.placed = true;
 	}
 
 	public Room(float x, float y,StateGame s) throws NoSuchMethodException, SecurityException {
@@ -62,10 +63,14 @@ public class Room {
 		hitbox.setBounds(hitbox);
 		this.ents = new Vector<Entity>();
 
-		build_r = new Button(75, 100, (int) x + sizex + 6, (int) y, 2, "", StateGame.f_18, fgetMethod("build", Room.class, String.class), this);
+		build_r = new Button(75, 100, (int) x + sizex + 6, (int) y, 2, "", 
+				StateGame.f_18, 
+				fgetMethod("add_connection", Room.class, String.class), this);
 		build_r.set_args(null, "right");
 
-		build_l = new Button(75, 100, -75 + x - 6, y, 2, "", StateGame.f_18, fgetMethod("build", Room.class, String.class), this);
+		build_l = new Button(75, 100, -75 + x - 6, y, 2, "", 
+				StateGame.f_18, 
+				fgetMethod("add_connection", Room.class, String.class), this);
 		build_l.set_args(null, "left");
 
 
@@ -87,8 +92,8 @@ public class Room {
 		//build_u.update(i, mx, my, delta);
 		//build_d.update(i, mx, my, delta);
 		build_l.update(i, mx, my, delta);
-		build_r.set_args(s.incoming,"right");
-		build_l.set_args(s.incoming,"left");
+		build_r.set_args(s.new_room,"right");
+		build_l.set_args(s.new_room,"left");
 	}
 
 	public void drawFreeAdjacents(Graphics surface) {
@@ -96,10 +101,14 @@ public class Room {
 
 		// select one of these to add a room to. checks room size after this.
 		if (left == null) {
+			build_l.x = x - 80;
+			build_l.y = y;
 			build_l.draw(surface);
 		}
 
 		if (right == null) {
+			build_r.x = x + sizex + 5;
+			build_r.y = y;
 			build_r.draw(surface);
 		}
 

@@ -52,7 +52,7 @@ public class KeyboardControls implements KeyListener {
 		for (int k: keys) {
 			switch(k) {
 			case 1: /* escape */
-				s.mode = "general"; 
+				s.reset_mode();
 				break;
 			case LARROW:
 			case KEY_A:
