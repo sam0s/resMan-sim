@@ -1,6 +1,7 @@
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Vector;
 
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Graphics;
@@ -16,10 +17,8 @@ public class Container {
 	int pady;
 	Color inner;
 	Color outer;
-	Color inner_f;
-	Color outer_f;
 	float weight;
-	public Container containers[];
+	Vector<Container> containers;
 	public boolean hidden = false;
 	float relx;
 	float rely;
@@ -69,32 +68,37 @@ public class Container {
 		this.pady = pady;
 		this.inner = Game.win_inner;
 		this.outer = Game.win_outer;
-		this.inner_f = Game.win_inner_f;
-		this.outer_f = Game.win_outer_f;
 		this.weight = (float) weight;
-		this.containers = new Container[] {};
+		this.containers = new Vector<Container>();
 		this.relx = x;
 		this.rely = y;
 		this.destroy = false;
 	}
 
-	public void setTheme(Color in_f, Color out_f, Color in, Color out) {
-		inner_f = in_f;
-		outer_f = out_f;
+	public void set_theme(Color in, Color out) {
 		inner = in;
 		outer = out;
+		for (Container c: containers) {
+			c.set_theme(in, out);
+		}
 	}
 
 	public void clear_containers() {
-		containers = new Container[] {};
+		containers.removeAllElements();
+	}
+	
+	public void inset_cont(Container c, float xshift, float yshift) {
+		c.x = x + xshift;
+		c.y = y + yshift;
+		for (Container sub_cont: c.containers) {
+			c.inset_cont(sub_cont, sub_cont.relx + padx, sub_cont.rely + pady);
+		}
 	}
 
 	public void add_container(Container... containerz) {
 		for (Container new_container : containerz) {
-			containers = Arrays.copyOf(containers, containers.length + 1);
-			containers[containers.length - 1] = new_container;
-			new_container.x = x + new_container.relx + padx;
-			new_container.y = y + new_container.rely + pady;
+			containers.addElement(new_container);
+			inset_cont(new_container, new_container.relx + padx, new_container.rely + pady);
 		}
 	}
 
@@ -112,9 +116,9 @@ public class Container {
 
 	public void draw(Graphics surface) throws SlickException {
 		surface.setLineWidth(weight);
-		surface.setColor(is_focused ? inner_f : inner);
+		surface.setColor(inner);
 		surface.fillRect(x, y, sizex, sizey);
-		surface.setColor(is_focused ? outer_f : outer);
+		surface.setColor(outer);
 		surface.drawRect(x, y, sizex, sizey);
 
 		for (Container c : containers) {

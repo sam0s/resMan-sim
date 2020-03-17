@@ -23,7 +23,7 @@ public class ControlWindow extends Window {
 	Random r;
 	
 	public ControlWindow(int sizex, int sizey, int x, int y, int padx, int pady, double weight, Font f, StateGame s) throws NoSuchMethodException, SecurityException {
-		super(300, 400, 420, 200, padx, pady, weight, f, "Important window", s);
+		super(300, 400, 420, 200, padx, pady, weight, "Important window", s);
 		
 		this.mom = null;
 		this.dad = null;

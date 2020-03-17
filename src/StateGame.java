@@ -103,7 +103,7 @@ public class StateGame extends BasicGameState {
 			e.curRoom.ents.removeAllElements();
 		}
 		guys.removeAllElements();
-		ewin.deselect_entity();
+		//ewin.deselect_entity();
 		cwin.sel_person = null;
 		cwin.clear_parents();
 	}
@@ -148,7 +148,7 @@ public class StateGame extends BasicGameState {
 			ui.addElement(menu);
 			cwin = new ControlWindow(400, 100, 0, 0, 4, 4, 2, f_24, this);
 			ui.addElement(cwin);
-			ewin = new EntityWindow(Game.win_pad, Game.win_pad, 2, f_24, this);
+			ewin = new EntityWindow(this);
 			focused_win = cwin;
 			ui.addElement(ewin);
 

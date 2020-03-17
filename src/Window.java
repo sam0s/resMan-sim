@@ -12,10 +12,11 @@ import org.newdawn.slick.geom.Rectangle;
 
 public class Window extends Container {
 
-	public Container titlebar;
-	public int titlebar_height;
-	public String title;
-	public Font f;
+	Container titlebar;
+	String title;
+	
+	Font win_font;
+	
 	boolean moving;
 	Color title_color;
 	Button hidebutton;
@@ -23,14 +24,15 @@ public class Window extends Container {
 
 	float moving_cursor_x_offset;
 	float moving_cursor_y_offset;
+	
+	
 
 	@Override
 	public void add_container(Container... containerz) {
 		for (Container new_container : containerz) {
-			containers = Arrays.copyOf(containers, containers.length + 1);
-			containers[containers.length - 1] = new_container;
-			new_container.x = x + new_container.relx + padx;
-			new_container.y = y + new_container.rely + this.titlebar_height + pady;
+			containers.addElement(new_container);
+			inset_cont(new_container, 
+					new_container.relx + padx, new_container.relx + titlebar.sizey + pady);
 		}
 	}
 
@@ -40,18 +42,26 @@ public class Window extends Container {
 		moving = false;
 	}
 
-	public Window(int sizex, int sizey, int x, int y, int padx, int pady, double weight, Font f, String title, StateGame s) throws NoSuchMethodException, SecurityException {
+	public Window(int sizex, int sizey, int x, int y, int padx, int pady, double weight, String title, StateGame s) throws NoSuchMethodException, SecurityException {
 		super(sizex, sizey, x, y, padx, pady, weight);
 		this.moving_cursor_x_offset = 0;
 		this.moving_cursor_y_offset = 0;
-		titlebar_height = f.getHeight(title) + 2;
-		titlebar = new Container(this.sizex, titlebar_height, this.x, this.y, 2, 2, weight);
-		hidebutton = new Button(30, titlebar_height, sizex - 30 - padx, -titlebar.sizey - pady, weight, "H", f, fgetMethod("hide"), this);
+		
+		win_font = s.f_24;
+		
+		titlebar = new Container(this.sizex, 
+				win_font.getHeight(title), 
+				this.x, 
+				this.y, 
+				2, 2, 
+				weight);
+		
+		hidebutton = new Button(30, titlebar.sizey, titlebar.sizex-30-(int)weight, (int)-weight, weight, "H", win_font, fgetMethod("hide"), this);
+		titlebar.add_container(hidebutton);
 		moving = false;
+		
 		this.title = title;
-		this.f = f;
 		this.title_color = outer;
-		this.add_container(hidebutton);
 		this.is_focused = false;
 		this.s = s;
 	}
@@ -82,7 +92,7 @@ public class Window extends Container {
 			}
 
 			if (mx > x && mx < x + sizex) {
-				if (my > y && my < y + titlebar_height) {
+				if (my > y && my < y + titlebar.sizey) {
 					if (!moving && i.isMousePressed(0)) {
 						moving = i.isMouseButtonDown(0);
 
@@ -121,10 +131,10 @@ public class Window extends Container {
 
 	public void set_title(String text) {
 		int size_lim = sizex - (int) weight * 2 - hidebutton.sizex - (int) hidebutton.weight * 2;
-		if (f.getWidth(text) > size_lim) {
+		if (win_font.getWidth(text) > size_lim) {
 			int i = 0;
 			for (i = text.length() - 1; i >= 0; i--) {
-				if (f.getWidth(text.substring(0, i)) < size_lim - f.getWidth("...")) {
+				if (win_font.getWidth(text.substring(0, i)) < size_lim - win_font.getWidth("...")) {
 					title = text.substring(0, i).concat("...");
 					return;
 				}
@@ -137,17 +147,17 @@ public class Window extends Container {
 	public void draw(Graphics surface) throws SlickException {
 		if (!hidden) {
 			surface.setLineWidth(weight);
-			surface.setColor(is_focused ? inner_f : inner);
+			surface.setColor(inner);
 			surface.fillRect(x, y, sizex, sizey);
-			surface.setColor(is_focused ? outer_f : outer);
+			surface.setColor(outer);
 			surface.drawRect(x, y, sizex, sizey);
 			titlebar.draw(surface);
 			for (Container c : containers) {
 				c.draw(surface);
 			}
-			surface.setFont(f);
-			surface.setColor(is_focused ? outer_f : outer);
-			surface.drawString(title, x + 2, y + 2);
+			surface.setFont(win_font);
+			surface.setColor(outer);
+			surface.drawString(title, x + padx, y + pady/2);
 		}
 	}
 }

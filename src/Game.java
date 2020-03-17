@@ -29,10 +29,9 @@ public class Game extends StateBasedGame {
 	public static final int HEIGHT = 720;
 	public static final int MENU_BAR_HEIGHT = 68;
 	public static final int FPS = 1200;
-	public static final Color win_inner_f = new Color(40, 40, 40, 225);
-	public static final Color win_outer_f = Color.orange;
-	public static final Color win_inner = win_inner_f;
-	public static final Color win_outer = win_outer_f;
+	public static final Color win_inner = new Color(40, 40, 40, 225);
+	public static final Color win_outer = Color.orange;
+	public static final Color clear = new Color(0, 0, 0, 0);
 	public static final int win_pad = 4;
 	// major.minor(patch)
 	public static final double VERSION = 1.40;

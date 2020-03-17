@@ -22,11 +22,10 @@ public class InputBox extends Window implements KeyListener {
 	public static final int ENTER = 28;
 
 	public InputBox(String text, int x, int y, Font f, double weight, Input i, Method okb, Object target, StateGame s) throws NoSuchMethodException, SecurityException {
-		super(f.getWidth(text) + 80, f.getHeight(text) + 170, x, y, 0, 0, weight, f, "Enter Text", s);
+		super(f.getWidth(text) + 80, f.getHeight(text) + 170, x, y, 0, 0, weight, "Enter Text", s);
 		this.i = i;
 		this.i.addKeyListener(this);
 		this.header = text;
-		this.f = f;
 		this.hidden = false;
 		this.okb = okb;
 		this.target = target;
@@ -83,7 +82,7 @@ public class InputBox extends Window implements KeyListener {
 
 		String split_text[] = print_str.split("\n");
 		for (int j = 0; j < split_text.length && (j + 1) * f.getHeight(split_text[j]) < sizey; j++) {
-			f.drawString(x, y + (j * f.getHeight(split_text[j])) + titlebar_height, split_text[j]);
+			f.drawString(x, y + (j * f.getHeight(split_text[j])) + titlebar.sizex, split_text[j]);
 		}
 
 	}
