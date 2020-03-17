@@ -50,16 +50,16 @@ public class Window extends Container {
 		
 		win_font = s.f_24;
 		
-		titlebar = new Container(this.sizex, 
-				win_font.getHeight(title), 
-				this.x, 
-				this.y, 
-				2, 2, 
-				weight);
+		titlebar = new Container(this.sizex,
+				win_font.getHeight(title),
+				-padx, -win_font.getHeight(title) - pady,
+				0, 0, weight);
 		
-		hidebutton = new Button(30, titlebar.sizey, titlebar.sizex-30-(int)weight, (int)-weight, weight, "H", win_font, fgetMethod("hide"), this);
+		hidebutton = new Button(30, titlebar.sizey, titlebar.sizex-30-padx, -pady, weight, "H", win_font, fgetMethod("hide"), this);
 		titlebar.add_container(hidebutton);
 		moving = false;
+		
+		add_container(titlebar);
 		
 		this.title = title;
 		this.title_color = outer;
@@ -88,7 +88,7 @@ public class Window extends Container {
 					yoffset = Game.MENU_BAR_HEIGHT - y;
 				}
 				move(xoffset, yoffset);
-				titlebar.move(xoffset, yoffset);
+				//titlebar.move(xoffset, yoffset);
 
 			}
 
@@ -110,8 +110,6 @@ public class Window extends Container {
 				c.is_focused = is_focused;
 				c.update(i, mx, my, delta);
 			}
-			titlebar.is_focused = is_focused;
-			titlebar.update(i, mx, my, delta);
 
 			if (mx > x && mx < x + sizex) {
 				if (my > y && my < y + sizey) {
@@ -152,10 +150,11 @@ public class Window extends Container {
 			surface.fillRect(x, y, sizex, sizey);
 			surface.setColor(outer);
 			surface.drawRect(x, y, sizex, sizey);
-			titlebar.draw(surface);
+			
 			for (Container c : containers) {
 				c.draw(surface);
 			}
+			
 			surface.setFont(win_font);
 			surface.setColor(outer);
 			surface.drawString(title, x + padx, y + pady/2);

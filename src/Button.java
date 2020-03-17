@@ -43,6 +43,7 @@ public class Button extends Container {
 		hi = false;
 		if (!pause && mx >= x && mx <= x + sizex  && my >= y && my <= y + sizey) {
 			if (i.isMousePressed(0)) {
+				System.out.printf("we got here\n");
 				func.invoke(gc, this.args);
 			}
 
