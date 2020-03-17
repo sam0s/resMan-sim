@@ -24,6 +24,15 @@ public class Entity {
 	public boolean moving = false;
 	public int roamDir = 1;
 	public int[] origin = { 16, 32 };
+	
+	
+	int hp;
+	int hp_max;
+	
+	boolean dead;
+	boolean destroy;
+	
+	
 	public Method fgetMethod(String methodName, Class... args) throws NoSuchMethodException, SecurityException {
 		return this.getClass().getMethod(methodName, args);
 	}
@@ -32,6 +41,11 @@ public class Entity {
 		this.name = name;
 		this.x = x;
 		this.y = y;		
+		
+		hp = 100;
+		hp_max = 1000;
+		dead = false;
+		destroy = false;
 	}
 
 	public void set_name(String name) {
@@ -89,6 +103,10 @@ public class Entity {
 
 	public void update(int delta) {
 		roam(delta);
+		if (hp <= 0) {
+			dead = true;
+			destroy = true;
+		}
 	}
 
 	public void draw(Graphics surface) {

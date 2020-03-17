@@ -18,7 +18,7 @@ public class EntityWindow extends Window {
 	HorzBarGraph hp_bar;
 	Label lvl_num;
 	Label age_num;
-	Label sex_num;
+	Label sex_val;
 	
 	/* independent buttons */
 	Button deselect;
@@ -72,9 +72,10 @@ public class EntityWindow extends Window {
 		
 		/* sex */
 		Label sex = new Label(0, 0, 0, 0, 0, "SEX ", s.f_18);
-		sex_num = new Label(sex.sizex + padx, 0, 0, 0, 0, "NULL", s.f_18);
-		Container sex_cont = new Container((int)age_num.relx + age_num.sizex, sex_num.sizey,
+		sex_val = new Label(sex.sizex + padx, 0, 0, 0, 0, "NULL", s.f_18);
+		Container sex_cont = new Container((int)sex_val.relx + sex_val.sizex, sex_val.sizey,
 				0, age_cont.rely + age_cont.sizey + pady, 0, 0, 0);
+		sex_cont.add_container(sex, sex_val);
 		
 		human = new Container(sizex, 
 				hp_cont.sizey + lvl_cont.sizey + age_cont.sizey + sex_cont.sizey,
@@ -88,11 +89,31 @@ public class EntityWindow extends Window {
 	}
 	
 	public void update_human() {
-		hp_bar.percent += 0.0001f;
-		hp_bar.percent = hp_bar.percent > 1 ? 0 : hp_bar.percent;
+		if (selected_ent == null) {
+			return;
+		} else {
+			Human e = (Human)selected_ent;
+			
+			hp_bar.percent = (float) e.hp/e.hp_max;
+			age_num.set_text(String.format("%d", e.age));
+			sex_val.set_text(String.format("%s", e.gender == Game.MALE ? "Male" : "Female"));
+		}
+	}
+	
+	public void reset_human() {
+		hp_bar.percent = 0;
+		age_num.set_text("NULL");
+		sex_val.set_text("NULL");
+	}
+	
+	public void set_selected_ent(Entity e) {
+		selected_ent = e;
+		title = e.name;
 	}
 	
 	public void deselect() {
 		selected_ent = null;
+		title = "NULL";
+		reset_human();
 	}
 }

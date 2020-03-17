@@ -42,9 +42,7 @@ public class ControlWindow extends Window {
 		add_container(mom_name);
 		
 		add_container(new Button(100, 32, 0, mom_name.rely + mom_name.sizey + pady, 2, "BREED", f, fgetMethod("breed"), this));
-	
-		
-		
+			
 		add_container(new Label(0, 0, 4, 4, 0, "sniff snoff", StateGame.f_18));
 		newGuy = new Button(100, 32, 0, 32, 2, "add 1", f, s.fgetMethod("add_person", Room.class), s);
 		newGuy.set_args(s.rooms.elementAt(r.nextInt(s.rooms.size())));
@@ -52,6 +50,12 @@ public class ControlWindow extends Window {
 		placeRoom.set_args("default");
 		placeElevator = new Button(160, 32, 150, 120, 2, "add elevator", f, s.fgetMethod("enter_placement_mode", String.class), s);
 		placeElevator.set_args("elevator");
+		
+		add_container(new Button(120, 32, 150,placeElevator.rely + placeElevator.sizey + pady, 2,
+				"sub health", s.f_24, fgetMethod("sub_health"), this));
+
+		
+		
 		reset_vp = new Button(f.getWidth("reset_viewport") + 10, 32, 0, 68, 2, "reset viewport", f, s.fgetMethod("reset_viewport"), s);
 		reset_vp.set_args((Object[]) null);
 		add_container(newGuy, placeRoom, placeElevator, reset_vp);
@@ -105,6 +109,14 @@ public class ControlWindow extends Window {
 			s.guys.addElement(child);
 		} else {
 			s.add_dialog("mom and dad must be selected");
+		}
+	}
+	
+	public void sub_health() {
+		if (sel_person == null) {
+			return;
+		} else {
+			sel_person.hp -= 10;
 		}
 	}
 

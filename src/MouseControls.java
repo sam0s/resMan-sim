@@ -48,6 +48,7 @@ public class MouseControls implements MouseListener{
 				if (s.ewin.hidden) {
 					s.ewin.show();
 				}
+				s.ewin.set_selected_ent(e);
 				s.cwin.set_sel_person((Human)e);
 				break;
 			}

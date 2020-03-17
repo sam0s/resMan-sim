@@ -19,13 +19,14 @@ public class Human extends Entity{
 	int hair_color;
 	int eye_color;
 	int skin_color;
-	
-	int hp;
+
 	int morale;
 	int level;
 	
 	Human father;
 	Human mother;
+	
+	boolean dead;
 	
 	public Human(int x, int y) throws SlickException, NoSuchMethodException, SecurityException {
 		super("temp", x, y, true);
@@ -44,12 +45,14 @@ public class Human extends Entity{
 		eye_color = r.nextInt(21);
 		skin_color = r.nextInt(60);
 		
-		hp = r.nextInt(101);
-		morale = r.nextInt(101);
-		level = r.nextInt(11);
-		
+		level = r.nextInt(10)+1;
+		hp_max = 10 * level;
+		hp = r.nextInt(hp_max);
+		morale = r.nextInt(101);		
 		father = null;
 		mother = null;
+		
+		dead = false;
 		
 		Image sprite = new Image(gender ? "gfx//testChar.png" : "gfx//testCharFem.png");
 		sprite.setFilter(Image.FILTER_NEAREST);
