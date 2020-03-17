@@ -17,7 +17,7 @@ public class StateGame extends BasicGameState {
 	public static String[] namesM = { "Glenn", "Jerry", "Joe", "Jack", "Paul", "Nick", "Trevor", "Mathew", "Todd", "Linus", "Harry", "Walter", "Ryan", "Bob", "Henry", "Brian", "Dennis" };
 	public static String[] namesF = { "Stephanie", "Susan", "Patricia", "Kim", "Rachel", "Rebecca", "Alice", "Jackie", "Judy", "Heidi", "Skylar", "Anna", "Paige" };
 	public static String[] namesL = { "Rollins", "Howard", "Zalman", "Bell", "Newell", "Caiafa", "Finnegan", "Hall", "Howell", "Kernighan", "Wilson", "Ritchie" };
-	
+	boolean dragging = false;
 	Image bg, bg2;
 	Input input;
 	MouseControls mc = new MouseControls(this);
@@ -25,16 +25,16 @@ public class StateGame extends BasicGameState {
 	java.awt.Font fontRaw = null;
 	public static Font f_32, f_18, f_24, f_16, f_14;
 	Random b = new Random();
-	
+
 	Room new_room;
-	
+
 	Entity grabbed;
 	Vector<Container> misc_renders = new Vector<Container>();
 	Vector<Container> ui = new Vector<Container>();
-	
+
 	Vector<Room> rooms = new Vector<Room>();
 	Vector<Entity> guys = new Vector<Entity>();
-	
+
 	EntityWindow ewin;
 	ControlWindow cwin;
 	Window focused_win;
@@ -49,7 +49,7 @@ public class StateGame extends BasicGameState {
 
 	int mousex_rel;
 	int mousey_rel;
-	
+
 	boolean debug_info = true;
 	boolean placed = false;
 
@@ -97,28 +97,28 @@ public class StateGame extends BasicGameState {
 		r.add_entity(e);
 		guys.addElement(e);
 	}
-	
+
 	public void kill_all() throws NoSuchMethodException, SecurityException {
-		for (Entity e: guys) {
+		for (Entity e : guys) {
 			e.curRoom.ents.removeAllElements();
 		}
 		guys.removeAllElements();
-		//ewin.deselect_entity();
+		// ewin.deselect_entity();
 		cwin.sel_person = null;
 		cwin.clear_parents();
 	}
-	
+
 	public void init_fonts() {
 		try {
 			fontRaw = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new java.io.File("TerminusTTF-Bold-4.47.0.ttf"));
 		} catch (FontFormatException | IOException e) {
 			e.printStackTrace();
 		}
-	
+
 		if (fontRaw == null) {
 			fontRaw = new java.awt.Font("Default", 0, 28);
 		}
-		
+
 		f_32 = new TrueTypeFont(fontRaw.deriveFont(32f), false);
 		f_24 = new TrueTypeFont(fontRaw.deriveFont(24f), false);
 		f_18 = new TrueTypeFont(fontRaw.deriveFont(18f), false);
@@ -136,9 +136,9 @@ public class StateGame extends BasicGameState {
 
 		bg = new Image("testBack.png");
 		bg2 = new Image("under.png");
-		
+
 		init_fonts();
-		
+
 		/* init containers */
 
 		try {
@@ -182,33 +182,32 @@ public class StateGame extends BasicGameState {
 		vp_h = Game.HEIGHT;
 		vp_zoom_scale = 1f;
 		/* TEMPORARY!!!! */
-		for (Container c: ui) {
+		for (Container c : ui) {
 			c.hidden = false;
 		}
 	}
-	
-	public boolean overlaps(float a_tl_x, float a_tl_y, float a_br_x, float a_br_y, 
-			float b_tl_x, float b_tl_y, float b_br_x, float b_br_y) {
-			System.out.printf("%s\n", a_br_x <= b_tl_x || a_tl_x >= b_br_x ? "l/r" : "");
-			System.out.printf("%s\n", a_br_y <= b_tl_y || a_tl_y >= b_br_y ? "u/d" : "");
+
+	public boolean overlaps(float a_tl_x, float a_tl_y, float a_br_x, float a_br_y, float b_tl_x, float b_tl_y, float b_br_x, float b_br_y) {
+		System.out.printf("%s\n", a_br_x <= b_tl_x || a_tl_x >= b_br_x ? "l/r" : "");
+		System.out.printf("%s\n", a_br_y <= b_tl_y || a_tl_y >= b_br_y ? "u/d" : "");
 		return !(a_br_x <= b_tl_x || a_tl_x >= b_br_x) && !(a_br_y <= b_tl_y || a_tl_y >= b_br_y);
 	}
-	
+
 	public boolean room_overlap(float b_tl_x, float b_tl_y, float b_br_x, float b_br_y) {
-		for (Room a: rooms) {
+		for (Room a : rooms) {
 			if (overlaps(a.x, a.y, a.x + a.sizex, a.y + a.sizey, b_tl_x, b_tl_y, b_br_x, b_br_y)) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	public void enter_placement_mode(String type) throws NoSuchMethodException, SecurityException {
 		new_room = new Room(0, 0, type, this);
 		mode = "room_place";
 		placed = false;
 	}
-	
+
 	public void exit_placement_mode() {
 		if (placed) {
 			rooms.addElement(new_room);
@@ -216,7 +215,7 @@ public class StateGame extends BasicGameState {
 		new_room = null;
 		mode = "general";
 	}
-	
+
 	public void reset_mode() {
 		switch (mode) {
 		case "room_place":
@@ -227,16 +226,15 @@ public class StateGame extends BasicGameState {
 		}
 	}
 
-
-	public void update_containers(Vector<Container> elements, int delta, Boolean mousepress,int mx,int my) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public void update_containers(Vector<Container> elements, int delta, Boolean mousepress, int mx, int my) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		for (Iterator<Container> iter = elements.iterator(); iter.hasNext();) {
 			Container cont = iter.next();
 			if (focused_win != null) {
-				focused_win.update(input, mx,my,delta);
+				focused_win.update(input, mx, my, delta);
 			}
 
 			if (!cont.is_focused) {
-				cont.update(input, mx,my,delta);
+				cont.update(input, mx, my, delta);
 			}
 
 			if (cont.destroy) {
@@ -249,6 +247,17 @@ public class StateGame extends BasicGameState {
 	}
 
 	@Override
+	public void mouseDragged(int oldx, int oldy, int newx, int newy) {
+		// if (s.dragging) {
+		if (input.isMouseButtonDown(1)) {
+			this.vp_x += newx - oldx;
+			this.vp_y += newy - oldy;
+		}
+		// }
+
+	}
+
+	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 		/* update windows */
 
@@ -256,15 +265,15 @@ public class StateGame extends BasicGameState {
 
 		mousex_rel = (int) Math.floor(input.getMouseX() / vp_zoom_scale) - vp_x;
 		mousey_rel = (int) Math.floor(input.getMouseY() / vp_zoom_scale) - vp_y;
-		
+
 		mc.set_delta(delta);
 		kc.set_delta(delta);
-		
+
 		if (mode == "room_place") {
 			for (Iterator<Room> iter = rooms.iterator(); iter.hasNext();) {
 				Room r = iter.next();
 				try {
-					r.update(input,mousex_rel,mousey_rel, delta);
+					r.update(input, mousex_rel, mousey_rel, delta);
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
 					e1.printStackTrace();
 				}
@@ -272,13 +281,13 @@ public class StateGame extends BasicGameState {
 			if (placed) {
 				reset_mode();
 			} else {
-				return; 
+				return;
 			}
 		}
-		
+
 		try {
-			update_containers(ui, delta, mousepress,input.getMouseX(),input.getMouseY());
-			update_containers(misc_renders, delta, mousepress,input.getMouseX(),input.getMouseY());
+			update_containers(ui, delta, mousepress, input.getMouseX(), input.getMouseY());
+			update_containers(misc_renders, delta, mousepress, input.getMouseX(), input.getMouseY());
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
 			e1.printStackTrace();
 		}
@@ -286,7 +295,7 @@ public class StateGame extends BasicGameState {
 		for (Iterator<Room> iter = rooms.iterator(); iter.hasNext();) {
 			Room r = iter.next();
 			try {
-				r.update(input,mousex_rel,mousey_rel, delta);
+				r.update(input, mousex_rel, mousey_rel, delta);
 			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
 				e1.printStackTrace();
 			}
@@ -312,7 +321,7 @@ public class StateGame extends BasicGameState {
 
 		g.scale(vp_zoom_scale, vp_zoom_scale);
 		g.translate(vp_x, vp_y);
-		
+
 		if (mode == "room_place") {
 			for (Iterator<Room> iter = rooms.iterator(); iter.hasNext();) {
 				Room r = iter.next();
@@ -336,17 +345,17 @@ public class StateGame extends BasicGameState {
 			f_32.drawString(32, menu.sizey, String.format("(%d, %d), vp: (%d %d) %dx%d [%f], mr: (%d, %d)", input.getMouseX(), input.getMouseY(), vp_x, vp_y, vp_w, vp_h, vp_zoom_scale, mousex_rel, mousey_rel), Color.red);
 			f_32.drawString(32, menu.sizey + 32, String.format("pop: %d, rms: %d", guys.size(), rooms.size()), Color.red);
 		}
-		
-		for (Container cont: ui) {
+
+		for (Container cont : ui) {
 			if (!cont.is_focused) {
 				cont.draw(g);
 			}
 
 		}
-		for (Container cont: misc_renders) {
+		for (Container cont : misc_renders) {
 			cont.draw(g);
 		}
-		
+
 		if (focused_win != null) {
 			focused_win.draw(g);
 		}
