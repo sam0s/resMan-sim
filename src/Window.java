@@ -32,12 +32,13 @@ public class Window extends Container {
 		for (Container new_container : containerz) {
 			containers.addElement(new_container);
 			inset_cont(new_container, 
-					new_container.relx + padx, new_container.relx + titlebar.sizey + pady);
+					new_container.relx + padx, new_container.rely + titlebar.sizey + pady);
 		}
 	}
 
 	@Override
 	public void hide() {
+		System.out.printf("hide\n");
 		hidden = true;
 		moving = false;
 	}

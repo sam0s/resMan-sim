@@ -60,7 +60,7 @@ public class Button extends Container {
 		surface.drawRect(x, y, sizex, sizey);
 		surface.setFont(f);
 		surface.setColor(outer);
-		surface.drawString(text, (x + sizex / 2) - f.getWidth(text) / 2, (y + sizey / 2) - f.getHeight(text) / 2);
+		surface.drawString(text, x + (sizex - f.getWidth(text))/2, y + (sizey - f.getHeight(text))/2 + (int)weight);
 
 	}
 

@@ -12,12 +12,18 @@ public class EntityWindow extends Window {
 	Entity selected_ent;
 	StateGame s;
 	
-	/* human attrs */
+	/* human items */
 	Container human;
 	
 	HorzBarGraph hp_bar;
 	Label lvl_num;
 	Label age_num;
+	Label sex_num;
+	
+	/* independent buttons */
+	Button deselect;
+	
+	/* misc elements */
 
 	public EntityWindow(StateGame s) throws NoSuchMethodException, SecurityException, SlickException {
 		super(300, 350, 100, 100, Game.win_pad, Game.win_pad, 2,"NULL", s);
@@ -26,8 +32,13 @@ public class EntityWindow extends Window {
 		
 		build_human_cont();
 		
+		/* independent buttons */
+		deselect = new Button(sizex - padx*2, win_font.getHeight("DESELECT"), 0, 
+				sizey - win_font.getHeight("DESELECT") - titlebar.sizey - pady*2, 2, 
+				"DESELECT", win_font, fgetMethod("deselect"), this);
+		
 		/* temporary */
-		add_container(human);
+		add_container(human, deselect);
 		
 		for (Container c: containers) {
 			c.set_theme(Game.clear, Game.win_outer);
@@ -49,15 +60,26 @@ public class EntityWindow extends Window {
 				0, hp_cont.rely + hp_cont.sizey + pady, 0, 0, 0);
 		lvl_cont.add_container(lvl, lvl_num);
 		
+		/* horizontal rule */
+		//Container hr = new Container(sizex, 0, -padx, lvl_cont.rely + lvl_cont.sizey + pady, 0, 0, 2);
+		
 		/* age */
 		Label age = new Label(0, 0, 0, 0, 0, "AGE ", s.f_18); 
 		age_num = new Label(age.sizex + padx, 0, 0, 0, 0, "NULL", s.f_18);
-		Container age_cont = new Container(age.sizex + padx + age_num.sizex , age.sizey, 0, 
+		Container age_cont = new Container((int)age_num.relx + age_num.sizex, age.sizey, 0, 
 				lvl_cont.rely + lvl_cont.sizey + pady, 0, 0, 0);
 		age_cont.add_container(age, age_num);
 		
-		human = new Container(sizex, hp_cont.sizey + lvl_cont.sizey + age.sizey, -padx, -pady, padx, pady, 0);
-		human.add_container(hp_cont, lvl_cont, age_cont);
+		/* sex */
+		Label sex = new Label(0, 0, 0, 0, 0, "SEX ", s.f_18);
+		sex_num = new Label(sex.sizex + padx, 0, 0, 0, 0, "NULL", s.f_18);
+		Container sex_cont = new Container((int)age_num.relx + age_num.sizex, sex_num.sizey,
+				0, age_cont.rely + age_cont.sizey + pady, 0, 0, 0);
+		
+		human = new Container(sizex, 
+				hp_cont.sizey + lvl_cont.sizey + age_cont.sizey + sex_cont.sizey,
+				-padx, -pady, padx, pady, 0);
+		human.add_container(hp_cont, lvl_cont, age_cont, sex_cont);
 	}
 	
 	public void update(Input i, int mx, int my, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -68,5 +90,9 @@ public class EntityWindow extends Window {
 	public void update_human() {
 		hp_bar.percent += 0.0001f;
 		hp_bar.percent = hp_bar.percent > 1 ? 0 : hp_bar.percent;
+	}
+	
+	public void deselect() {
+		selected_ent = null;
 	}
 }
