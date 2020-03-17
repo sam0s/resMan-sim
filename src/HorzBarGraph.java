@@ -1,4 +1,7 @@
+import java.lang.reflect.InvocationTargetException;
+
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 
 public class HorzBarGraph extends Container {
 
@@ -11,11 +14,11 @@ public class HorzBarGraph extends Container {
 	}
 	
 	public void set_percent(float percent) {
-		if (percent > 1) {
-			this.percent = 1;
-			return;
-		}
 		this.percent = percent;
+	}
+	
+	public void update(Input i, int mx, int my, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		super.update(i, mx, my, delta);
 	}
 	
 	public void draw(Graphics surface) {
