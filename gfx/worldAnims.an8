@@ -16,10 +16,13 @@ environment {
   }
 }
 texture { "GLOBE_TEX"
-  file { "Z:\\home\\sam0s\\csci321\\resMan-sim\\gfx\\GLOBE_TEX.bmp" }
+  file { "C:\\Users\\Sam Tubb\\workspace\\Game\\gfx\\GLOBE_TEX.bmp" }
 }
 texture { "texture0"
-  file { "Z:\\home\\sam0s\\csci321\\resMan-sim\\gfx\\GLOBE_TEX.png" }
+  file { "C:\\Users\\Sam Tubb\\workspace\\Game\\gfx\\GLOBE_TEX.png" }
+}
+texture { "skyboxmap"
+  file { "C:\\Users\\Sam Tubb\\workspace\\Game\\gfx\\skyboxmap.png" }
 }
 object { "Globe_UV"
   material { "material01"
@@ -217,6 +220,37 @@ object { "Globe_UV"
     }
   }
 }
+object { "skybnox"
+  material { "material01"
+    surface {
+      /* RGB chunk no longer used */
+      rgb { 254 62 225 }
+      lockambientdiffuse { }
+      ambient {
+        rgb { 254 62 225 }
+        factor { 0.30000 }
+      }
+      diffuse {
+        rgb { 254 62 225 }
+        factor { 0.70000 }
+      }
+      specular {
+        rgb { 255 255 255 }
+        factor { 0.20000 }
+      }
+      phongsize { 32 }
+    }
+  }
+  sphere {
+    name { "sphere01" }
+    base {
+      origin { (-0.05900 -0.63900 0) }
+    }
+    material { "material01" }
+    diameter { 223.77 }
+    longlat { 12 8 }
+  }
+}
 figure { "figure01"
   bone { "root"
     length { 10 }
@@ -228,21 +262,29 @@ sequence { "sequence02"
 }
 scene { "scene01"
   frames { 72 }
-  groundgrid { 1 }
+  groundgrid { 0 }
   shadowbias { 0.00100 }
   background { 153 153 153 }
   camera { "camera01"
-    loc { (-272.8 585.4 -703.1) }
-    orientation { (-0.04877 0.93733 -0.14632 -0.31244) }
+    loc { (-450 400.4 -861.6) }
+    orientation { (0 0 0 -1) }
     fov { 60 }
     number { 1 } 
   }
-  objectelement { "eobject01" "Globe_UV"
-    loc { (-521.79 404.44 -998.13) }
+  objectelement { "eobject02" "skybnox"
+    loc { (-1447.3 393.85 -815.52) }
+    orientation { (0.32897 0.68182 0.40662 0.51144) }
+    scale { 1.786 }
   }
-  objectelement { "eobject02" "Globe_UV"
-    loc { (0 0 0) }
-    scale { 132.95 }
+  objectelement { "eobject01" "Globe_UV"
+    loc { (-450 400.3 -740) }
+    orientation { (0 -0.70711 0 0.70710) }
+    controller { "orientation"
+      track {
+        qkey { 0 (0 -0.70711 0 0.70710) "S" }
+        qkey { 71 (0 0.71080 0 -0.70339) "S" }
+      }
+    }
   }
 }
 scene { "scene02"
@@ -254,7 +296,12 @@ scene { "scene02"
     loc { (2.1085 -5.0027 158.64) }
     orientation { (0 -1 0 0) }
     fov { 60 }
-    number { 1 } 
+    number { 1 }
+    controller { "active"
+      track {
+        booleankey { 0 0 "T" }
+      }
+    } 
   }
   objectelement { "eobject01" "Globe_UV"
     loc { (0 0 0) }

@@ -13,7 +13,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class StateGame extends BasicGameState {
-
+	StateBasedGame psbg;
 	public static String[] namesM = { "Glenn", "Jerry", "Joe", "Jack", "Paul", "Nick", "Trevor", "Mathew", "Todd", "Linus", "Harry", "Walter", "Ryan", "Bob", "Henry", "Brian", "Dennis" };
 	public static String[] namesF = { "Stephanie", "Susan", "Patricia", "Kim", "Rachel", "Rebecca", "Alice", "Jackie", "Judy", "Heidi", "Skylar", "Anna", "Paige" };
 	public static String[] namesL = { "Rollins", "Howard", "Zalman", "Bell", "Newell", "Caiafa", "Finnegan", "Hall", "Howell", "Kernighan", "Wilson", "Ritchie" };
@@ -125,11 +125,17 @@ public class StateGame extends BasicGameState {
 		f_16 = new TrueTypeFont(fontRaw.deriveFont(16f), false);
 		f_14 = new TrueTypeFont(fontRaw.deriveFont(14f), false);
 	}
+	
+	public void gotothaglobe(){
+		psbg.enterState(1);
+	}
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		mode = "general";
-
+		//parent state based game 
+		psbg = sbg;
+		
 		input = gc.getInput();
 		input.addMouseListener(mc);
 		input.addKeyListener(kc);
@@ -153,10 +159,8 @@ public class StateGame extends BasicGameState {
 			ui.addElement(ewin);
 
 			menu = new MenuBar();
-			menu.add_icon(new ImageButton(64, 64, 0, 0, new Image("gfx//tweezicon.png"), fgetMethod("reset_viewport"), this), "left");
-			menu.add_icon(new ImageButton(64, 64, 0, 0, new Image("gfx//tweezicon.png"), fgetMethod("reset_viewport"), this), "left");
-			menu.add_icon(new ImageButton(64, 64, 0, 0, new Image("gfx//tweezicon.png"), fgetMethod("reset_viewport"), this), "left");
-			menu.add_icon(new ImageButton(64, 64, 0, 0, new Image("gfx//tweezicon.png"), fgetMethod("reset_viewport"), this), "right");
+			menu.add_icon(new ImageButton(64, 64, 0, 0, new Image("gfx//globeicon.png"), fgetMethod("gotothaglobe"), this), "left");
+			menu.add_icon(new ImageButton(64, 64, 0, 0, new Image("gfx//buildicon.png"), fgetMethod("show_build_menu"), this), "left");
 			menu.add_icon(new ImageButton(64, 64, 0, 0, new Image("gfx//icon_camera.png"), fgetMethod("reset_viewport"), this), "right");
 
 			ui.addElement(menu);
@@ -168,6 +172,9 @@ public class StateGame extends BasicGameState {
 		set_window_focus(ewin);
 	}
 
+	public void show_build_menu(){
+		System.out.printf("tyme to build\n");
+	}
 	public void set_window_focus(Window f) {
 		if (focused_win != null) {
 			focused_win.is_focused = false;
@@ -248,13 +255,10 @@ public class StateGame extends BasicGameState {
 
 	@Override
 	public void mouseDragged(int oldx, int oldy, int newx, int newy) {
-		// if (s.dragging) {
 		if (input.isMouseButtonDown(1)) {
 			this.vp_x += newx - oldx;
 			this.vp_y += newy - oldy;
 		}
-		// }
-
 	}
 
 	@Override
