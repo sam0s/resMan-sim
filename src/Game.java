@@ -35,7 +35,7 @@ public class Game extends StateBasedGame {
 	public static final Color clear = new Color(0, 0, 0, 0);
 	public static final int win_pad = 4;
 	// major.minor(patch)
-	public static final double VERSION = 1.40;
+	public static final double VERSION = 1.90;
 
 	public void initStatesList(GameContainer gc) throws SlickException {
 		this.addState(new StateGame());
