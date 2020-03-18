@@ -12,8 +12,9 @@ public class ImageButton extends Button {
 	public Image sprite;
 
 	public ImageButton(int sizex, int sizey, float x, float y, Image sprite, Method func, Object gc) {
-		super(sizex, sizey, x, y, 0, "", null, func, gc);
+		super((sizex == 0) ? sprite.getWidth() : sizex, (sizey == 0) ? sprite.getHeight() : sizey, x, y, 0, "", null, func, gc);
 		this.sprite = sprite;
+
 	}
 
 	@Override
