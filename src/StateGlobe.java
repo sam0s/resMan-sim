@@ -35,6 +35,7 @@ public class StateGlobe extends BasicGameState {
 		}
 
 		if (grot == 60 || grot == 43 || grot == 21) {
+			System.out.println(grot);
 			rotating = 0;
 			rot = 0;
 		}

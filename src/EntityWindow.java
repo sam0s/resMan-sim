@@ -42,6 +42,8 @@ public class EntityWindow extends Window {
 		for (Container c : containers) {
 			c.set_theme(Game.clear, Game.win_outer);
 		}
+		
+		this.hidden=true;
 	}
 
 	public void build_human_cont() {
@@ -78,6 +80,7 @@ public class EntityWindow extends Window {
 	}
 
 	public void update(Input i, int mx, int my, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		
 		super.update(i, mx, my, delta);
 		update_human();
 	}

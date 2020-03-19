@@ -36,6 +36,7 @@ public class StateGame extends BasicGameState {
 	Vector<Entity> guys = new Vector<Entity>();
 
 	EntityWindow ewin;
+	BuildingSelectWindow rwin;
 	ControlWindow cwin;
 	Window focused_win;
 	MenuBar menu;
@@ -155,8 +156,10 @@ public class StateGame extends BasicGameState {
 			cwin = new ControlWindow(400, 100, 0, 0, 4, 4, 2, f_24, this);
 			ui.addElement(cwin);
 			ewin = new EntityWindow(this);
+			rwin = new BuildingSelectWindow(this);
 			focused_win = cwin;
 			ui.addElement(ewin);
+			ui.addElement(rwin);
 
 			menu = new MenuBar();
 			menu.add_icon(new ImageButton(64, 64, 0, 0, new Image("gfx//globeicon.png"), fgetMethod("gotothaglobe"), this), "left");
@@ -173,7 +176,7 @@ public class StateGame extends BasicGameState {
 	}
 
 	public void show_build_menu(){
-		System.out.printf("tyme to build\n");
+		rwin.hidden=false;
 	}
 	public void set_window_focus(Window f) {
 		if (focused_win != null) {

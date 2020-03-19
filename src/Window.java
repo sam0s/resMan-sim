@@ -68,8 +68,9 @@ public class Window extends Container {
 	}
 
 	public void update(Input i, int mx, int my, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		super.update(i, mx, my, delta);
 		if (!hidden) {
+		super.update(i, mx, my, delta);
+		
 			if (!i.isMouseButtonDown(0)) {
 				moving = false;
 			}
