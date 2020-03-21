@@ -13,9 +13,9 @@ public class BuildingSelectWindow extends Window {
 
 	public BuildingSelectWindow(StateGame s) throws NoSuchMethodException, SecurityException, SlickException {
 		super(358, 350, 100, 100, Game.win_pad, Game.win_pad, 2, "NULL", s);
-		power = new ImageButton(0, 0, 0, 0, new Image("gfx\\room_prev_power.png"), s.fgetMethod("enter_placement_mode", String.class), s);
-		water = new ImageButton(0, 0, power.sprite.getWidth() + 4, 0, new Image("gfx\\room_prev_water.png"), s.fgetMethod("enter_placement_mode", String.class), s);
-		food = new ImageButton(0, 0, power.sprite.getWidth() * 2 + 8, 0, new Image("gfx\\room_prev_food.png"), s.fgetMethod("enter_placement_mode", String.class), s);
+		power = new ImageButton(0, 0, 0, 0, new Image("gfx//room_prev_power.png"), s.fgetMethod("enter_placement_mode", String.class), s);
+		water = new ImageButton(0, 0, power.sprite.getWidth() + 4, 0, new Image("gfx//room_prev_water.png"), s.fgetMethod("enter_placement_mode", String.class), s);
+		food = new ImageButton(0, 0, power.sprite.getWidth() * 2 + 8, 0, new Image("gfx//room_prev_food.png"), s.fgetMethod("enter_placement_mode", String.class), s);
 		placeElevator = new Button(160, 32, 150, 120, 2, "add elevator", StateGame.f_24, s.fgetMethod("enter_placement_mode", String.class), s);
 		placeElevator.set_args("elevator");
 		power.set_args("power");
