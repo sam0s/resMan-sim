@@ -18,14 +18,15 @@ public class StateGame extends BasicGameState {
 	public static String[] namesF = { "Stephanie", "Susan", "Patricia", "Kim", "Rachel", "Rebecca", "Alice", "Jackie", "Judy", "Heidi", "Skylar", "Anna", "Paige" };
 	public static String[] namesL = { "Rollins", "Howard", "Zalman", "Bell", "Newell", "Caiafa", "Finnegan", "Hall", "Howell", "Kernighan", "Wilson", "Ritchie" };
 	boolean dragging = false;
-	Image bg, bg2;
+	static Image bg, bg2;
 	Input input;
 	MouseControls mc = new MouseControls(this);
 	KeyboardControls kc = new KeyboardControls(this);
 	java.awt.Font fontRaw = null;
 	public static Font f_32, f_18, f_24, f_16, f_14;
 	Random b = new Random();
-
+	public static Image power_room_image;
+	public static Image elevator_room_image;
 	Room new_room;
 
 	Entity grabbed;
@@ -126,30 +127,31 @@ public class StateGame extends BasicGameState {
 		f_16 = new TrueTypeFont(fontRaw.deriveFont(16f), false);
 		f_14 = new TrueTypeFont(fontRaw.deriveFont(14f), false);
 	}
-	
-	public void gotothaglobe(){
+
+	public void gotothaglobe() {
 		psbg.enterState(1);
 	}
 
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		mode = "general";
-		//parent state based game 
+		// parent state based game
 		psbg = sbg;
-		
+
 		input = gc.getInput();
 		input.addMouseListener(mc);
 		input.addKeyListener(kc);
 
 		bg = new Image("testBack.png");
 		bg2 = new Image("under.png");
-
+		power_room_image = new Image("gfx//room_power.png");
+		elevator_room_image = new Image("gfx//room_elevator.png");
 		init_fonts();
 
 		/* init containers */
 
 		try {
-			rooms.addElement(new Room(320, Game.HEIGHT - 210, "default", this));
+			rooms.addElement(new PowerRoom(320, Game.HEIGHT - 210, this));
 			add_person(rooms.firstElement());
 			menu = new MenuBar();
 			ui.addElement(menu);
@@ -175,9 +177,10 @@ public class StateGame extends BasicGameState {
 		set_window_focus(ewin);
 	}
 
-	public void show_build_menu(){
-		rwin.hidden=false;
+	public void show_build_menu() {
+		rwin.hidden = false;
 	}
+
 	public void set_window_focus(Window f) {
 		if (focused_win != null) {
 			focused_win.is_focused = false;
@@ -213,7 +216,18 @@ public class StateGame extends BasicGameState {
 	}
 
 	public void enter_placement_mode(String type) throws NoSuchMethodException, SecurityException {
-		new_room = new Room(0, 0, type, this);
+		System.out.println(type);
+		switch (type) {
+		case "power":
+			new_room = new PowerRoom(0, 0, this);
+			break;
+		case "elevator":
+			new_room = new Elevator(0, 0, this);
+			break;
+		default:
+			new_room = new PowerRoom(0, 0, this);
+			break;
+		}
 		mode = "room_place";
 		placed = false;
 	}

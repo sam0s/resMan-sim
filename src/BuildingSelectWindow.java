@@ -9,20 +9,21 @@ public class BuildingSelectWindow extends Window {
 	ImageButton power;
 	ImageButton water;
 	ImageButton food;
+	Button placeElevator;
 
-	/* misc elements */
-	
-	public void test(){
-		System.out.println("yep");
-	}
 	public BuildingSelectWindow(StateGame s) throws NoSuchMethodException, SecurityException, SlickException {
 		super(358, 350, 100, 100, Game.win_pad, Game.win_pad, 2, "NULL", s);
-		power = new ImageButton(0, 0, 0, 0, new Image("gfx\\room_prev_power.png"), this.fgetMethod("test"), this);
-		water = new ImageButton(0, 0, power.sprite.getWidth()+4, 0, new Image("gfx\\room_prev_water.png"), this.fgetMethod("test"), this);
-		food = new ImageButton(0, 0, power.sprite.getWidth()*2+8, 0, new Image("gfx\\room_prev_food.png"), this.fgetMethod("test"), this);
-		this.add_container(power, water, food);
+		power = new ImageButton(0, 0, 0, 0, new Image("gfx\\room_prev_power.png"), s.fgetMethod("enter_placement_mode", String.class), s);
+		water = new ImageButton(0, 0, power.sprite.getWidth() + 4, 0, new Image("gfx\\room_prev_water.png"), s.fgetMethod("enter_placement_mode", String.class), s);
+		food = new ImageButton(0, 0, power.sprite.getWidth() * 2 + 8, 0, new Image("gfx\\room_prev_food.png"), s.fgetMethod("enter_placement_mode", String.class), s);
+		placeElevator = new Button(160, 32, 150, 120, 2, "add elevator", StateGame.f_24, s.fgetMethod("enter_placement_mode", String.class), s);
+		placeElevator.set_args("elevator");
+		power.set_args("power");
+		water.set_args("water");
+		food.set_args("food");
+		this.add_container(power, water, food, placeElevator);
 		this.title = "Build";
-		this.hidden=true;
+		this.hidden = true;
 	}
 
 	public void update(Input i, int mx, int my, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
