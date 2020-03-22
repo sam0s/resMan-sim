@@ -15,13 +15,13 @@ public class Elevator extends Room {
 		surface.setColor(Color.white);
 		if (s.new_room.name.equals("Elevator")) {
 			System.out.println("yep thats an eleavtor");
-			if (up == null && !s.room_overlap(x, y - sizey, x + s.new_room.sizex, y - sizey + s.new_room.sizey)) {
+			if (up == null && s.room_overlap(x, y - sizey, x + s.new_room.sizex, y - sizey + s.new_room.sizey) == null) {
 				draw_top_button(surface);
 			} else {
 				build_u.pause = true;
 			}
 
-			if (down == null && !s.room_overlap(x, y + sizey, x + s.new_room.sizex, y + sizey + s.new_room.sizey)) {
+			if (down == null && s.room_overlap(x, y + sizey, x + s.new_room.sizex, y + sizey + s.new_room.sizey) == null) {
 				draw_bottom_button(surface);
 			} else {
 				build_d.pause = true;
@@ -31,6 +31,25 @@ public class Elevator extends Room {
 			super.drawFreeAdjacents(surface);
 		}
 
+	}
+	
+	@Override 
+	public void check_adjacencies() {
+		super.check_adjacencies();
+		Room ovlp;
+		if (up == null && (ovlp = s.room_overlap(x, y - sizey, x, y)) != null) {
+			if (ovlp.type == "elevator") {
+				ovlp.down = this;
+				up = ovlp;
+			}
+		}
+
+		if (down == null && (ovlp = s.room_overlap(x,  y + sizey,  x + sizex, y + sizey*2)) != null) {
+			if (ovlp.type == "elevator") {
+				ovlp.up = this;
+				down = ovlp;
+			}
+		}
 	}
 
 }

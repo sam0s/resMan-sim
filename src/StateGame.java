@@ -206,13 +206,13 @@ public class StateGame extends BasicGameState {
 		return !(a_br_x <= b_tl_x || a_tl_x >= b_br_x) && !(a_br_y <= b_tl_y || a_tl_y >= b_br_y);
 	}
 
-	public boolean room_overlap(float b_tl_x, float b_tl_y, float b_br_x, float b_br_y) {
+	public Room room_overlap(float b_tl_x, float b_tl_y, float b_br_x, float b_br_y) {
 		for (Room a : rooms) {
 			if (overlaps(a.x, a.y, a.x + a.sizex, a.y + a.sizey, b_tl_x, b_tl_y, b_br_x, b_br_y)) {
-				return true;
+				return a;
 			}
 		}
-		return false;
+		return null;
 	}
 
 	public void enter_placement_mode(String type) throws NoSuchMethodException, SecurityException {

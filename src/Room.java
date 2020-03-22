@@ -18,6 +18,8 @@ public class Room {
 	float y;
 	String name;
 	int id = 0;
+	
+	String type;
 
 	Rectangle hitbox;
 	Vector<Entity> ents;
@@ -111,24 +113,28 @@ public class Room {
 			r.down = this;
 			r.x = x;
 			r.y = this.y - sizey;
+			r.check_adjacencies();
 			break;
 		case "down":
 			down = r;
 			r.up = this;
 			r.x = x;
 			r.y = this.y + sizey;
+			r.check_adjacencies();
 			break;
 		case "left":
 			left = r;
 			r.right = this;
 			r.x = this.x - r.sizex;
 			r.y = this.y;
+			r.check_adjacencies();
 			break;
 		case "right":
 			right = r;
 			r.left = this;
 			r.x = this.x + this.sizex;
 			r.y = this.y;
+			r.check_adjacencies();
 			break;
 		}
 		s.placed = true;
@@ -165,13 +171,13 @@ public class Room {
 	public void drawFreeAdjacents(Graphics surface) {
 		surface.setColor(Color.white);
 
-		if (left == null && !s.room_overlap(x - s.new_room.sizex, y, x, y + s.new_room.sizey)) {
+		if (left == null && s.room_overlap(x - s.new_room.sizex, y, x, y + s.new_room.sizey) == null) {
 			draw_left_button(surface);
 		} else {
 			build_l.pause = true;
 		}
 
-		if (right == null && !s.room_overlap(x + sizex, y, x + sizex + s.new_room.sizex, y + s.new_room.sizey)) {
+		if (right == null && s.room_overlap(x + sizex, y, x + sizex + s.new_room.sizex, y + s.new_room.sizey) == null) {
 			draw_right_button(surface);
 		} else {
 			build_r.pause = true;
@@ -193,6 +199,19 @@ public class Room {
 		
 		
 
+	}
+	
+	public void check_adjacencies() {
+		Room ovlp;
+		if (left == null && (ovlp = s.room_overlap(x - 10, y, x, y + sizey)) != null) {
+			ovlp.right = this;
+			left = ovlp;
+		}
+
+		if (right == null && (ovlp = s.room_overlap(x + sizex, y, x + sizex + 10, y + sizey)) != null) {
+			ovlp.left = this;
+			this.right = ovlp;
+		}
 	}
 
 }
