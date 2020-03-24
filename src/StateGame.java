@@ -18,15 +18,13 @@ public class StateGame extends BasicGameState {
 	public static String[] namesF = { "Stephanie", "Susan", "Patricia", "Kim", "Rachel", "Rebecca", "Alice", "Jackie", "Judy", "Heidi", "Skylar", "Anna", "Paige" };
 	public static String[] namesL = { "Rollins", "Howard", "Zalman", "Bell", "Newell", "Caiafa", "Finnegan", "Hall", "Howell", "Kernighan", "Wilson", "Ritchie" };
 	boolean dragging = false;
-	static Image bg, bg2;
+	static Image bg, bg2, power_room_image, water_room_image, elevator_room_image, food_room_image;
 	Input input;
 	MouseControls mc = new MouseControls(this);
 	KeyboardControls kc = new KeyboardControls(this);
 	java.awt.Font fontRaw = null;
 	public static Font f_32, f_18, f_24, f_16, f_14;
 	Random b = new Random();
-	public static Image power_room_image;
-	public static Image elevator_room_image;
 	Room new_room;
 
 	Entity grabbed;
@@ -146,6 +144,8 @@ public class StateGame extends BasicGameState {
 		bg2 = new Image("under.png");
 		power_room_image = new Image("gfx//room_power.png");
 		elevator_room_image = new Image("gfx//room_elevator.png");
+		water_room_image = new Image("gfx//room_water.png");
+		food_room_image = new Image("gfx//room_food.png");
 		init_fonts();
 
 		/* init containers */
@@ -221,8 +221,14 @@ public class StateGame extends BasicGameState {
 		case "power":
 			new_room = new PowerRoom(0, 0, this);
 			break;
+		case "water":
+			new_room = new WaterRoom(0, 0, this);
+			break;
 		case "elevator":
 			new_room = new Elevator(0, 0, this);
+			break;
+		case "food":
+			new_room = new FoodRoom(0, 0, this);
 			break;
 		default:
 			new_room = new PowerRoom(0, 0, this);

@@ -35,7 +35,7 @@ public class Game extends StateBasedGame {
 	public static final Color clear = new Color(0, 0, 0, 0);
 	public static final int win_pad = 4;
 	// major.minor(patch)
-	public static final double VERSION = 1.90;
+	public static final double VERSION = 2;
 
 	public void initStatesList(GameContainer gc) throws SlickException {
 		this.addState(new StateGame());
@@ -44,7 +44,7 @@ public class Game extends StateBasedGame {
 
 	public static void main(String[] args) {
 		try {
-			AppGameContainer app = new AppGameContainer(new Game("coomout_shelter indeb v" + VERSION));
+			AppGameContainer app = new AppGameContainer(new Game("resManSim v" + VERSION));
 			app.setDisplayMode(WIDTH, HEIGHT, false);
 			app.setFullscreen(false);
 			app.setTargetFrameRate(FPS);
