@@ -71,12 +71,20 @@ public class Entity {
 					}
 				}
 				if (tR.name.equals("Elevator")) {
+					if (vert < 0) {
+						tR = tR.up;
+					} else {
+						tR = tR.down;
+					}
 					q += pathHor(start, tR);
-					tR = tR.down;
 					tL = tR;
 				} else {
+					if (vert < 0) {
+						tL = tL.up;
+					} else {
+						tL = tL.down;
+					}
 					q += pathHor(start, tL);
-					tL = tL.down;
 					tR = tL;
 				}
 
