@@ -1,6 +1,5 @@
 import java.lang.reflect.InvocationTargetException;
 
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
@@ -11,7 +10,6 @@ import org.newdawn.slick.SlickException;
 public class EntityWindow extends Window {
 
 	Entity selected_ent;
-	StateGame s;
 
 	/* human items */
 	Container human;
@@ -23,8 +21,13 @@ public class EntityWindow extends Window {
 
 	/* independent buttons */
 	Button deselect;
+	Button move;
 
 	/* misc elements */
+
+	public void move() {
+		selected_ent.pathToRoom(selected_ent.curRoom, s.focused_room);
+	}
 
 	public EntityWindow(StateGame s) throws NoSuchMethodException, SecurityException, SlickException {
 		super(300, 350, 100, 100, Game.win_pad, Game.win_pad, 2, "NULL", s);
@@ -35,15 +38,15 @@ public class EntityWindow extends Window {
 
 		/* independent buttons */
 		deselect = new Button(sizex - padx * 2, win_font.getHeight("DESELECT"), 0, sizey - win_font.getHeight("DESELECT") - titlebar.sizey - pady * 2, 2, "DESELECT", win_font, fgetMethod("deselect"), this);
-
+		move = new Button(sizex - padx * 2, win_font.getHeight("move"), 0, deselect.y - win_font.getHeight("MOVE") - titlebar.sizey - pady * 2, 2, "move", win_font, fgetMethod("move"), this);
 		/* temporary */
-		add_container(human, deselect);
+		add_container(human, deselect, move);
 
 		for (Container c : containers) {
 			c.set_theme(Game.clear, Game.win_outer);
 		}
-		
-		this.hidden=true;
+
+		this.hidden = true;
 	}
 
 	public void build_human_cont() {
@@ -80,7 +83,7 @@ public class EntityWindow extends Window {
 	}
 
 	public void update(Input i, int mx, int my, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		
+
 		super.update(i, mx, my, delta);
 		update_human();
 	}

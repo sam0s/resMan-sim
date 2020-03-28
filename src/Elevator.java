@@ -32,20 +32,20 @@ public class Elevator extends Room {
 		}
 
 	}
-	
-	@Override 
+
+	@Override
 	public void check_adjacencies() {
 		super.check_adjacencies();
 		Room ovlp;
 		if (up == null && (ovlp = s.room_overlap(x, y - sizey, x, y)) != null) {
-			if (ovlp.type == "elevator") {
+			if (ovlp.name == "Elevator") {
 				ovlp.down = this;
 				up = ovlp;
 			}
 		}
 
-		if (down == null && (ovlp = s.room_overlap(x,  y + sizey,  x + sizex, y + sizey*2)) != null) {
-			if (ovlp.type == "elevator") {
+		if (down == null && (ovlp = s.room_overlap(x, y + sizey, x + sizex, y + sizey * 2)) != null) {
+			if (ovlp.name == "Elevator") {
 				ovlp.up = this;
 				down = ovlp;
 			}

@@ -1,4 +1,5 @@
 import java.lang.reflect.Method;
+import java.util.Vector;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
@@ -24,15 +25,13 @@ public class Entity {
 	public boolean moving = false;
 	public int roamDir = 1;
 	public int[] origin = { 16, 32 };
-	
-	
+
 	int hp;
 	int hp_max;
-	
+
 	boolean dead;
 	boolean destroy;
-	
-	
+
 	public Method fgetMethod(String methodName, Class... args) throws NoSuchMethodException, SecurityException {
 		return this.getClass().getMethod(methodName, args);
 	}
@@ -40,8 +39,8 @@ public class Entity {
 	public Entity(String name, int x, int y, boolean gender) throws NoSuchMethodException, SecurityException {
 		this.name = name;
 		this.x = x;
-		this.y = y;		
-		
+		this.y = y;
+
 		hp = 100;
 		hp_max = 1000;
 		dead = false;
@@ -50,6 +49,80 @@ public class Entity {
 
 	public void set_name(String name) {
 		this.name = name;
+	}
+
+	public void pathToRoom(Room start, Room r) {
+		String q = "";
+		int vert = 0;
+		if (start.level != r.level) {
+			vert = r.level - start.level;
+
+			Room tL = start;
+			Room tR = start;
+			System.out.println(tR.name);
+			while (vert != 0) {
+				while (tL.name.equals("Elevator") != true && tR.name.equals("Elevator") != true) {
+					if (tL.left != null) {
+						tL = tL.left;
+					}
+
+					if (tR.right != null) {      
+						tR = tR.right;
+					}
+				}
+				if (tR.name.equals("Elevator")) {
+					q += pathHor(start, tR);
+					tR = tR.down;
+					tL = tR;
+				} else {
+					q += pathHor(start, tL);
+					tL = tL.down;
+					tR = tL;
+				}
+
+				if (vert > 0) {
+					vert--;
+					q += "d ";
+				}
+				if (vert < 0) {
+					vert++;
+					q += "u ";
+				}
+			}
+			q += pathHor(tR, r);
+		} else {
+			q += pathHor(start, r);
+		}
+		System.out.println(q);
+	}
+
+	public String pathHor(Room start, Room r) {
+		String ret = "";
+		Room testL = start;
+		Room testR = start;
+		Vector<String> q = new Vector<String>();
+
+		int steps = 0;
+		while (testL != r && testR != r) {
+			steps++;
+			if (testL.left != null) {
+				testL = testL.left;
+			}
+
+			if (testR.right != null) {
+				testR = testR.right;
+			}
+		}
+		if (testR == r) {
+			for (int i = 0; i < steps; i++) {
+				ret += "r ";
+			}
+		} else {
+			for (int i = 0; i < steps; i++) {
+				ret += "l ";
+			}
+		}
+		return ret;
 	}
 
 	public void setRoom(Room r) {

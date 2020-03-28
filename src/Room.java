@@ -18,8 +18,7 @@ public class Room {
 	float y;
 	String name;
 	int id = 0;
-	
-	String type;
+	int level = 0;
 
 	Rectangle hitbox;
 	Vector<Entity> ents;
@@ -46,15 +45,9 @@ public class Room {
 		this.y = y;
 		this.s = s;
 		this.sprite = sprite;
-		// case "elevator":
-		// sizex = 80;
-		// sizey = 110;
-		// break;
-		// default:
 		this.sizex = sizex;
 		this.sizey = sizey;
-		// break;
-		// }
+
 		this.name = name;
 		hitbox = new Rectangle(x, y, sizex, sizey);
 		hitbox.setBounds(hitbox);
@@ -83,13 +76,13 @@ public class Room {
 		ents.addElement(e);
 	}
 
-	public void update(int delta) {
-		for (Entity e : ents) {
-			e.update(delta);
-		}
-	}
-
 	public void update(Input i, int mx, int my, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		if (mx >= x && mx <= x + sizex && my >= y && my <= y + sizey) {
+			if (i.isMousePressed(0)) {
+				s.focused_room = this;
+				System.out.printf("roomba\n");
+			}
+		}
 		if (s.mode == "room_place") {
 			build_u.set_args(s.new_room, "up");
 			build_d.set_args(s.new_room, "down");
@@ -113,6 +106,7 @@ public class Room {
 			r.down = this;
 			r.x = x;
 			r.y = this.y - sizey;
+			r.level = this.level - 1;
 			r.check_adjacencies();
 			break;
 		case "down":
@@ -120,6 +114,7 @@ public class Room {
 			r.up = this;
 			r.x = x;
 			r.y = this.y + sizey;
+			r.level = this.level + 1;
 			r.check_adjacencies();
 			break;
 		case "left":
@@ -127,6 +122,7 @@ public class Room {
 			r.right = this;
 			r.x = this.x - r.sizex;
 			r.y = this.y;
+			r.level = this.level;
 			r.check_adjacencies();
 			break;
 		case "right":
@@ -134,6 +130,7 @@ public class Room {
 			r.left = this;
 			r.x = this.x + this.sizex;
 			r.y = this.y;
+			r.level = this.level;
 			r.check_adjacencies();
 			break;
 		}
@@ -187,20 +184,24 @@ public class Room {
 
 	public void draw(Graphics surface) {
 
-		sprite.draw(x,y);
-		
+		sprite.draw(x, y);
 		surface.setColor(Color.red);
+		if (s.focused_room == this) {
+			surface.setColor(Color.cyan);
+		}
 		surface.setLineWidth(2);
 		surface.drawRect(x, y, hitbox.getWidth(), hitbox.getHeight());
-		
+
 		for (Entity e : ents) {
 			e.draw(surface);
 		}
-		
-		
+
+		surface.setFont(StateGame.f_14);
+		surface.setColor(Color.cyan);
+		surface.drawString("" + level, x + 2, y + 2);
 
 	}
-	
+
 	public void check_adjacencies() {
 		Room ovlp;
 		if (left == null && (ovlp = s.room_overlap(x - 10, y, x, y + sizey)) != null) {

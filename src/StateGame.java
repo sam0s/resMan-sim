@@ -38,6 +38,7 @@ public class StateGame extends BasicGameState {
 	BuildingSelectWindow rwin;
 	ControlWindow cwin;
 	Window focused_win;
+	Room focused_room;
 	MenuBar menu;
 	String mode;
 

@@ -24,10 +24,13 @@ public class Game extends StateBasedGame {
 	public static final boolean FEMALE = false;
 	
 	// Application Properties
-	//public static final int WIDTH = (int) ss.getWidth();
-	//public static final int HEIGHT = (int) ss.getHeight();
+	
 	public static final int WIDTH = 1280;
 	public static final int HEIGHT = 720;
+	
+	//public static final int WIDTH = (int) ss.getWidth();
+	//public static final int HEIGHT = (int) ss.getHeight();
+	
 	public static final int MENU_BAR_HEIGHT = 68;
 	public static final int FPS = 1200;
 	public static final Color win_inner = new Color(40, 40, 40, 225);
@@ -47,6 +50,7 @@ public class Game extends StateBasedGame {
 			AppGameContainer app = new AppGameContainer(new Game("resManSim v" + VERSION));
 			app.setDisplayMode(WIDTH, HEIGHT, false);
 			app.setFullscreen(false);
+			//app.setFullscreen(true);
 			app.setTargetFrameRate(FPS);
 			app.setShowFPS(true);
 			app.setUpdateOnlyWhenVisible(false);
