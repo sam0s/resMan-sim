@@ -55,39 +55,52 @@ public class Entity {
 	public void pathToRoom(Room start, Room r) {
 		String y = find(start, r, "");
 		System.out.println("PATH: " + y);
-		visited = new Vector<Room>();
 	}
 
 	public String find(Room start, Room r, String path) {
-		String dirs[] = new String[4];
+		visited = new Vector<Room>();
+		visited.add(start);
+
+		if (start.right != null) {
+			path = findpath(start.right, r, path + "r ");
+		}
+
+		visited = new Vector<Room>();
+		visited.add(start);
+
+		if (start.left != null && path.length() < 1) {
+			path = findpath(start.left, r, path + "l ");
+		}
+
+		return path;
+
+	}
+
+	public String findpath(Room start, Room r, String path) {
+		String t = "";
 		visited.add(start);
 		if (start == r) {
-			return path;
-		}
+			t = path;
+		} else {
 
-		if (start.right != null && !visited.contains(start.right)) {
-			dirs[0] =  "" + find(start.right, r, path + "r ");
-		}
+			if (start.right != null && !visited.contains(start.right)) {
+				t += findpath(start.right, r, path + "r ");
+			}
 
-		if (start.up != null && !visited.contains(start.up)) {
-			dirs[1] =  "" + find(start.up, r, path + "u ");
-		}
+			if (start.up != null && !visited.contains(start.up)) {
+				t += findpath(start.up, r, path + "u ");
+			}
 
-		if (start.left != null && !visited.contains(start.left)) {
-			dirs[2] = "" + find(start.left, r, path + "l ");
-		}
+			if (start.left != null && !visited.contains(start.left)) {
+				t += findpath(start.left, r, path + "l ");
+			}
 
-		if (start.down != null && !visited.contains(start.down)) {
-			dirs[3] = "" + find(start.down, r, path + "d ");
-		}
-		
-		for (int i = 0; i < 4; i++) {
-			if (dirs[i] != null && dirs[i] != "") {
-				return dirs[i];
+			if (start.down != null && !visited.contains(start.down)) {
+				t += findpath(start.down, r, path + "d ");
 			}
 		}
-		
-		return "";
+
+		return t;
 
 	}
 
