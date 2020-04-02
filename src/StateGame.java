@@ -33,6 +33,8 @@ public class StateGame extends BasicGameState {
 
 	Vector<Room> rooms = new Vector<Room>();
 	Vector<Entity> guys = new Vector<Entity>();
+	
+	Resources resources;
 
 	EntityWindow ewin;
 	BuildingSelectWindow rwin;
@@ -174,6 +176,8 @@ public class StateGame extends BasicGameState {
 			e.printStackTrace();
 
 		}
+		
+		resources = new Resources(this);
 
 		set_window_focus(ewin);
 	}

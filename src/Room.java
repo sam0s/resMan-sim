@@ -16,7 +16,7 @@ public class Room {
 	int sizey;
 	float x;
 	float y;
-	String name;
+	String type;
 	int id = 0;
 	int level = 0;
 
@@ -40,7 +40,7 @@ public class Room {
 		return this.getClass().getMethod(methodName, args);
 	}
 
-	public Room(float x, float y, int sizex, int sizey, String name, Image sprite, StateGame s) throws NoSuchMethodException, SecurityException {
+	public Room(float x, float y, int sizex, int sizey, String type, Image sprite, StateGame s) throws NoSuchMethodException, SecurityException {
 		this.x = x;
 		this.y = y;
 		this.s = s;
@@ -48,7 +48,7 @@ public class Room {
 		this.sizex = sizex;
 		this.sizey = sizey;
 
-		this.name = name;
+		this.type = type;
 		hitbox = new Rectangle(x, y, sizex, sizey);
 		hitbox.setBounds(hitbox);
 		this.ents = new Vector<Entity>();

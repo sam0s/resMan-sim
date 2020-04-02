@@ -13,7 +13,7 @@ public class Elevator extends Room {
 	@Override
 	public void drawFreeAdjacents(Graphics surface) {
 		surface.setColor(Color.white);
-		if (s.new_room.name.equals("Elevator")) {
+		if (s.new_room.type.equals("Elevator")) {
 			System.out.println("yep thats an eleavtor");
 			if (up == null && s.room_overlap(x, y - sizey, x + s.new_room.sizex, y - sizey + s.new_room.sizey) == null) {
 				draw_top_button(surface);
@@ -38,14 +38,14 @@ public class Elevator extends Room {
 		super.check_adjacencies();
 		Room ovlp;
 		if (up == null && (ovlp = s.room_overlap(x, y - sizey, x, y)) != null) {
-			if (ovlp.name == "Elevator") {
+			if (ovlp.type == "Elevator") {
 				ovlp.down = this;
 				up = ovlp;
 			}
 		}
 
 		if (down == null && (ovlp = s.room_overlap(x, y + sizey, x + sizex, y + sizey * 2)) != null) {
-			if (ovlp.name == "Elevator") {
+			if (ovlp.type == "Elevator") {
 				ovlp.up = this;
 				down = ovlp;
 			}

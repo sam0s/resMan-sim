@@ -13,7 +13,9 @@ public class Resources {
 	
 	Vector<Human> staff_list;
 	
-	public Resources() {
+	StateGame s;
+	
+	public Resources(StateGame s) {
 		this.power_store = 0;
 		this.food_store = 0;
 		this.water_store = 0;
@@ -23,6 +25,8 @@ public class Resources {
 		this.staff = 0;
 		
 		this.staff_list = new Vector<Human>();
+		
+		this.s = s;
 	}
 	
 	public void update(int delta) {
