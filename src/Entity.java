@@ -25,6 +25,7 @@ public class Entity {
 	public boolean moving = false;
 	public int roamDir = 1;
 	public int[] origin = { 16, 32 };
+	Vector<Room> visited = new Vector<Room>();
 
 	int hp;
 	int hp_max;
@@ -52,66 +53,48 @@ public class Entity {
 	}
 
 	public void pathToRoom(Room start, Room r) {
-		String q = "";
-		int vert = 0;
-		if (start.level != r.level) {
-			vert = r.level - start.level;
+		String y = find(start, r, "");
+		System.out.println("PATH: " + y);
+		visited = new Vector<Room>();
+	}
 
-			Room tL = start;
-			Room tR = start;
-			System.out.println(tR.name);
-			while (vert != 0) {
-				while (tL.name.equals("Elevator") != true && tR.name.equals("Elevator") != true) {
-					if (tL.left != null) {
-						tL = tL.left;
-					}
-
-					if (tR.right != null) {      
-						tR = tR.right;
-					}
-				}
-				if (tR.name.equals("Elevator")) {
-					if (vert < 0) {
-						tR = tR.up;
-					} else {
-						tR = tR.down;
-					}
-					q += pathHor(start, tR);
-					tL = tR;
-				} else {
-					if (vert < 0) {
-						tL = tL.up;
-					} else {
-						tL = tL.down;
-					}
-					q += pathHor(start, tL);
-					tR = tL;
-				}
-
-				if (vert > 0) {
-					vert--;
-					q += "d ";
-				}
-				if (vert < 0) {
-					vert++;
-					q += "u ";
-				}
-			}
-			q += pathHor(tR, r);
-		} else {
-			q += pathHor(start, r);
+	public String find(Room start, Room r, String path) {
+		visited.add(start);
+		if (start == r) {
+			return path;
 		}
-		System.out.println(q);
+
+		if (start.right != null && !visited.contains(start.right)) {
+			return "" + find(start.right, r, path + "r ");
+		}
+
+		if (start.up != null && !visited.contains(start.up)) {
+			return "" + find(start.up, r, path + "u ");
+		}
+
+		if (start.left != null && !visited.contains(start.left)) {
+			return "" + find(start.left, r, path + "l ");
+		}
+
+		if (start.down != null && !visited.contains(start.down)) {
+			return "" + find(start.down, r, path + "d ");
+		}
+
+		return "";
+
 	}
 
 	public String pathHor(Room start, Room r) {
 		String ret = "";
+		System.out.println(start.name);
+		System.out.println(r.name);
 		Room testL = start;
 		Room testR = start;
 		Vector<String> q = new Vector<String>();
 
 		int steps = 0;
 		while (testL != r && testR != r) {
+			// System.out.println("steps = " + steps);
 			steps++;
 			if (testL.left != null) {
 				testL = testL.left;
@@ -120,14 +103,19 @@ public class Entity {
 			if (testR.right != null) {
 				testR = testR.right;
 			}
+			if (steps > 5000) {
+				break;
+			}
 		}
 		if (testR == r) {
 			for (int i = 0; i < steps; i++) {
 				ret += "r ";
+				System.out.println("right");
 			}
 		} else {
 			for (int i = 0; i < steps; i++) {
 				ret += "l ";
+				System.out.println("left");
 			}
 		}
 		return ret;
