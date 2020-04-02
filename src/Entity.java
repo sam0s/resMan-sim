@@ -59,27 +59,34 @@ public class Entity {
 	}
 
 	public String find(Room start, Room r, String path) {
+		String dirs[] = new String[4];
 		visited.add(start);
 		if (start == r) {
 			return path;
 		}
 
 		if (start.right != null && !visited.contains(start.right)) {
-			return "" + find(start.right, r, path + "r ");
+			dirs[0] =  "" + find(start.right, r, path + "r ");
 		}
 
 		if (start.up != null && !visited.contains(start.up)) {
-			return "" + find(start.up, r, path + "u ");
+			dirs[1] =  "" + find(start.up, r, path + "u ");
 		}
 
 		if (start.left != null && !visited.contains(start.left)) {
-			return "" + find(start.left, r, path + "l ");
+			dirs[2] = "" + find(start.left, r, path + "l ");
 		}
 
 		if (start.down != null && !visited.contains(start.down)) {
-			return "" + find(start.down, r, path + "d ");
+			dirs[3] = "" + find(start.down, r, path + "d ");
 		}
-
+		
+		for (int i = 0; i < 4; i++) {
+			if (dirs[i] != null && dirs[i] != "") {
+				return dirs[i];
+			}
+		}
+		
 		return "";
 
 	}
