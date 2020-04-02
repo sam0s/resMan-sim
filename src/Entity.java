@@ -53,26 +53,40 @@ public class Entity {
 	}
 
 	public void pathToRoom(Room start, Room r) {
-		String y = find(start, r, "");
+		String y = find(start, r);
 		System.out.println("PATH: " + y);
 	}
 
-	public String find(Room start, Room r, String path) {
+	public String find(Room start, Room r) {
+		String pathL = "";
+		String pathR = "";
 		visited = new Vector<Room>();
 		visited.add(start);
 
 		if (start.right != null) {
-			path = findpath(start.right, r, path + "r ");
+			pathR = findpath(start.right, r, "r ");
 		}
 
 		visited = new Vector<Room>();
 		visited.add(start);
 
-		if (start.left != null && path.length() < 1) {
-			path = findpath(start.left, r, path + "l ");
+		if (start.left != null) {
+			pathL = findpath(start.left, r, "l ");
 		}
 
-		return path;
+		System.out.println("L dist " + pathL.length());
+		System.out.println("R dist " + pathR.length());
+
+		if (pathL.equals("") == false && pathR.equals("") == false) {
+			if (pathR.length() == pathL.length()) {
+				// prefer to move the RIGHT way
+				return pathR;
+			}
+			// choose the road most traveled
+			return (pathL.length() < pathR.length()) ? pathL : pathR;
+		}
+
+		return (pathR.equals("")) ? pathL : pathR;
 
 	}
 
@@ -102,43 +116,6 @@ public class Entity {
 
 		return t;
 
-	}
-
-	public String pathHor(Room start, Room r) {
-		String ret = "";
-		System.out.println(start.name);
-		System.out.println(r.name);
-		Room testL = start;
-		Room testR = start;
-		Vector<String> q = new Vector<String>();
-
-		int steps = 0;
-		while (testL != r && testR != r) {
-			// System.out.println("steps = " + steps);
-			steps++;
-			if (testL.left != null) {
-				testL = testL.left;
-			}
-
-			if (testR.right != null) {
-				testR = testR.right;
-			}
-			if (steps > 5000) {
-				break;
-			}
-		}
-		if (testR == r) {
-			for (int i = 0; i < steps; i++) {
-				ret += "r ";
-				System.out.println("right");
-			}
-		} else {
-			for (int i = 0; i < steps; i++) {
-				ret += "l ";
-				System.out.println("left");
-			}
-		}
-		return ret;
 	}
 
 	public void setRoom(Room r) {
