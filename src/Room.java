@@ -76,7 +76,7 @@ public class Room {
 	}
 
 	public void add_entity(Entity e) {
-		e.curRoom = this;
+		e.setRoom(this);
 		ents.addElement(e);
 	}
 
