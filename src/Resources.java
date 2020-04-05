@@ -1,7 +1,10 @@
 import java.util.Vector;
 
 public class Resources {
-	float power_store; /* MWe */
+	float power_store; /* MW */
+	float power_store_max;
+	float power_prod; /* MW/hr */
+	float power_use; /* MW/hr */
 	float food_store; /* tons */
 	float water_store; /* liters */
 	float money; /* TBD */
@@ -19,6 +22,9 @@ public class Resources {
 	
 	public Resources(StateGame s) {
 		this.power_store = 0;
+		this.power_store_max = 10;
+		this.power_prod = 0;
+		this.power_use = 0;
 		this.food_store = 0;
 		this.water_store = 0;
 		this.n_staff = 0;
@@ -35,6 +41,18 @@ public class Resources {
 		for (Human s : staff_list) {
 			s.update(delta);
 		}
+		
+		power_store += net_power();
+		if (power_store < 0) {
+			power_store = 0;
+		}
+		if (power_store > power_store_max) {
+			power_store = power_store_max;
+		}
+	}
+	
+	public float net_power() {
+		return power_prod - power_use;
 	}
 	
 	public void add_staff(Human staff) {

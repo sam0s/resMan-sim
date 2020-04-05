@@ -101,7 +101,7 @@ public class ControlWindow extends Window {
 		if (mom != null && dad != null) {
 			Human child = mom.create_offspring(dad);
 			mom.curRoom.add_entity(child);
-			s.guys.addElement(child);
+			s.resources.add_staff(child);
 		} else {
 			s.add_dialog("mom and dad must be selected");
 		}
