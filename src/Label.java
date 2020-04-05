@@ -20,11 +20,11 @@ public class Label extends Container {
 
 	public void set_text(String text) {
 		this.text = text;
+		set_size(f.getWidth(text) + padx * 2, f.getHeight(text) + pady * 2);
 	}
 
 	public void update(Input i, int mx, int my, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		super.update(i, mx, my, delta);
-		set_size(f.getWidth(text) + padx * 2, f.getHeight(text) + pady * 2);
 		for (Container c : containers) {
 			c.update(i, mx, my, delta);
 		}
