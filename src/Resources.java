@@ -2,9 +2,9 @@ import java.util.Vector;
 
 public class Resources {
 	float power_store; /* MW */
-	float power_store_max;
-	float power_prod; /* MW/hr */
-	float power_use; /* MW/hr */
+	float power_store_max; /* MWh */
+	float power_prod; /* MW */
+	float power_use; /* MW */
 	float food_store; /* tons */
 	float water_store; /* liters */
 	float money; /* TBD */

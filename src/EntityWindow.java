@@ -33,7 +33,8 @@ public class EntityWindow extends Window {
 		super(300, 350, 100, 100, Game.win_pad, Game.win_pad, 2, "NULL", s);
 
 		this.selected_ent = null;
-
+		this.s = s;
+		
 		build_human_cont();
 
 		/* independent buttons */
@@ -52,7 +53,7 @@ public class EntityWindow extends Window {
 	public void build_human_cont() {
 		/* hp */
 		Label hp = new Label(0, 0, 0, 0, 0, "HP  ", s.f_18);
-		hp_bar = new HorzBarGraph(100, hp.sizey, hp.sizex + padx, 0, 2);
+		hp_bar = new HorzBarGraph(100, hp.sizey, hp.sizex + padx, 0, 2, s.f_18);
 		Container hp_cont = new Container((int) hp_bar.relx + hp_bar.sizex, hp.sizey, 0, 0, 0, 0, 0);
 		hp_cont.add_container(hp, hp_bar);
 

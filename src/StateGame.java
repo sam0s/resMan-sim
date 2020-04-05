@@ -41,6 +41,7 @@ public class StateGame extends BasicGameState {
 	Window focused_win;
 	Room focused_room;
 	MenuBar menu;
+	InfoDisp info;
 	String mode;
 
 	int vp_x = 0;
@@ -156,6 +157,8 @@ public class StateGame extends BasicGameState {
 			add_person(rooms.firstElement());
 			menu = new MenuBar();
 			ui.addElement(menu);
+			info = new InfoDisp(resources, this);
+			ui.addElement(info);
 			cwin = new ControlWindow(400, 100, 0, 0, 4, 4, 2, f_24, this);
 			ui.addElement(cwin);
 			ewin = new EntityWindow(this);
