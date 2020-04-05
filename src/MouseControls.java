@@ -43,7 +43,7 @@ public class MouseControls implements MouseListener {
 	@Override
 	public void mouseClicked(int arg0, int arg1, int arg2, int arg3) {
 		/* check if mouse is over entity */
-		for (Entity e : s.guys) {
+		for (Entity e : s.resources.staff_list) {
 			if (e.isClicked(s.mousex_rel, s.mousey_rel)) {
 				if (s.ewin.hidden) {
 					s.ewin.show();

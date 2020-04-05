@@ -32,7 +32,6 @@ public class StateGame extends BasicGameState {
 	Vector<Container> ui = new Vector<Container>();
 
 	Vector<Room> rooms = new Vector<Room>();
-	Vector<Entity> guys = new Vector<Entity>();
 	
 	Resources resources;
 
@@ -96,16 +95,13 @@ public class StateGame extends BasicGameState {
 
 	// change form of (add_guy) to be more progressive!
 	public void add_person(Room r) throws SlickException, NoSuchMethodException, SecurityException {
-		Entity e = new Human((int) r.x, (int) r.y);
+		Human e = new Human((int) r.x, (int) r.y);
 		r.add_entity(e);
-		guys.addElement(e);
+		resources.add_staff(e);
 	}
 
 	public void kill_all() throws NoSuchMethodException, SecurityException {
-		for (Entity e : guys) {
-			e.curRoom.ents.removeAllElements();
-		}
-		guys.removeAllElements();
+		resources.remove_all_staff();
 		// ewin.deselect_entity();
 		cwin.sel_person = null;
 		cwin.clear_parents();
@@ -150,6 +146,8 @@ public class StateGame extends BasicGameState {
 		water_room_image = new Image("gfx//room_water.png");
 		food_room_image = new Image("gfx//room_food.png");
 		init_fonts();
+		
+		resources = new Resources(this);
 
 		/* init containers */
 
@@ -176,9 +174,7 @@ public class StateGame extends BasicGameState {
 			e.printStackTrace();
 
 		}
-		
-		resources = new Resources(this);
-
+	
 		set_window_focus(ewin);
 	}
 
@@ -333,10 +329,8 @@ public class StateGame extends BasicGameState {
 			}
 		}
 
-		for (Entity e : guys) {
-			e.update(delta);
-		}
-
+		resources.update(delta);
+		
 		// drag guy if he is grabbed
 		if (grabbed != null) {
 			grabbed.x = mousex_rel;
@@ -375,7 +369,7 @@ public class StateGame extends BasicGameState {
 
 		if (debug_info) {
 			f_32.drawString(32, menu.sizey, String.format("(%d, %d), vp: (%d %d) %dx%d [%f], mr: (%d, %d)", input.getMouseX(), input.getMouseY(), vp_x, vp_y, vp_w, vp_h, vp_zoom_scale, mousex_rel, mousey_rel), Color.red);
-			f_32.drawString(32, menu.sizey + 32, String.format("pop: %d, rms: %d", guys.size(), rooms.size()), Color.red);
+			f_32.drawString(32, menu.sizey + 32, String.format("pop: %d, rms: %d", resources.n_staff, rooms.size()), Color.red);
 		}
 
 		for (Container cont : ui) {

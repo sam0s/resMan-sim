@@ -32,7 +32,9 @@ public class Resources {
 	}
 	
 	public void update(int delta) {
-		
+		for (Human s : staff_list) {
+			s.update(delta);
+		}
 	}
 	
 	public void add_staff(Human staff) {
@@ -43,5 +45,13 @@ public class Resources {
 	public void remove_staff(Human staff) {
 		staff_list.remove(staff);
 		n_staff--;
+	}
+	
+	public void remove_all_staff() {
+		for (Human s : staff_list) {
+			s.curRoom.ents.removeElement(s);
+		}
+		staff_list.removeAllElements();
+		n_staff = 0;
 	}
 }
