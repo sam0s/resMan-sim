@@ -26,10 +26,10 @@ public class Entity {
 	public int roamDir = 1;
 	public int[] origin = { 16, 32 };
 	Vector<Room> visited = new Vector<Room>();
-
+	String cur_path = "";
 	int hp;
 	int hp_max;
-
+	int speed = 100;
 	boolean dead;
 	boolean destroy;
 
@@ -53,13 +53,9 @@ public class Entity {
 	}
 
 	public void pathToRoom(Room start, Room r) {
-		String y = find(start, r);
-		System.out.println("PATH: " + y);
-	}
-
-	public String find(Room start, Room r) {
 		String pathL = "";
 		String pathR = "";
+		String y = "";
 		visited = new Vector<Room>();
 		visited.add(start);
 
@@ -74,19 +70,20 @@ public class Entity {
 			pathL = findpath(start.left, r, "l ");
 		}
 
-		System.out.println("L dist " + pathL.length());
-		System.out.println("R dist " + pathR.length());
-
+		// System.out.println("L dist " + pathL.length());
+		// System.out.println("R dist " + pathR.length());
+		y = (pathR.equals("")) ? pathL : pathR;
 		if (pathL.equals("") == false && pathR.equals("") == false) {
 			if (pathR.length() == pathL.length()) {
 				// prefer to move the RIGHT way
-				return pathR;
+				y = pathR;
 			}
 			// choose the road most traveled
-			return (pathL.length() < pathR.length()) ? pathL : pathR;
+			y = (pathL.length() < pathR.length()) ? pathL : pathR;
 		}
-
-		return (pathR.equals("")) ? pathL : pathR;
+		y = y.replaceAll("\\s", "");
+		cur_path = "" + y;
+		System.out.println("PATH: " + y);
 
 	}
 
@@ -118,12 +115,6 @@ public class Entity {
 
 	}
 
-	public void setRoom(Room r) {
-		curRoom = r;
-		x = r.x;
-		y = r.y + r.sizey - sprite.getHeight() * sizey;
-	}
-
 	public void setSize(float size) {
 		this.sizey = size;
 	}
@@ -141,16 +132,66 @@ public class Entity {
 		return ((mx > x && mx < x + hitbox.getWidth()) && (my > y && my < y + hitbox.getHeight()));
 	}
 
+	public void setRoom(Room r) {
+		curRoom = r;
+		x = r.x;
+		y = r.y + r.sizey - sprite.getHeight() * sizey;
+	}
+
+	public void moveToRoom(Room r, int left) {
+		Room lastRoom = curRoom;
+		curRoom = r;
+		curRoom.add_entity(this);
+		lastRoom.clearOldEnts();
+		x = r.x;
+		if (left == 1) {
+			System.out.println("leftit");
+			x = r.x + r.sizex - this.sizex;
+		}
+		y = r.y + r.sizey - sprite.getHeight() * sizey;
+
+	}
+
+	public void move(int delta) {
+		switch (cur_path.charAt(0)) {
+		case 'r':
+			x += speed * (delta / 1000f);
+			// System.out.printf("moving right.. ");
+			if (x >= curRoom.x + curRoom.sizex) {
+				cur_path = cur_path.substring(1);
+				moveToRoom(curRoom.right, 0);
+			}
+			break;
+		case 'l':
+			x -= speed * (delta / 1000f);
+			// System.out.printf("moving right.. ");
+			if (x <= curRoom.x) {
+				cur_path = cur_path.substring(1);
+				moveToRoom(curRoom.left, 1);
+			}
+			break;
+		case 'u':
+			cur_path = cur_path.substring(1);
+			moveToRoom(curRoom.up, 0);
+			break;
+		case 'd':
+			cur_path = cur_path.substring(1);
+			moveToRoom(curRoom.down, 0);
+			break;
+
+		}
+	}
+
 	public void roam(int delta) {
 		if (roamDir == 1) {
-			x += 40 * (delta / 1000f);
+			x += speed * (delta / 1000f);
 			if (x + sprite.getWidth() * sizex >= curRoom.x + curRoom.sizex) {
 				roamDir = 0;
 				sizex = -1;
 				return;
 			}
 		} else {
-			x -= 40 * (delta / 1000f);
+			x -= speed * (delta / 1000f);
 			if (x <= curRoom.x) {
 				sizex = 1;
 				roamDir = 1;
@@ -168,7 +209,11 @@ public class Entity {
 	}
 
 	public void update(int delta) {
-		roam(delta);
+		if (cur_path.equals("")) {
+			roam(delta);
+		} else {
+			move(delta);
+		}
 		if (hp <= 0) {
 			dead = true;
 			destroy = true;

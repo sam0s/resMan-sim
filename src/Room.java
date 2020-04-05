@@ -40,6 +40,10 @@ public class Room {
 		return this.getClass().getMethod(methodName, args);
 	}
 
+	public void clearOldEnts() {
+		ents.removeIf(n -> (n.curRoom != this));
+	}
+
 	public Room(float x, float y, int sizex, int sizey, String type, Image sprite, StateGame s) throws NoSuchMethodException, SecurityException {
 		this.x = x;
 		this.y = y;
@@ -72,7 +76,7 @@ public class Room {
 	}
 
 	public void add_entity(Entity e) {
-		e.setRoom(this);
+		e.curRoom = this;
 		ents.addElement(e);
 	}
 
