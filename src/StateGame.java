@@ -370,6 +370,8 @@ public class StateGame extends BasicGameState {
 		if (debug_info) {
 			f_32.drawString(32, menu.sizey, String.format("(%d, %d), vp: (%d %d) %dx%d [%f], mr: (%d, %d)", input.getMouseX(), input.getMouseY(), vp_x, vp_y, vp_w, vp_h, vp_zoom_scale, mousex_rel, mousey_rel), Color.red);
 			f_32.drawString(32, menu.sizey + 32, String.format("pop: %d, rms: %d", resources.n_staff, rooms.size()), Color.red);
+			f_32.drawString(32, menu.sizey + 64,  String.format("power_use %.3f, power_prod %.3f, pow_net %.4f, pow_store %.3f", resources.power_use, resources.power_prod, resources.net_power(), resources.power_store), Color.red);
+			f_32.drawString(32, menu.sizey + 96, String.format("water_store %.3f, food_store %.3f", resources.water_store, resources.food_store), Color.red);
 		}
 
 		for (Container cont : ui) {

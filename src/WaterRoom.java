@@ -8,7 +8,7 @@ public class WaterRoom extends ProductionRoom {
 		this.prod_rate = 10; // liters/hr 
 		this.level = 0;
 		
-		s.resources.power_use += 0.10f;
+		s.resources.power_use += 0.25f;
 	}
 	
 	public void update(Input i, int mx, int my, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {

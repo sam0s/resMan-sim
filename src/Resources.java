@@ -42,7 +42,7 @@ public class Resources {
 			s.update(delta);
 		}
 		
-		power_store += net_power();
+		power_store += (net_power()/360)*(delta/1000f);
 		if (power_store < 0) {
 			power_store = 0;
 		}

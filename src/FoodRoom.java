@@ -8,7 +8,7 @@ public class FoodRoom extends ProductionRoom {
 		this.prod_rate = 0.01f; // tons/hr
 		this.level = 0;
 		
-		s.resources.power_use += 0.10f;
+		s.resources.power_use += 0.25f;
 	}
 	
 	public void update(Input i, int mx, int my, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
