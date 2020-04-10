@@ -203,6 +203,7 @@ public class Room {
 		surface.setFont(StateGame.f_14);
 		surface.setColor(Color.cyan);
 		surface.drawString("" + level, x + 2, y + 2);
+		surface.drawString("      pop: " + ents.size(), x + 2, y + 2);
 
 	}
 

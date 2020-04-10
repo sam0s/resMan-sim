@@ -32,7 +32,7 @@ public class Game extends StateBasedGame {
 	//public static final int HEIGHT = (int) ss.getHeight();
 	
 	public static final int MENU_BAR_HEIGHT = 68;
-	public static final int FPS = 1200;
+	public static final int FPS = 60;
 	public static final Color win_inner = new Color(40, 40, 40, 225);
 	public static final Color win_outer = Color.orange;
 	public static final Color clear = new Color(0, 0, 0, 0);

@@ -34,7 +34,7 @@ public class EntityWindow extends Window {
 
 		this.selected_ent = null;
 		this.s = s;
-		
+
 		build_human_cont();
 
 		/* independent buttons */

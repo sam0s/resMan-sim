@@ -13,7 +13,7 @@ import org.newdawn.slick.geom.Rectangle;
 public class Entity {
 	public String name;
 	// /public Image sprite;
-	public Animation sprite;
+	public Image sprite;
 	public int level;
 	public int id;
 	public float sizex = 1;
@@ -32,6 +32,12 @@ public class Entity {
 	int speed = 100;
 	boolean dead;
 	boolean destroy;
+	Image arm;
+	Image leg;
+	Image body;
+	Image head;
+	Limb leg_left;
+	Limb leg_right;
 
 	public Method fgetMethod(String methodName, Class... args) throws NoSuchMethodException, SecurityException {
 		return this.getClass().getMethod(methodName, args);
@@ -184,14 +190,14 @@ public class Entity {
 
 	public void roam(int delta) {
 		if (roamDir == 1) {
-			x += speed * (delta / 1000f);
+			x += speed / 2 * (delta / 1000f);
 			if (x + sprite.getWidth() * sizex >= curRoom.x + curRoom.sizex) {
 				roamDir = 0;
 				sizex = -1;
 				return;
 			}
 		} else {
-			x -= speed * (delta / 1000f);
+			x -= speed / 2 * (delta / 1000f);
 			if (x <= curRoom.x) {
 				sizex = 1;
 				roamDir = 1;
@@ -200,12 +206,25 @@ public class Entity {
 		}
 	}
 
-	public void setSpriteLoad(SpriteSheet spr) throws SlickException {
+	public void setSpriteLoad(String spr_name) throws SlickException {
 		// later make this a list accessible by the class;
-		sprite = new Animation(spr, spr.getHorizontalCount());
-		sprite.setSpeed(0.5f);
+		arm = new Image("gfx\\charAttributes\\" + spr_name + "\\arm_" + spr_name + ".png");
+		head = new Image("gfx\\charAttributes\\" + spr_name + "\\head_" + spr_name + ".png");
+		leg = new Image("gfx\\charAttributes\\" + spr_name + "\\leg_" + spr_name + ".png");
+		leg_left = new Limb(leg);
+		Image b = leg.copy();
+		b.setImageColor(60, 60, 60);
+		leg_right = new Limb(b);
+
+		leg_left.set_rot(new float[] { -30, 0, 30, 0 });
+		leg_right.set_rot(new float[] { 30, 0, -30, 0 });
+
+		body = new Image("gfx\\charAttributes\\" + spr_name + "\\body_" + spr_name + ".png");
+		sprite = body;
+		// sprite = new Animation(spr, spr.getHorizontalCount());
+		// sprite.setSpeed(0.5f);
 		hitbox = new Rectangle(x, y, sprite.getWidth(), sprite.getHeight());
-		hitbox.setBounds(hitbox);
+		// hitbox.setBounds(hitbox);
 	}
 
 	public void update(int delta) {
@@ -221,7 +240,14 @@ public class Entity {
 	}
 
 	public void draw(Graphics surface) {
-		sprite.draw(x - sizex * origin[0] + origin[0], y - sizey * origin[1] + origin[1], sprite.getWidth() * sizex, sprite.getHeight() * sizey);
+		// leg.draw(x, y);
+		leg_right.draw(x, y);
+		leg_left.draw(x, y);
+		body.draw(x, y);
+		arm.draw(x, y);
+		head.draw(x, y);
+		// sprite.draw(x - sizex * origin[0] + origin[0], y - sizey * origin[1]
+		// + origin[1], sprite.getWidth() * sizex, sprite.getHeight() * sizey);
 		surface.setColor(Color.red);
 		surface.setLineWidth(2);
 		surface.drawRect(x, y, hitbox.getWidth(), hitbox.getHeight());
