@@ -1,6 +1,7 @@
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
+
 import java.util.Random;
 
 public class Human extends Entity {
@@ -27,6 +28,26 @@ public class Human extends Entity {
 
 	boolean dead;
 
+	public void animation_idle() {
+		System.out.println("whoakay");
+		animation_clear();
+		limbs[3].set_origin(13, 18);
+		limbs[3].set_rot(new float[] { -3, 3 });
+		limbs[3].set_speed(15);
+		limbs[0].rot_to(-10);
+		limbs[1].rot_to(10);
+	}
+
+	public void animation_walk() {
+		System.out.println("walkin");
+		animation_clear();
+		limbs[3].set_origin(13, 18);
+		limbs[3].set_rot(new float[] { -30, 30 });
+		limbs[3].set_speed(100);
+		limbs[0].set_rot(new float[] { 30, -30 });
+		limbs[1].set_rot(new float[] { -30, 30 });
+	}
+
 	public Human(int x, int y) throws SlickException, NoSuchMethodException, SecurityException {
 		super("temp", x, y, true);
 		r = new Random();
@@ -52,10 +73,8 @@ public class Human extends Entity {
 		mother = null;
 
 		dead = false;
-
-		Image sprite = new Image(gender ? "gfx//testChar.png" : "gfx//testCharFem.png");
-		sprite.setFilter(Image.FILTER_NEAREST);
-		setSpriteLoad("default");
+		setSpriteLoad(gender ? "default" : "default_girl");
+		animation_idle();
 	}
 
 	public void set_name(String first_name, String last_name) {

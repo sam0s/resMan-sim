@@ -32,12 +32,19 @@ public class Entity {
 	int speed = 100;
 	boolean dead;
 	boolean destroy;
-	Image arm;
-	Image leg;
-	Image body;
-	Image head;
-	Limb leg_left;
-	Limb leg_right;
+	Limb limbs[];
+
+	public void animation_clear() {
+		for (Limb l : limbs) {
+			l.set_rot(null);
+		}
+	}
+
+	public void animation_idle() {
+	}
+
+	public void animation_walk() {
+	}
 
 	public Method fgetMethod(String methodName, Class... args) throws NoSuchMethodException, SecurityException {
 		return this.getClass().getMethod(methodName, args);
@@ -59,6 +66,7 @@ public class Entity {
 	}
 
 	public void pathToRoom(Room start, Room r) {
+		animation_walk();
 		String pathL = "";
 		String pathR = "";
 		String y = "";
@@ -152,7 +160,7 @@ public class Entity {
 		x = r.x;
 		if (left == 1) {
 			System.out.println("leftit");
-			x = r.x + r.sizex - this.sizex;
+			x = r.x + r.sizex - this.sprite.getWidth();
 		}
 		y = r.y + r.sizey - sprite.getHeight() * sizey;
 
@@ -171,7 +179,7 @@ public class Entity {
 		case 'l':
 			x -= speed * (delta / 1000f);
 			// System.out.printf("moving right.. ");
-			if (x <= curRoom.x) {
+			if (x + sprite.getWidth() <= curRoom.x) {
 				cur_path = cur_path.substring(1);
 				moveToRoom(curRoom.left, 1);
 			}
@@ -185,6 +193,9 @@ public class Entity {
 			moveToRoom(curRoom.down, 0);
 			break;
 
+		}
+		if (cur_path.equals("")) {
+			animation_idle();
 		}
 	}
 
@@ -208,44 +219,34 @@ public class Entity {
 
 	public void setSpriteLoad(String spr_name) throws SlickException {
 		// later make this a list accessible by the class;
-		arm = new Image("gfx\\charAttributes\\" + spr_name + "\\arm_" + spr_name + ".png");
-		head = new Image("gfx\\charAttributes\\" + spr_name + "\\head_" + spr_name + ".png");
-		leg = new Image("gfx\\charAttributes\\" + spr_name + "\\leg_" + spr_name + ".png");
-		leg_left = new Limb(leg);
-		Image b = leg.copy();
-		b.setImageColor(60, 60, 60);
-		leg_right = new Limb(b);
-
-		leg_left.set_rot(new float[] { -30, 0, 30, 0 });
-		leg_right.set_rot(new float[] { 30, 0, -30, 0 });
-
-		body = new Image("gfx\\charAttributes\\" + spr_name + "\\body_" + spr_name + ".png");
-		sprite = body;
-		// sprite = new Animation(spr, spr.getHorizontalCount());
-		// sprite.setSpeed(0.5f);
+		Limb arm = new Limb(new Image("gfx\\charAttributes\\" + spr_name + "\\arm.png"));
+		Limb head = new Limb(new Image("gfx\\charAttributes\\" + spr_name + "\\head.png"));
+		Image legg = new Image("gfx\\charAttributes\\" + spr_name + "\\leg.png");
+		Image legg2 = new Image("gfx\\charAttributes\\" + spr_name + "\\leg.png");
+		Image bod = new Image("gfx\\charAttributes\\" + spr_name + "\\body.png");
+		sprite = bod;
+		limbs = new Limb[] { new Limb(legg), new Limb(legg2), new Limb(bod), arm, head };
 		hitbox = new Rectangle(x, y, sprite.getWidth(), sprite.getHeight());
-		// hitbox.setBounds(hitbox);
 	}
 
 	public void update(int delta) {
-		if (cur_path.equals("")) {
-			roam(delta);
-		} else {
+		if (cur_path.equals("") == false) {
 			move(delta);
 		}
 		if (hp <= 0) {
 			dead = true;
 			destroy = true;
 		}
+		for (Limb l : limbs) {
+			l.update(delta);
+		}
 	}
 
 	public void draw(Graphics surface) {
 		// leg.draw(x, y);
-		leg_right.draw(x, y);
-		leg_left.draw(x, y);
-		body.draw(x, y);
-		arm.draw(x, y);
-		head.draw(x, y);
+		for (Limb l : limbs) {
+			l.draw(x, y);
+		}
 		// sprite.draw(x - sizex * origin[0] + origin[0], y - sizey * origin[1]
 		// + origin[1], sprite.getWidth() * sizex, sprite.getHeight() * sizey);
 		surface.setColor(Color.red);
