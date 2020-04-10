@@ -1,3 +1,4 @@
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
@@ -25,7 +26,7 @@ public class Human extends Entity {
 
 	Human father;
 	Human mother;
-
+	Image eyes;
 	boolean dead;
 
 	public void animation_idle() {
@@ -62,7 +63,7 @@ public class Human extends Entity {
 		} while (age <= 16);
 		System.out.printf("age: %d\n", age);
 		hair_color = r.nextInt(21);
-		eye_color = r.nextInt(21);
+		eye_color = r.nextInt(6);
 		skin_color = r.nextInt(60);
 
 		level = r.nextInt(10) + 1;
@@ -74,7 +75,9 @@ public class Human extends Entity {
 
 		dead = false;
 		setSpriteLoad(gender ? "default" : "default_girl");
+		eyes = StateGame.eyes.getSprite(eye_color, 0);
 		animation_idle();
+
 	}
 
 	public void set_name(String first_name, String last_name) {
@@ -85,6 +88,16 @@ public class Human extends Entity {
 
 	public void set_gender(boolean gender) {
 		this.gender = gender;
+	}
+
+	public void setRoom(Room r) {
+		curRoom = r;
+		x = r.x;
+		y = r.y + r.sizey - sprite.getHeight() * sizey;
+		this.r = new Random();
+		int yx = (this.r.nextInt((int) r.sizex - sprite.getWidth()) + (int) r.x);
+		System.out.println("ss " + yx);
+		move_to_point(yx);
 	}
 
 	public void set_age(int age) {
@@ -108,6 +121,12 @@ public class Human extends Entity {
 		child.father = father;
 		child.mother = this;
 		return child;
+	}
+
+	public void draw(Graphics surface) {
+		super.draw(surface);
+		eyes.draw(x + 15, y + 6);
+
 	}
 
 }

@@ -31,6 +31,7 @@ public class Entity {
 	int hp_max;
 	int speed = 100;
 	boolean dead;
+	float target_x;
 	boolean destroy;
 	Limb limbs[];
 
@@ -166,6 +167,21 @@ public class Entity {
 
 	}
 
+	public void move_to_point(float xx) {
+
+		if (xx > curRoom.x + curRoom.sizex - sprite.getWidth()) {
+			System.out.println("o: " + xx + sprite);
+			xx = curRoom.x + sprite.getWidth();
+		}
+		if (xx < curRoom.x) {
+			System.out.println("g: " + xx);
+			xx = curRoom.x;
+		}
+		System.out.println("ASDSD: " + xx);
+		target_x = xx;
+
+	}
+
 	public void move(int delta) {
 		switch (cur_path.charAt(0)) {
 		case 'r':
@@ -200,21 +216,39 @@ public class Entity {
 	}
 
 	public void roam(int delta) {
-		if (roamDir == 1) {
-			x += speed / 2 * (delta / 1000f);
-			if (x + sprite.getWidth() * sizex >= curRoom.x + curRoom.sizex) {
-				roamDir = 0;
-				sizex = -1;
-				return;
-			}
-		} else {
-			x -= speed / 2 * (delta / 1000f);
-			if (x <= curRoom.x) {
-				sizex = 1;
-				roamDir = 1;
-				return;
+
+		if (target_x != x) {
+			// System.out.println(target_x + " " + x);
+			if (x > target_x) {
+				x -= speed / 2 * (delta / 1000f);
+				if (x < target_x) {
+					x = target_x;
+				}
+			} else {
+				if (x < target_x) {
+					x += speed / 2 * (delta / 1000f);
+					if (x > target_x) {
+						x = target_x;
+					}
+				}
 			}
 		}
+
+		// if (roamDir == 1) {
+		// x += speed / 2 * (delta / 1000f);
+		// if (x + sprite.getWidth() * sizex >= curRoom.x + curRoom.sizex) {
+		// roamDir = 0;
+		// sizex = -1;
+		// return;
+		// }
+		// } else {
+		// x -= speed / 2 * (delta / 1000f);
+		// if (x <= curRoom.x) {
+		// sizex = 1;
+		// roamDir = 1;
+		// return;
+		// }
+		// }
 	}
 
 	public void setSpriteLoad(String spr_name) throws SlickException {
@@ -223,15 +257,16 @@ public class Entity {
 		Limb head = new Limb(new Image("gfx\\charAttributes\\" + spr_name + "\\head.png"));
 		Image legg = new Image("gfx\\charAttributes\\" + spr_name + "\\leg.png");
 		Image legg2 = new Image("gfx\\charAttributes\\" + spr_name + "\\leg.png");
-		Image bod = new Image("gfx\\charAttributes\\" + spr_name + "\\body.png");
-		sprite = bod;
-		limbs = new Limb[] { new Limb(legg), new Limb(legg2), new Limb(bod), arm, head };
+		sprite = head.sprite;
+		limbs = new Limb[] { new Limb(legg), new Limb(legg2), head, arm };
 		hitbox = new Rectangle(x, y, sprite.getWidth(), sprite.getHeight());
 	}
 
 	public void update(int delta) {
 		if (cur_path.equals("") == false) {
 			move(delta);
+		} else {
+			roam(delta);
 		}
 		if (hp <= 0) {
 			dead = true;
@@ -249,9 +284,9 @@ public class Entity {
 		}
 		// sprite.draw(x - sizex * origin[0] + origin[0], y - sizey * origin[1]
 		// + origin[1], sprite.getWidth() * sizex, sprite.getHeight() * sizey);
-		surface.setColor(Color.red);
-		surface.setLineWidth(2);
-		surface.drawRect(x, y, hitbox.getWidth(), hitbox.getHeight());
+		// surface.setColor(Color.red);
+		// surface.setLineWidth(2);
+		// surface.drawRect(x, y, hitbox.getWidth(), hitbox.getHeight());
 	}
 
 }

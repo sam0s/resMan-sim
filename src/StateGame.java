@@ -19,6 +19,7 @@ public class StateGame extends BasicGameState {
 	public static String[] namesL = { "Rollins", "Howard", "Zalman", "Bell", "Newell", "Caiafa", "Finnegan", "Hall", "Howell", "Kernighan", "Wilson", "Ritchie" };
 	boolean dragging = false;
 	static Image bg, bg2, power_room_image, water_room_image, elevator_room_image, food_room_image;
+	static SpriteSheet eyes;
 	Input input;
 	MouseControls mc = new MouseControls(this);
 	KeyboardControls kc = new KeyboardControls(this);
@@ -32,7 +33,7 @@ public class StateGame extends BasicGameState {
 	Vector<Container> ui = new Vector<Container>();
 
 	Vector<Room> rooms = new Vector<Room>();
-	
+
 	Resources resources;
 
 	EntityWindow ewin;
@@ -133,6 +134,7 @@ public class StateGame extends BasicGameState {
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		mode = "general";
+		eyes = new SpriteSheet(new Image("gfx\\charAttributes\\eyes.png"), 11, 4); //15,6 to place on face
 		// parent state based game
 		psbg = sbg;
 
@@ -147,7 +149,7 @@ public class StateGame extends BasicGameState {
 		water_room_image = new Image("gfx//room_water.png");
 		food_room_image = new Image("gfx//room_food.png");
 		init_fonts();
-		
+
 		resources = new Resources(this);
 
 		/* init containers */
@@ -177,7 +179,7 @@ public class StateGame extends BasicGameState {
 			e.printStackTrace();
 
 		}
-	
+
 		set_window_focus(ewin);
 	}
 
@@ -333,7 +335,7 @@ public class StateGame extends BasicGameState {
 		}
 
 		resources.update(delta);
-		
+
 		// drag guy if he is grabbed
 		if (grabbed != null) {
 			grabbed.x = mousex_rel;
@@ -373,7 +375,7 @@ public class StateGame extends BasicGameState {
 		if (debug_info) {
 			f_32.drawString(32, menu.sizey, String.format("(%d, %d), vp: (%d %d) %dx%d [%f], mr: (%d, %d)", input.getMouseX(), input.getMouseY(), vp_x, vp_y, vp_w, vp_h, vp_zoom_scale, mousex_rel, mousey_rel), Color.red);
 			f_32.drawString(32, menu.sizey + 32, String.format("pop: %d, rms: %d", resources.n_staff, rooms.size()), Color.red);
-			f_32.drawString(32, menu.sizey + 64,  String.format("power_use %.3f, power_prod %.3f, pow_net %.4f, pow_store %.3f", resources.power_use, resources.power_prod, resources.net_power(), resources.power_store), Color.red);
+			f_32.drawString(32, menu.sizey + 64, String.format("power_use %.3f, power_prod %.3f, pow_net %.4f, pow_store %.3f", resources.power_use, resources.power_prod, resources.net_power(), resources.power_store), Color.red);
 			f_32.drawString(32, menu.sizey + 96, String.format("water_store %.3f, food_store %.3f", resources.water_store, resources.food_store), Color.red);
 		}
 
