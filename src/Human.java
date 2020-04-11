@@ -16,7 +16,7 @@ public class Human extends Entity {
 	String last_name;
 	boolean gender;
 	int age;
-
+	int expression;
 	int hair_color;
 	int eye_color;
 	int skin_color;
@@ -27,10 +27,10 @@ public class Human extends Entity {
 	Human father;
 	Human mother;
 	Image eyes;
+	Image face;
 	boolean dead;
 
 	public void animation_idle() {
-		System.out.println("whoakay");
 		animation_clear();
 		limbs[3].set_origin(13, 18);
 		limbs[3].set_rot(new float[] { -3, 3 });
@@ -40,7 +40,6 @@ public class Human extends Entity {
 	}
 
 	public void animation_walk() {
-		System.out.println("walkin");
 		animation_clear();
 		limbs[3].set_origin(13, 18);
 		limbs[3].set_rot(new float[] { -30, 30 });
@@ -58,13 +57,12 @@ public class Human extends Entity {
 		last_name = namesL[r.nextInt(namesL.length)];
 		name = first_name + " " + last_name;
 
-		do {
-			age = (int) Math.round(r.nextGaussian() * 5 + 25);
-		} while (age <= 16);
+		age = (int) Math.round(r.nextGaussian() * 5 + 25) + 16;
 		System.out.printf("age: %d\n", age);
 		hair_color = r.nextInt(21);
 		eye_color = r.nextInt(6);
 		skin_color = r.nextInt(60);
+		expression = r.nextInt(3);
 
 		level = r.nextInt(10) + 1;
 		hp_max = 10 * level;
@@ -75,7 +73,11 @@ public class Human extends Entity {
 
 		dead = false;
 		setSpriteLoad(gender ? "default" : "default_girl");
-		eyes = StateGame.eyes.getSprite(eye_color, 0);
+		eyes = StateGame.eyes.copy();
+		// not sure how you want to do Eye color under this system, so for now
+		// its random;
+		eyes.setImageColor(r.nextFloat(), r.nextFloat(), r.nextFloat());
+		face = StateGame.faces.getSprite(expression, 0);
 		animation_idle();
 
 	}
@@ -126,6 +128,7 @@ public class Human extends Entity {
 	public void draw(Graphics surface) {
 		super.draw(surface);
 		eyes.draw(x + 15, y + 6);
+		face.draw(x + 12, y + 2);
 
 	}
 

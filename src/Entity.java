@@ -67,6 +67,9 @@ public class Entity {
 	}
 
 	public void pathToRoom(Room start, Room r) {
+		if (r == start) {
+			return;
+		}
 		animation_walk();
 		String pathL = "";
 		String pathR = "";
@@ -143,7 +146,6 @@ public class Entity {
 	}
 
 	public boolean isClicked(int mx, int my) {
-
 
 		return ((mx > x && mx < x + hitbox.getWidth()) && (my > y && my < y + hitbox.getHeight()));
 	}

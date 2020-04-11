@@ -14,9 +14,9 @@ public class Window extends Container {
 
 	Container titlebar;
 	String title;
-	
+
 	Font win_font;
-	
+
 	boolean moving;
 	Color title_color;
 	Button hidebutton;
@@ -24,15 +24,12 @@ public class Window extends Container {
 
 	float moving_cursor_x_offset;
 	float moving_cursor_y_offset;
-	
-	
 
 	@Override
 	public void add_container(Container... containerz) {
 		for (Container new_container : containerz) {
 			containers.addElement(new_container);
-			inset_cont(new_container, 
-					new_container.relx + padx, new_container.rely + titlebar.sizey + pady);
+			inset_cont(new_container, new_container.relx + padx, new_container.rely + titlebar.sizey + pady);
 		}
 	}
 
@@ -47,20 +44,17 @@ public class Window extends Container {
 		super(sizex, sizey, x, y, padx, pady, weight);
 		this.moving_cursor_x_offset = 0;
 		this.moving_cursor_y_offset = 0;
-		
+
 		win_font = s.f_24;
-		
-		titlebar = new Container(this.sizex,
-				win_font.getHeight(title),
-				-padx, -win_font.getHeight(title) - pady,
-				0, 0, weight);
-		
-		hidebutton = new Button(30, titlebar.sizey, titlebar.sizex-30-padx, -pady, weight, "H", win_font, fgetMethod("hide"), this);
+
+		titlebar = new Container(this.sizex, win_font.getHeight(title), -padx, -win_font.getHeight(title) - pady, 0, 0, weight);
+
+		hidebutton = new Button(30, titlebar.sizey, titlebar.sizex - 30 - padx, -pady, weight, "H", win_font, fgetMethod("hide"), this);
 		titlebar.add_container(hidebutton);
 		moving = false;
-		
+
 		add_container(titlebar);
-		
+
 		this.title = title;
 		this.title_color = outer;
 		this.is_focused = false;
@@ -69,8 +63,8 @@ public class Window extends Container {
 
 	public void update(Input i, int mx, int my, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		if (!hidden) {
-		super.update(i, mx, my, delta);
-		
+			super.update(i, mx, my, delta);
+
 			if (!i.isMouseButtonDown(0)) {
 				moving = false;
 			}
@@ -89,7 +83,7 @@ public class Window extends Container {
 					yoffset = Game.MENU_BAR_HEIGHT - y;
 				}
 				move(xoffset, yoffset);
-				//titlebar.move(xoffset, yoffset);
+				// titlebar.move(xoffset, yoffset);
 
 			}
 
@@ -151,14 +145,14 @@ public class Window extends Container {
 			surface.fillRect(x, y, sizex, sizey);
 			surface.setColor(outer);
 			surface.drawRect(x, y, sizex, sizey);
-			
+
 			for (Container c : containers) {
 				c.draw(surface);
 			}
-			
+
 			surface.setFont(win_font);
 			surface.setColor(outer);
-			surface.drawString(title, x + padx, y + pady/2);
+			surface.drawString(title, x + padx, y + pady / 2);
 		}
 	}
 }

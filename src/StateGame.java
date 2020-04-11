@@ -18,8 +18,8 @@ public class StateGame extends BasicGameState {
 	public static String[] namesF = { "Stephanie", "Susan", "Patricia", "Kim", "Rachel", "Rebecca", "Alice", "Jackie", "Judy", "Heidi", "Skylar", "Anna", "Paige" };
 	public static String[] namesL = { "Rollins", "Howard", "Zalman", "Bell", "Newell", "Caiafa", "Finnegan", "Hall", "Howell", "Kernighan", "Wilson", "Ritchie" };
 	boolean dragging = false;
-	static Image bg, bg2, power_room_image, water_room_image, elevator_room_image, food_room_image;
-	static SpriteSheet eyes;
+	static Image bg, bg2, power_room_image, water_room_image, elevator_room_image, food_room_image, eyes;
+	static SpriteSheet faces;
 	Input input;
 	MouseControls mc = new MouseControls(this);
 	KeyboardControls kc = new KeyboardControls(this);
@@ -134,11 +134,10 @@ public class StateGame extends BasicGameState {
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		mode = "general";
-		eyes = new SpriteSheet(new Image("gfx\\charAttributes\\eyes.png"), 11, 4); // 15,6
-																					// to
-																					// place
-																					// on
-																					// face
+		eyes = new Image("gfx\\charAttributes\\eyes.png"); // 15,
+															// 6
+		faces = new SpriteSheet(new Image("gfx\\charAttributes\\faces.png"), 17, 14); // 12
+																						// ,2
 		// parent state based game
 		psbg = sbg;
 
@@ -305,7 +304,7 @@ public class StateGame extends BasicGameState {
 
 		mc.set_delta(delta);
 		kc.set_delta(delta);
-		resources.update(delta);
+
 		if (mode == "room_place") {
 			for (Iterator<Room> iter = rooms.iterator(); iter.hasNext();) {
 				Room r = iter.next();
@@ -328,7 +327,7 @@ public class StateGame extends BasicGameState {
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
 			e1.printStackTrace();
 		}
-
+		resources.update(delta);
 		for (Iterator<Room> iter = rooms.iterator(); iter.hasNext();) {
 			Room r = iter.next();
 			try {
