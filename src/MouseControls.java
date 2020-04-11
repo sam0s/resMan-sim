@@ -39,30 +39,18 @@ public class MouseControls implements MouseListener {
 
 	}
 
-	
 	@Override
 	public void mouseClicked(int arg0, int arg1, int arg2, int arg3) {
-		/* check if mouse is over entity */
-		for (Entity e : s.resources.staff_list) {
-			if (e.isClicked(s.mousex_rel, s.mousey_rel)) {
-				if (s.ewin.hidden) {
-					s.ewin.show();
-				}
-				s.ewin.set_selected_ent(e);
-				s.cwin.set_sel_person((Human)e);
-				s.cwin.set_sel_person((Human) e);
-				break;
-			}
-		}
+
 	}
 
 	@Override
 	public void mouseDragged(int oldx, int oldy, int newx, int newy) {
-		//if (s.dragging) {
-		//if s.mo
-			//s.vp_x += newx - oldx;
-			//s.vp_y += newy - oldy;
-		//}
+		// if (s.dragging) {
+		// if s.mo
+		// s.vp_x += newx - oldx;
+		// s.vp_y += newy - oldy;
+		// }
 
 	}
 
@@ -74,7 +62,21 @@ public class MouseControls implements MouseListener {
 
 	@Override
 	public void mousePressed(int arg0, int arg1, int arg2) {
-
+		/* check if mouse is over entity */
+		for (Entity e : s.resources.staff_list) {
+			if (e.isClicked(s.mousex_rel, s.mousey_rel)) {
+				if (s.input.isMousePressed(0)) {
+					System.out.printf("okay, yeah what you think you're special kid??\nYou can click on an entity GOOD FOR YOU!!\n");
+				}
+				if (s.ewin.hidden) {
+					s.ewin.show();
+				}
+				s.ewin.set_selected_ent(e);
+				s.cwin.set_sel_person((Human) e);
+				s.cwin.set_sel_person((Human) e);
+				break;
+			}
+		}
 	}
 
 	@Override

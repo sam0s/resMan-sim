@@ -134,7 +134,11 @@ public class StateGame extends BasicGameState {
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		mode = "general";
-		eyes = new SpriteSheet(new Image("gfx\\charAttributes\\eyes.png"), 11, 4); //15,6 to place on face
+		eyes = new SpriteSheet(new Image("gfx\\charAttributes\\eyes.png"), 11, 4); // 15,6
+																					// to
+																					// place
+																					// on
+																					// face
 		// parent state based game
 		psbg = sbg;
 
@@ -301,7 +305,7 @@ public class StateGame extends BasicGameState {
 
 		mc.set_delta(delta);
 		kc.set_delta(delta);
-
+		resources.update(delta);
 		if (mode == "room_place") {
 			for (Iterator<Room> iter = rooms.iterator(); iter.hasNext();) {
 				Room r = iter.next();
@@ -334,13 +338,6 @@ public class StateGame extends BasicGameState {
 			}
 		}
 
-		resources.update(delta);
-
-		// drag guy if he is grabbed
-		if (grabbed != null) {
-			grabbed.x = mousex_rel;
-			grabbed.y = mousey_rel;
-		}
 	}
 
 	public void set_mode(String m) {
@@ -369,6 +366,12 @@ public class StateGame extends BasicGameState {
 			r.draw(g);
 		}
 
+		if (ewin.selected_ent != null) {
+			g.setColor(Color.red);
+			g.setLineWidth(2);
+			g.drawRect(ewin.selected_ent.x, ewin.selected_ent.y, ewin.selected_ent.hitbox.getWidth(), ewin.selected_ent.hitbox.getHeight());
+		}
+
 		g.translate(-vp_x, -vp_y);
 		g.scale(1 / vp_zoom_scale, 1 / vp_zoom_scale);
 
@@ -392,5 +395,6 @@ public class StateGame extends BasicGameState {
 		if (focused_win != null) {
 			focused_win.draw(g);
 		}
+
 	}
 }

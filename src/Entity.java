@@ -144,6 +144,7 @@ public class Entity {
 
 	public boolean isClicked(int mx, int my) {
 
+
 		return ((mx > x && mx < x + hitbox.getWidth()) && (my > y && my < y + hitbox.getHeight()));
 	}
 
@@ -168,6 +169,7 @@ public class Entity {
 	}
 
 	public void move_to_point(float xx) {
+		animation_walk();
 
 		if (xx > curRoom.x + curRoom.sizex - sprite.getWidth()) {
 			System.out.println("o: " + xx + sprite);
@@ -210,9 +212,6 @@ public class Entity {
 			break;
 
 		}
-		if (cur_path.equals("")) {
-			animation_idle();
-		}
 	}
 
 	public void roam(int delta) {
@@ -223,12 +222,14 @@ public class Entity {
 				x -= speed / 2 * (delta / 1000f);
 				if (x < target_x) {
 					x = target_x;
+					animation_idle();
 				}
 			} else {
 				if (x < target_x) {
 					x += speed / 2 * (delta / 1000f);
 					if (x > target_x) {
 						x = target_x;
+						animation_idle();
 					}
 				}
 			}
@@ -278,7 +279,6 @@ public class Entity {
 	}
 
 	public void draw(Graphics surface) {
-		// leg.draw(x, y);
 		for (Limb l : limbs) {
 			l.draw(x, y);
 		}
