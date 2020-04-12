@@ -134,10 +134,10 @@ public class StateGame extends BasicGameState {
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		mode = "general";
-		eyes = new Image("gfx\\charAttributes\\eyes.png"); // 15,6
-		faces = new SpriteSheet(new Image("gfx\\charAttributes\\faces.png"), 17, 14); // 12,2
+		eyes = new Image("gfx//charAttributes//eyes.png"); // 15,6
+		faces = new SpriteSheet(new Image("gfx//charAttributes//faces.png"), 17, 14); // 12,2
 
-		hairs = new SpriteSheet(new Image("gfx\\charAttributes\\hairs.png"), 32, 32); // 0,0
+		hairs = new SpriteSheet(new Image("gfx//charAttributes//hairs.png"), 32, 32); // 0,0
 		// parent state based game
 		psbg = sbg;
 

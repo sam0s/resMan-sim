@@ -99,7 +99,7 @@ public class Entity {
 			// choose the road most traveled
 			y = (pathL.length() < pathR.length()) ? pathL : pathR;
 		}
-		y = y.replaceAll("\\s", "");
+		y = y.replaceAll("//s", "");
 		cur_path = "" + y;
 		System.out.println("PATH: " + y);
 
@@ -256,10 +256,10 @@ public class Entity {
 
 	public void setSpriteLoad(String spr_name) throws SlickException {
 		// later make this a list accessible by the class;
-		Limb arm = new Limb(new Image("gfx\\charAttributes\\" + spr_name + "\\arm.png"));
-		Limb head = new Limb(new Image("gfx\\charAttributes\\" + spr_name + "\\head.png"));
-		Image legg = new Image("gfx\\charAttributes\\" + spr_name + "\\leg.png");
-		Image legg2 = new Image("gfx\\charAttributes\\" + spr_name + "\\leg.png");
+		Limb arm = new Limb(new Image("gfx//charAttributes//" + spr_name + "//arm.png"));
+		Limb head = new Limb(new Image("gfx//charAttributes//" + spr_name + "//head.png"));
+		Image legg = new Image("gfx//charAttributes//" + spr_name + "//leg.png");
+		Image legg2 = new Image("gfx//charAttributes//" + spr_name + "//leg.png");
 		sprite = head.sprite;
 		limbs = new Limb[] { new Limb(legg), new Limb(legg2), head, arm };
 		hitbox = new Rectangle(x, y, sprite.getWidth(), sprite.getHeight());
