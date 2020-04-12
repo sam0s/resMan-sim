@@ -32,13 +32,13 @@ public class Game extends StateBasedGame {
 	// public static final int HEIGHT = (int) ss.getHeight();
 
 	public static final int MENU_BAR_HEIGHT = 68;
-	public static final int FPS = 1960;
+	public static final int FPS = 120;
 	public static final Color win_inner = new Color(40, 40, 40, 225);
 	public static final Color win_outer = Color.orange;
 	public static final Color clear = new Color(0, 0, 0, 0);
 	public static final int win_pad = 4;
 	// major.minor(patch)
-	public static final double VERSION = 2;
+	public static final double VERSION = 2.20;
 
 	public void initStatesList(GameContainer gc) throws SlickException {
 		this.addState(new StateGame());

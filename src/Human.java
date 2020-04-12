@@ -28,6 +28,7 @@ public class Human extends Entity {
 	Human mother;
 	Image eyes;
 	Image face;
+	Image hair;
 	boolean dead;
 
 	public void animation_idle() {
@@ -72,12 +73,17 @@ public class Human extends Entity {
 		mother = null;
 
 		dead = false;
+		// outfit
 		setSpriteLoad(gender ? "default" : "default_girl");
 		eyes = StateGame.eyes.copy();
 		// not sure how you want to do Eye color under this system, so for now
 		// its random;
 		eyes.setImageColor(r.nextFloat(), r.nextFloat(), r.nextFloat());
 		face = StateGame.faces.getSprite(expression, 0);
+
+		// gonna make this x=0 == boys hair, y=0 == girls hair at some point
+		hair = StateGame.hairs.getSprite(r.nextInt(4), 0);
+		hair.setImageColor(r.nextFloat(), r.nextFloat(), r.nextFloat());
 		animation_idle();
 
 	}
@@ -127,6 +133,7 @@ public class Human extends Entity {
 
 	public void draw(Graphics surface) {
 		super.draw(surface);
+		hair.draw(x, y);
 		eyes.draw(x + 15, y + 6);
 		face.draw(x + 12, y + 2);
 

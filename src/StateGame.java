@@ -19,7 +19,7 @@ public class StateGame extends BasicGameState {
 	public static String[] namesL = { "Rollins", "Howard", "Zalman", "Bell", "Newell", "Caiafa", "Finnegan", "Hall", "Howell", "Kernighan", "Wilson", "Ritchie" };
 	boolean dragging = false;
 	static Image bg, bg2, power_room_image, water_room_image, elevator_room_image, food_room_image, eyes;
-	static SpriteSheet faces;
+	static SpriteSheet faces, hairs;
 	Input input;
 	MouseControls mc = new MouseControls(this);
 	KeyboardControls kc = new KeyboardControls(this);
@@ -54,7 +54,7 @@ public class StateGame extends BasicGameState {
 	int mousex_rel;
 	int mousey_rel;
 
-	boolean debug_info = true;
+	boolean debug_info = false;
 	boolean placed = false;
 
 	public static final int ID = 0;
@@ -134,10 +134,10 @@ public class StateGame extends BasicGameState {
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		mode = "general";
-		eyes = new Image("gfx\\charAttributes\\eyes.png"); // 15,
-															// 6
-		faces = new SpriteSheet(new Image("gfx\\charAttributes\\faces.png"), 17, 14); // 12
-																						// ,2
+		eyes = new Image("gfx\\charAttributes\\eyes.png"); // 15,6
+		faces = new SpriteSheet(new Image("gfx\\charAttributes\\faces.png"), 17, 14); // 12,2
+
+		hairs = new SpriteSheet(new Image("gfx\\charAttributes\\hairs.png"), 32, 32); // 0,0
 		// parent state based game
 		psbg = sbg;
 
