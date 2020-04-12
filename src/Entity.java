@@ -99,7 +99,7 @@ public class Entity {
 			// choose the road most traveled
 			y = (pathL.length() < pathR.length()) ? pathL : pathR;
 		}
-		y = y.replaceAll("//s", "");
+		y = y.replaceAll("\\s", "");
 		cur_path = "" + y;
 		System.out.println("PATH: " + y);
 
