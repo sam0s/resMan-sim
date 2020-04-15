@@ -1,9 +1,10 @@
 import java.lang.reflect.InvocationTargetException;
 
 import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
 
 public class FoodRoom extends ProductionRoom {
-	public FoodRoom(float x, float y, StateGame s) throws NoSuchMethodException, SecurityException {
+	public FoodRoom(float x, float y, StateGame s) throws NoSuchMethodException, SecurityException, SlickException {
 		super(x, y, "food_room", s);
 		this.prod_rate = 0.01f; // tons/hr
 		this.level = 0;

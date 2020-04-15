@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.lang.reflect.InvocationTargetException;
@@ -17,7 +18,7 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-public class StateGame extends BasicGameState {
+public class StateGame extends BasicGameState implements Serializable {
 	StateBasedGame psbg;
 	public static String[] namesM = { "Glenn", "Jerry", "Joe", "Jack", "Paul", "Nick", "Trevor", "Mathew", "Todd", "Linus", "Harry", "Walter", "Ryan", "Bob", "Henry", "Brian", "Dennis" };
 	public static String[] namesF = { "Stephanie", "Susan", "Patricia", "Kim", "Rachel", "Rebecca", "Alice", "Jackie", "Judy", "Heidi", "Skylar", "Anna", "Paige" };
@@ -101,24 +102,26 @@ public class StateGame extends BasicGameState {
 	}
 
 	// change form of (add_guy) to be more progressive!
-	
+
 	public void add_person(Room r) throws SlickException, NoSuchMethodException, SecurityException {
 		Human e = new Human((int) r.x, (int) r.y);
 		r.add_entity(e);
 		resources.add_staff(e);
 	}
-	
-	public void load_person(Room r) throws SlickException {
+
+	public void load() throws SlickException, NoSuchMethodException, SecurityException {
 		String filename = "file.bas";
 		FileInputStream file;
-		Human e = null;
+		Vector<Room> e = null;
 		try {
 			file = new FileInputStream(filename);
 			ObjectInputStream in = new ObjectInputStream(file);
 
 			// Method for deserialization of object
-			e = (Human) in.readObject();
-			e.onLoad();
+			e = (Vector<Room>) in.readObject();
+			for (Room ar : e) {
+				ar.onLoad(this);
+			}
 			in.close();
 			file.close();
 
@@ -133,8 +136,7 @@ public class StateGame extends BasicGameState {
 			e1.printStackTrace();
 		}
 
-		r.add_entity(e);
-		resources.add_staff(e);
+		rooms = e;
 	}
 
 	public void kill_all() throws NoSuchMethodException, SecurityException {
@@ -176,7 +178,7 @@ public class StateGame extends BasicGameState {
 			ObjectOutputStream out = new ObjectOutputStream(file);
 
 			// Method for serialization of object
-			out.writeObject(cwin.sel_person);
+			out.writeObject(rooms);
 
 			out.close();
 			file.close();
@@ -234,8 +236,9 @@ public class StateGame extends BasicGameState {
 			ui.addElement(rwin);
 
 			menu = new MenuBar();
-			menu.add_icon(new ImageButton(64, 64, 0, 0, new Image("gfx//globeicon.png"), fgetMethod("save"), this), "left");
+			menu.add_icon(new ImageButton(64, 64, 0, 0, new Image("gfx//globeicon.png"), fgetMethod("gotothaglobe"), this), "left");
 			menu.add_icon(new ImageButton(64, 64, 0, 0, new Image("gfx//buildicon.png"), fgetMethod("show_build_menu"), this), "left");
+			menu.add_icon(new ImageButton(64, 64, 0, 0, new Image("gfx//debug.png"), fgetMethod("show_ctrl_menu"), this), "left");
 			menu.add_icon(new ImageButton(64, 64, 0, 0, new Image("gfx//icon_camera.png"), fgetMethod("reset_viewport"), this), "right");
 
 			ui.addElement(menu);
@@ -245,6 +248,10 @@ public class StateGame extends BasicGameState {
 		}
 
 		set_window_focus(ewin);
+	}
+
+	public void show_ctrl_menu() {
+		cwin.hidden = false;
 	}
 
 	public void show_build_menu() {
@@ -264,10 +271,6 @@ public class StateGame extends BasicGameState {
 		vp_w = Game.WIDTH;
 		vp_h = Game.HEIGHT;
 		vp_zoom_scale = 1f;
-		/* TEMPORARY!!!! */
-		for (Container c : ui) {
-			c.hidden = false;
-		}
 	}
 
 	public boolean overlaps(float a_tl_x, float a_tl_y, float a_br_x, float a_br_y, float b_tl_x, float b_tl_y, float b_br_x, float b_br_y) {
@@ -285,7 +288,7 @@ public class StateGame extends BasicGameState {
 		return null;
 	}
 
-	public void enter_placement_mode(String type) throws NoSuchMethodException, SecurityException {
+	public void enter_placement_mode(String type) throws NoSuchMethodException, SecurityException, SlickException {
 		System.out.println(type);
 		switch (type) {
 		case "power":

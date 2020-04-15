@@ -77,44 +77,48 @@ public class Human extends Entity {
 		mother = null;
 
 		dead = false;
-		
+
 		/* outfit */
 		setSpriteLoad(gender ? "default" : "default_girl");
-		
+
 		/* eyes */
 		eyes = StateGame.eyes.copy();
 		int ec[] = Traits.get_eye_color(eye_color);
-		eyes.setImageColor(ec[0]/255f, ec[1]/255f, ec[2]/255f);
-		
+		eyes.setImageColor(ec[0] / 255f, ec[1] / 255f, ec[2] / 255f);
+
 		/* face */
 		face = StateGame.faces.getSprite(expression, 0);
 
 		/* hair */
 		hair = StateGame.hairs.getSprite(r.nextInt(4), 0);
 		int hc[] = Traits.get_hair_color(hair_color);
-		//System.out.printf("%d %d %d\n",  hc[0], hc[1], hc[2]);
-		hair.setImageColor(hc[0]/255f, hc[1]/255f, hc[2]/255f);
-		
+		// System.out.printf("%d %d %d\n", hc[0], hc[1], hc[2]);
+		hair.setImageColor(hc[0] / 255f, hc[1] / 255f, hc[2] / 255f);
+
 		animation_idle();
 
 	}
 
-	public void onLoad() throws SlickException {
+	public void onLoad(Room rm) throws SlickException {
+
 		Random r = new Random();
 		setSpriteLoad(gender ? "default" : "default_girl");
-		
+
 		/* eyes */
 		eyes = StateGame.eyes.copy();
 		int ec[] = Traits.get_eye_color(this.eye_color);
-		eyes.setImageColor(ec[0]/255f, ec[1]/255f, ec[2]/255f);
-		
+		eyes.setImageColor(ec[0] / 255f, ec[1] / 255f, ec[2] / 255f);
+
 		/* expression */
 		face = StateGame.faces.getSprite(expression, 0);
 
 		/* hair */
 		hair = StateGame.hairs.getSprite(r.nextInt(4), 0);
 		int hc[] = Traits.get_hair_color(this.hair_color);
-		hair.setImageColor(hc[0]/255f, hc[1]/255f, hc[2]/255f);
+		hair.setImageColor(hc[0] / 255f, hc[1] / 255f, hc[2] / 255f);
+
+		setRoom(rm);
+		System.out.println(name);
 	}
 
 	public void set_name(String first_name, String last_name) {
