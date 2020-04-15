@@ -1,31 +1,32 @@
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Vector;
 
-import org.newdawn.slick.Animation;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Rectangle;
 
-public class Entity {
+public class Entity implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7002488053710004924L;
 	public String name;
 	// /public Image sprite;
-	public Image sprite;
+	public transient Image sprite;
 	public int level;
 	public int id;
 	public float sizex = 1;
 	public float sizey = 1;
 	public float x;
 	public float y;
-	public Rectangle hitbox;
-	public Room curRoom;
+	public transient Rectangle hitbox;
+	public transient Room curRoom;
 	public boolean moving = false;
 	public int roamDir = 1;
 	public int[] origin = { 16, 32 };
-	Vector<Room> visited = new Vector<Room>();
+	transient Vector<Room> visited = new Vector<Room>();
 	String cur_path = "";
 	int hp;
 	int hp_max;
@@ -33,7 +34,7 @@ public class Entity {
 	boolean dead;
 	float target_x;
 	boolean destroy;
-	Limb limbs[];
+	transient Limb limbs[];
 
 	public void animation_clear() {
 		for (Limb l : limbs) {
@@ -256,13 +257,14 @@ public class Entity {
 
 	public void setSpriteLoad(String spr_name) throws SlickException {
 		// later make this a list accessible by the class;
+		System.out.println("loading imags");
 		Limb arm = new Limb(new Image("gfx//charAttributes//" + spr_name + "//arm.png"));
 		Limb head = new Limb(new Image("gfx//charAttributes//" + spr_name + "//head.png"));
 		Image legg = new Image("gfx//charAttributes//" + spr_name + "//leg.png");
 		Image legg2 = new Image("gfx//charAttributes//" + spr_name + "//leg.png");
-		sprite = head.sprite;
-		limbs = new Limb[] { new Limb(legg), new Limb(legg2), head, arm };
-		hitbox = new Rectangle(x, y, sprite.getWidth(), sprite.getHeight());
+		this.sprite = head.sprite;
+		this.limbs = new Limb[] { new Limb(legg), new Limb(legg2), head, arm };
+		this.hitbox = new Rectangle(x, y, sprite.getWidth(), sprite.getHeight());
 	}
 
 	public void update(int delta) {
@@ -284,11 +286,6 @@ public class Entity {
 		for (Limb l : limbs) {
 			l.draw(x, y);
 		}
-		// sprite.draw(x - sizex * origin[0] + origin[0], y - sizey * origin[1]
-		// + origin[1], sprite.getWidth() * sizex, sprite.getHeight() * sizey);
-		// surface.setColor(Color.red);
-		// surface.setLineWidth(2);
-		// surface.drawRect(x, y, hitbox.getWidth(), hitbox.getHeight());
 	}
 
 }

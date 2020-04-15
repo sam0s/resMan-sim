@@ -1,9 +1,5 @@
 import java.awt.Dimension;
-import java.awt.FontFormatException;
 import java.awt.Toolkit;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 

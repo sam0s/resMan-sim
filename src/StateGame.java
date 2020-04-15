@@ -1,5 +1,10 @@
 import java.awt.FontFormatException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.lang.reflect.InvocationTargetException;
@@ -96,8 +101,38 @@ public class StateGame extends BasicGameState {
 	}
 
 	// change form of (add_guy) to be more progressive!
+	
 	public void add_person(Room r) throws SlickException, NoSuchMethodException, SecurityException {
 		Human e = new Human((int) r.x, (int) r.y);
+		r.add_entity(e);
+		resources.add_staff(e);
+	}
+	
+	public void load_person(Room r) throws SlickException {
+		String filename = "file.bas";
+		FileInputStream file;
+		Human e = null;
+		try {
+			file = new FileInputStream(filename);
+			ObjectInputStream in = new ObjectInputStream(file);
+
+			// Method for deserialization of object
+			e = (Human) in.readObject();
+			e.onLoad();
+			in.close();
+			file.close();
+
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
 		r.add_entity(e);
 		resources.add_staff(e);
 	}
@@ -129,6 +164,32 @@ public class StateGame extends BasicGameState {
 
 	public void gotothaglobe() {
 		psbg.enterState(1);
+	}
+
+	public void save() {
+		String filename = "file.bas";
+
+		// Serialization
+		try {
+			// Saving of object in a file
+			FileOutputStream file = new FileOutputStream(filename);
+			ObjectOutputStream out = new ObjectOutputStream(file);
+
+			// Method for serialization of object
+			out.writeObject(cwin.sel_person);
+
+			out.close();
+			file.close();
+
+			System.out.println("Object has been serialized");
+
+		}
+
+		catch (IOException ex) {
+			ex.printStackTrace();
+			// System.out.println("IOException is caught");
+		}
+
 	}
 
 	@Override
@@ -173,7 +234,7 @@ public class StateGame extends BasicGameState {
 			ui.addElement(rwin);
 
 			menu = new MenuBar();
-			menu.add_icon(new ImageButton(64, 64, 0, 0, new Image("gfx//globeicon.png"), fgetMethod("gotothaglobe"), this), "left");
+			menu.add_icon(new ImageButton(64, 64, 0, 0, new Image("gfx//globeicon.png"), fgetMethod("save"), this), "left");
 			menu.add_icon(new ImageButton(64, 64, 0, 0, new Image("gfx//buildicon.png"), fgetMethod("show_build_menu"), this), "left");
 			menu.add_icon(new ImageButton(64, 64, 0, 0, new Image("gfx//icon_camera.png"), fgetMethod("reset_viewport"), this), "right");
 

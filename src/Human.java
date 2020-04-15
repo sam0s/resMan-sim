@@ -6,11 +6,15 @@ import org.newdawn.slick.SpriteSheet;
 import java.util.Random;
 
 public class Human extends Entity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public static String[] namesM = { "Glenn", "Jerry", "Joe", "Jack", "Paul", "Nick", "Trevor", "Mathew", "Todd", "Linus", "Harry", "Walter", "Ryan", "Bob", "Henry", "Brian", "Dennis" };
 	public static String[] namesF = { "Stephanie", "Susan", "Patricia", "Kim", "Rachel", "Rebecca", "Alice", "Jackie", "Judy", "Heidi", "Skylar", "Anna", "Paige" };
 	public static String[] namesL = { "Rollins", "Howard", "Zalman", "Bell", "Newell", "Caiafa", "Finnegan", "Hall", "Howell", "Kernighan", "Wilson", "Ritchie" };
 
-	Random r;
+	transient Random r;
 
 	String first_name;
 	String last_name;
@@ -26,9 +30,9 @@ public class Human extends Entity {
 
 	Human father;
 	Human mother;
-	Image eyes;
-	Image face;
-	Image hair;
+	transient Image eyes;
+	transient Image face;
+	transient Image hair;
 	boolean dead;
 
 	public void animation_idle() {
@@ -86,6 +90,20 @@ public class Human extends Entity {
 		hair.setImageColor(r.nextFloat(), r.nextFloat(), r.nextFloat());
 		animation_idle();
 
+	}
+
+	public void onLoad() throws SlickException {
+		Random r = new Random();
+		setSpriteLoad(gender ? "default" : "default_girl");
+		eyes = StateGame.eyes.copy();
+		// not sure how you want to do Eye color under this system, so for now
+		// its random;
+		eyes.setImageColor(r.nextFloat(), r.nextFloat(), r.nextFloat());
+		face = StateGame.faces.getSprite(expression, 0);
+
+		// gonna make this x=0 == boys hair, y=0 == girls hair at some point
+		hair = StateGame.hairs.getSprite(r.nextInt(4), 0);
+		hair.setImageColor(r.nextFloat(), r.nextFloat(), r.nextFloat());
 	}
 
 	public void set_name(String first_name, String last_name) {
