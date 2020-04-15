@@ -64,9 +64,9 @@ public class Human extends Entity {
 
 		age = (int) Math.round(r.nextGaussian() * 5 + 25) + 16;
 		System.out.printf("age: %d\n", age);
-		hair_color = r.nextInt(21);
+		hair_color = r.nextInt(6);
 		eye_color = r.nextInt(6);
-		skin_color = r.nextInt(60);
+		skin_color = r.nextInt(6);
 		expression = r.nextInt(3);
 
 		level = r.nextInt(10) + 1;
@@ -77,33 +77,43 @@ public class Human extends Entity {
 		mother = null;
 
 		dead = false;
-		// outfit
+		
+		/* outfit */
 		setSpriteLoad(gender ? "default" : "default_girl");
+		
+		/* eyes */
 		eyes = StateGame.eyes.copy();
-		// not sure how you want to do Eye color under this system, so for now
-		// its random;
-		eyes.setImageColor(r.nextFloat(), r.nextFloat(), r.nextFloat());
+		int ec[] = Traits.get_eye_color(eye_color);
+		eyes.setImageColor(ec[0]/255f, ec[1]/255f, ec[2]/255f);
+		
+		/* face */
 		face = StateGame.faces.getSprite(expression, 0);
 
-		// gonna make this x=0 == boys hair, y=0 == girls hair at some point
+		/* hair */
 		hair = StateGame.hairs.getSprite(r.nextInt(4), 0);
-		hair.setImageColor(r.nextFloat(), r.nextFloat(), r.nextFloat());
+		int hc[] = Traits.get_hair_color(hair_color);
+		//System.out.printf("%d %d %d\n",  hc[0], hc[1], hc[2]);
+		hair.setImageColor(hc[0]/255f, hc[1]/255f, hc[2]/255f);
+		
 		animation_idle();
 
 	}
 
 	public void onLoad() throws SlickException {
-		Random r = new Random();
 		setSpriteLoad(gender ? "default" : "default_girl");
+		
+		/* eyes */
 		eyes = StateGame.eyes.copy();
-		// not sure how you want to do Eye color under this system, so for now
-		// its random;
-		eyes.setImageColor(r.nextFloat(), r.nextFloat(), r.nextFloat());
+		int ec[] = Traits.get_eye_color(this.eye_color);
+		eyes.setImageColor(ec[0], ec[1], ec[2]);
+		
+		/* expression */
 		face = StateGame.faces.getSprite(expression, 0);
 
-		// gonna make this x=0 == boys hair, y=0 == girls hair at some point
+		/* hair */
 		hair = StateGame.hairs.getSprite(r.nextInt(4), 0);
-		hair.setImageColor(r.nextFloat(), r.nextFloat(), r.nextFloat());
+		int hc[] = Traits.get_hair_color(this.hair_color);
+		hair.setImageColor(hc[0], hc[1], hc[2]);
 	}
 
 	public void set_name(String first_name, String last_name) {
@@ -142,7 +152,7 @@ public class Human extends Entity {
 		int ec = (int) (this.eye_color + father.eye_color) / 2;
 		int sc = (int) (this.skin_color + father.skin_color) / 2;
 		child.set_name(child.gender ? namesM[r.nextInt(namesM.length)] : namesF[r.nextInt(namesF.length)], father.last_name);
-		child.set_traits(hc + r.nextInt(7) - 3, ec + r.nextInt(7) - 3, sc + r.nextInt(7) - 3);
+		child.set_traits(hc, ec, sc);
 		child.set_age(0);
 		child.father = father;
 		child.mother = this;
