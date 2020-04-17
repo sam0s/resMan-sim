@@ -4,14 +4,17 @@ import java.lang.reflect.Method;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.*;
 
 public class StateGlobe extends BasicGameState {
 	public static final int ID = 1;
 	double rot = 0;
+	StateBasedGame psbg;
 	int grot = 60;
 	Image globeImg;
 	ImageButton rot_l;
 	ImageButton rot_r;
+	Button buttons[];
 	Input input;
 	int rotating;
 	Image globe_frames[];
@@ -49,14 +52,26 @@ public class StateGlobe extends BasicGameState {
 		globeImg = globe_frames[grot];
 	}
 
+	public void build(int zone) {
+		psbg.enterState(0, new FadeOutTransition(), new FadeInTransition());
+	}
+
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+		psbg = sbg;
+		buttons = new Button[4];
+		try {
+			buttons[0] = new Button(145, 52, 465f, 165f, 2.00, "Build Here", StateGame.f_14, fgetMethod("build", int.class), this);
+			buttons[0].set_args(1);
+		} catch (NoSuchMethodException | SecurityException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		globe_frames = new Image[72];
-		for(int i=0;i<72;i++){
+		for (int i = 0; i < 72; i++) {
 			globe_frames[i] = new Image(String.format("gfx//globe_frames//globf00%02d.png", i));
 		}
-		
-		
+
 		globeImg = globe_frames[grot];
 		input = gc.getInput();
 		try {
@@ -75,6 +90,11 @@ public class StateGlobe extends BasicGameState {
 
 		// update buttons
 		try {
+			for (Button b : buttons) {
+				if (b != null) {
+					b.update(input, input.getMouseX(), input.getMouseY(), delta);
+				}
+			}
 			rot_r.update(input, input.getMouseX(), input.getMouseY(), delta);
 			rot_l.update(input, input.getMouseX(), input.getMouseY(), delta);
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
@@ -90,6 +110,12 @@ public class StateGlobe extends BasicGameState {
 		globeImg.draw(0, 0);
 		rot_r.draw(g);
 		rot_l.draw(g);
+		for (Button b : buttons) {
+			if (b != null) {
+				System.out.println(b.text);
+				b.draw(g);
+			}
+		}
 	}
 
 	@Override

@@ -60,7 +60,7 @@ public class StateGame extends BasicGameState implements Serializable {
 	int mousex_rel;
 	int mousey_rel;
 
-	boolean debug_info = false;
+	boolean debug_info = true;
 	boolean placed = false;
 
 	public static final int ID = 0;
@@ -208,8 +208,8 @@ public class StateGame extends BasicGameState implements Serializable {
 		input.addMouseListener(mc);
 		input.addKeyListener(kc);
 
-		bg = new Image("testBack.png");
-		bg2 = new Image("under.png");
+		bg = new Image("gfx//over_grass.png");
+		bg2 = new Image("gfx//under1.png");
 		power_room_image = new Image("gfx//room_power.png");
 		elevator_room_image = new Image("gfx//room_elevator.png");
 		water_room_image = new Image("gfx//room_water.png");
@@ -354,6 +354,23 @@ public class StateGame extends BasicGameState implements Serializable {
 		if (input.isMouseButtonDown(1)) {
 			this.vp_x += newx - oldx;
 			this.vp_y += newy - oldy;
+
+			// i need some jdedmondt magic on this
+			if (vp_x < -1280) {
+				vp_x = -1280;
+			}
+
+			if (vp_y < -720) {
+				vp_y = -720;
+			}
+
+			if (vp_x > 1280) {
+				vp_x = 1280;
+			}
+
+			if (vp_y > 0) {
+				vp_y = 0;
+			}
 		}
 	}
 
@@ -422,8 +439,20 @@ public class StateGame extends BasicGameState implements Serializable {
 			return;
 		}
 
+		// <drawing bg> ------------------------------------- (is it legal to mark code blocks this way?)
+		if (vp_x < 0) {
+			bg.draw(Game.WIDTH, 0);
+			bg2.draw(Game.WIDTH, bg.getHeight() - 1);
+		}
+
+		if (vp_x > 0) {
+			bg.draw(-Game.WIDTH, 0);
+			bg2.draw(-Game.WIDTH, bg.getHeight() - 1);
+		}
+
 		bg.draw(0, 0);
-		bg2.draw(0, bg.getHeight());
+		bg2.draw(0, bg.getHeight() - 1);
+		// </drawing bg> -----------------------------------
 
 		for (Room r : rooms) {
 			r.draw(g);

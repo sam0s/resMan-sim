@@ -62,19 +62,22 @@ public class MouseControls implements MouseListener {
 
 	@Override
 	public void mousePressed(int arg0, int arg1, int arg2) {
+		System.out.println(arg0);
 		/* check if mouse is over entity */
-		for (Entity e : s.resources.staff_list) {
-			if (e.isClicked(s.mousex_rel, s.mousey_rel)) {
-				if (s.input.isMousePressed(0)) {
-					System.out.printf("okay, yeah what you think you're special kid??\nYou can click on an entity GOOD FOR YOU!!\n");
+		if (arg0 == 0) {
+			for (Entity e : s.resources.staff_list) {
+				if (e.isClicked(s.mousex_rel, s.mousey_rel)) {
+					if (s.input.isMousePressed(0)) {
+						System.out.printf("okay, yeah what you think you're special kid??\nYou can click on an entity GOOD FOR YOU!!\n");
+					}
+					if (s.ewin.hidden) {
+						s.ewin.show();
+					}
+					s.ewin.set_selected_ent(e);
+					s.cwin.set_sel_person((Human) e);
+					s.cwin.set_sel_person((Human) e);
+					break;
 				}
-				if (s.ewin.hidden) {
-					s.ewin.show();
-				}
-				s.ewin.set_selected_ent(e);
-				s.cwin.set_sel_person((Human) e);
-				s.cwin.set_sel_person((Human) e);
-				break;
 			}
 		}
 	}
@@ -90,11 +93,15 @@ public class MouseControls implements MouseListener {
 		// TODO Auto-generated method stub
 		System.out.println(arg0);
 		switch (arg0) {
-		case 120:
-			s.vp_zoom_scale -= .05;
-			break;
 		case -120:
+			s.vp_zoom_scale -= .05;
+			if (s.vp_zoom_scale < 1) {
+				s.vp_zoom_scale = 1;
+			}
+			break;
+		case 120:
 			s.vp_zoom_scale += .05;
+
 			break;
 		}
 	}

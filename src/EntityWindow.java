@@ -38,16 +38,25 @@ public class EntityWindow extends Window {
 		build_human_cont();
 
 		/* independent buttons */
-		deselect = new Button(sizex - padx * 2, win_font.getHeight("DESELECT"), 0, sizey - win_font.getHeight("DESELECT") - titlebar.sizey - pady * 2, 2, "DESELECT", win_font, fgetMethod("deselect"), this);
-		move = new Button(sizex - padx * 2, win_font.getHeight("move"), 0, deselect.y - win_font.getHeight("MOVE") - titlebar.sizey - pady * 2, 2, "move", win_font, fgetMethod("move"), this);
+		// deselect = new Button(sizex - padx * 2,
+		// win_font.getHeight("DESELECT"), 0, sizey -
+		// win_font.getHeight("DESELECT") - titlebar.sizey - pady * 2, 2,
+		// "DESELECT", win_font, fgetMethod("deselect"), this);
+		move = new Button(sizex - padx * 2, win_font.getHeight("move"), 0, sizey - win_font.getHeight("move") - titlebar.sizey - pady * 2, 2, "move", win_font, fgetMethod("move"), this);
 		/* temporary */
-		add_container(human, deselect, move);
+		add_container(human, move);
 
 		for (Container c : containers) {
 			c.set_theme(Game.clear, Game.win_outer);
 		}
 
 		this.hidden = true;
+	}
+
+	@Override
+	public void hide() {
+		super.hide();
+		deselect();
 	}
 
 	public void build_human_cont() {
