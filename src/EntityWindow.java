@@ -18,6 +18,7 @@ public class EntityWindow extends Window {
 	Label lvl_num;
 	Label age_num;
 	Label sex_val;
+	Label traits;
 
 	/* independent buttons */
 	Button deselect;
@@ -87,9 +88,12 @@ public class EntityWindow extends Window {
 		sex_val = new Label(sex.sizex + padx, 0, 0, 0, 0, "NULL", s.f_18);
 		Container sex_cont = new Container((int) sex_val.relx + sex_val.sizex, sex_val.sizey, 0, age_cont.rely + age_cont.sizey + pady, 0, 0, 0);
 		sex_cont.add_container(sex, sex_val);
+		
+		/* traits */
+		traits = new Label(0, sex_cont.sizey + sex_cont.rely, 0, 0, 0, "traits", s.f_16);
 
 		human = new Container(sizex, hp_cont.sizey + lvl_cont.sizey + age_cont.sizey + sex_cont.sizey, -padx, -pady, padx, pady, 0);
-		human.add_container(hp_cont, lvl_cont, age_cont, sex_cont);
+		human.add_container(hp_cont, lvl_cont, age_cont, sex_cont, traits);
 	}
 
 	public void update(Input i, int mx, int my, int delta) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -107,6 +111,7 @@ public class EntityWindow extends Window {
 			hp_bar.percent = (float) e.hp / e.hp_max;
 			age_num.set_text(String.format("%d", e.age));
 			sex_val.set_text(String.format("%s", e.gender == Game.MALE ? "Male" : "Female"));
+			traits.set_text(String.format("hc %d, ec %d, sc %d", e.hair_color, e.eye_color, e.skin_color));
 		}
 	}
 
