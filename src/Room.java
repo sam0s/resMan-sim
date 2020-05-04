@@ -233,7 +233,7 @@ public class Room implements Serializable {
 
 	}
 
-	public void draw(Graphics surface) {
+	public void draw(Graphics surface) throws SlickException {
 		if (sprite != null) {
 			sprite.draw(x, y);
 			surface.setColor(Color.red);

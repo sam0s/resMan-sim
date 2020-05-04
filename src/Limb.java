@@ -1,3 +1,4 @@
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
 public class Limb {
@@ -84,8 +85,10 @@ public class Limb {
 
 	}
 
-	public void draw(float x, float y) {
-		sprite.draw(x, y);
+	public void draw(float x, float y, Graphics g) {
+		
+		g.drawImage(sprite, 0, 0);
+		
 
 	}
 

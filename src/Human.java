@@ -38,8 +38,8 @@ public class Human extends Entity {
 	public void animation_idle() {
 		animation_clear();
 		limbs[3].set_origin(13, 18);
-		limbs[3].set_rot(new float[] { -3, 3 });
-		limbs[3].set_speed(15);
+		limbs[3].set_rot(new float[] { -7, 12 });
+		limbs[3].set_speed(20);
 		limbs[0].rot_to(-10);
 		limbs[1].rot_to(10);
 	}
@@ -150,7 +150,7 @@ public class Human extends Entity {
 		this.eye_color = eye_color;
 		this.skin_color = skin_color;
 	}
-	
+
 	public void reset_colors() {
 		int ec[] = Traits.get_eye_color(this.eye_color);
 		eyes.setImageColor(ec[0] / 255f, ec[1] / 255f, ec[2] / 255f);
@@ -160,9 +160,9 @@ public class Human extends Entity {
 
 	public Human create_offspring(Human father) throws NoSuchMethodException, SecurityException, SlickException {
 		Human child = new Human((int) curRoom.x, (int) curRoom.y);
-		int hc = (int) ( (this.hair_color + father.hair_color) / 2f );
-		int ec = (int) ( (this.eye_color + father.eye_color) / 2f );
-		int sc = (int) ( (this.skin_color + father.skin_color) / 2f );
+		int hc = (int) ((this.hair_color + father.hair_color) / 2f);
+		int ec = (int) ((this.eye_color + father.eye_color) / 2f);
+		int sc = (int) ((this.skin_color + father.skin_color) / 2f);
 		child.set_name(child.gender ? namesM[r.nextInt(namesM.length)] : namesF[r.nextInt(namesF.length)], father.last_name);
 		child.set_traits(hc, ec, sc);
 		child.set_age(0);
@@ -172,11 +172,11 @@ public class Human extends Entity {
 		return child;
 	}
 
-	public void draw(Graphics surface) {
+	public void draw(Graphics surface) throws SlickException {
 		super.draw(surface);
-		hair.draw(x, y);
-		eyes.draw(x + 15, y + 6);
-		face.draw(x + 12, y + 2);
+		hair.draw(x + ((direction == -1) ? hair.getWidth() : 0), y, (direction == -1) ? -hair.getWidth() : hair.getWidth(), hair.getHeight());
+		eyes.draw(x + ((direction == -1) ? eyes.getWidth() + 6 : 15), y + 6, (direction == -1) ? -eyes.getWidth() : eyes.getWidth(), eyes.getHeight());
+		face.draw(x + ((direction == -1) ? face.getWidth() : 12), y + 2, (direction == -1) ? -face.getWidth() : face.getWidth(), face.getHeight());
 
 	}
 

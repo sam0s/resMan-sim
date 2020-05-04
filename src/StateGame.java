@@ -60,7 +60,7 @@ public class StateGame extends BasicGameState implements Serializable {
 	int mousex_rel;
 	int mousey_rel;
 
-	boolean debug_info = true;
+	boolean debug_info = false;
 	boolean placed = false;
 
 	public static final int ID = 0;

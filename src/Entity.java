@@ -35,6 +35,8 @@ public class Entity implements Serializable {
 	float target_x;
 	boolean destroy;
 	transient Limb limbs[];
+	transient Graphics spr;
+	int direction = 0;
 
 	public void animation_clear() {
 		for (Limb l : limbs) {
@@ -175,11 +177,9 @@ public class Entity implements Serializable {
 		animation_walk();
 
 		if (xx > curRoom.x + curRoom.sizex - sprite.getWidth()) {
-			System.out.println("o: " + xx + sprite);
 			xx = curRoom.x + sprite.getWidth();
 		}
 		if (xx < curRoom.x) {
-			System.out.println("g: " + xx);
 			xx = curRoom.x;
 		}
 		System.out.println("ASDSD: " + xx);
@@ -190,6 +190,7 @@ public class Entity implements Serializable {
 	public void move(int delta) {
 		switch (cur_path.charAt(0)) {
 		case 'r':
+			direction = 0;
 			x += speed * (delta / 1000f);
 			// System.out.printf("moving right.. ");
 			if (x >= curRoom.x + curRoom.sizex) {
@@ -198,6 +199,7 @@ public class Entity implements Serializable {
 			}
 			break;
 		case 'l':
+			direction = -1;
 			x -= speed * (delta / 1000f);
 			// System.out.printf("moving right.. ");
 			if (x + sprite.getWidth() <= curRoom.x) {
@@ -262,7 +264,10 @@ public class Entity implements Serializable {
 		Limb head = new Limb(new Image("gfx//charAttributes//" + spr_name + "//head.png"));
 		Image legg = new Image("gfx//charAttributes//" + spr_name + "//leg.png");
 		Image legg2 = new Image("gfx//charAttributes//" + spr_name + "//leg.png");
-		this.sprite = head.sprite;
+
+		this.sprite = new Image(head.sprite.getWidth(), head.sprite.getHeight());
+		spr = this.sprite.getGraphics();
+		spr.setAntiAlias(false);
 		this.limbs = new Limb[] { new Limb(legg), new Limb(legg2), head, arm };
 		this.hitbox = new Rectangle(x, y, sprite.getWidth(), sprite.getHeight());
 	}
@@ -282,10 +287,17 @@ public class Entity implements Serializable {
 		}
 	}
 
-	public void draw(Graphics surface) {
+	public void draw(Graphics surface) throws SlickException {
+		spr.clear();
 		for (Limb l : limbs) {
-			l.draw(x, y);
+			l.draw(x, y, spr);
 		}
-	}
+		Image temp = new Image(sprite.getWidth(), sprite.getHeight());
 
+		spr.copyArea(temp, 0, 0);
+		spr.flush();
+		temp.setCenterOfRotation(sprite.getWidth() / 2, sprite.getHeight() / 2);
+		temp.flushPixelData();
+		temp.draw(x + ((direction == -1) ? sprite.getWidth() : 0), y + sprite.getHeight(), (direction == -1) ? -sprite.getWidth() : sprite.getWidth(), -sprite.getHeight());
+	}
 }
