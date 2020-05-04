@@ -40,6 +40,7 @@ public class Human extends Entity {
 		limbs[3].set_origin(13, 18);
 		limbs[3].set_rot(new float[] { -3, 3 });
 		limbs[3].set_speed(15);
+
 		limbs[0].rot_to(-10);
 		limbs[1].rot_to(10);
 	}
@@ -47,10 +48,10 @@ public class Human extends Entity {
 	public void animation_walk() {
 		animation_clear();
 		limbs[3].set_origin(13, 18);
-		limbs[3].set_rot(new float[] { -30, 30 });
+		limbs[3].set_rot(new float[] { -30, -10, 0, 10, 30, 10, 0, -10 });
 		limbs[3].set_speed(100);
-		limbs[0].set_rot(new float[] { 30, -30 });
-		limbs[1].set_rot(new float[] { -30, 30 });
+		limbs[0].set_rot(new float[] { 30, 10, 0, -10, -30, -10, 0, 10 });
+		limbs[1].set_rot(new float[] { -30, -10, 0, 10, 30, 10, 0, -10 });
 	}
 
 	public Human(int x, int y) throws SlickException, NoSuchMethodException, SecurityException {
@@ -150,7 +151,7 @@ public class Human extends Entity {
 		this.eye_color = eye_color;
 		this.skin_color = skin_color;
 	}
-	
+
 	public void reset_colors() {
 		int ec[] = Traits.get_eye_color(this.eye_color);
 		eyes.setImageColor(ec[0] / 255f, ec[1] / 255f, ec[2] / 255f);
@@ -160,9 +161,9 @@ public class Human extends Entity {
 
 	public Human create_offspring(Human father) throws NoSuchMethodException, SecurityException, SlickException {
 		Human child = new Human((int) curRoom.x, (int) curRoom.y);
-		int hc = (int) ( (this.hair_color + father.hair_color) / 2f );
-		int ec = (int) ( (this.eye_color + father.eye_color) / 2f );
-		int sc = (int) ( (this.skin_color + father.skin_color) / 2f );
+		int hc = (int) ((this.hair_color + father.hair_color) / 2f);
+		int ec = (int) ((this.eye_color + father.eye_color) / 2f);
+		int sc = (int) ((this.skin_color + father.skin_color) / 2f);
 		child.set_name(child.gender ? namesM[r.nextInt(namesM.length)] : namesF[r.nextInt(namesF.length)], father.last_name);
 		child.set_traits(hc, ec, sc);
 		child.set_age(0);

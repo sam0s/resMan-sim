@@ -5,6 +5,8 @@ public class Limb {
 	public float[] rotation;
 	public int rot_frame = 0;
 	public float angle = 0;
+	public float frame_rate = 15;
+	public float frame = 0;
 	public float speed;
 	public float origin_x;
 	public float origin_y;
@@ -15,6 +17,7 @@ public class Limb {
 		speed = 100;
 		origin_x = s.getWidth() / 2;
 		origin_y = s.getHeight() / 2;
+
 	}
 
 	public void advance_rot_frame() {
@@ -30,55 +33,25 @@ public class Limb {
 	}
 
 	public void rot_to(float r) {
-		rotTo = r;
+		sprite.setRotation(r);
 	}
 
 	public void set_origin(float xx, float yy) {
 		origin_x = xx;
 		origin_y = yy;
+		sprite.setCenterOfRotation(xx, yy);
 
 	}
 
 	public void update(int delta) {
-
-		sprite.setCenterOfRotation(origin_x, origin_y);
-		if (rotation != null && rotation.length > 0) {
-			sprite.setRotation(angle);
-			float spd = speed * (delta / 1000f);
-			// System.out.println(rot_frame + " " + angle + " " +
-			// rotation[rot_frame]);
-			if (angle < rotation[rot_frame]) {
-				angle += spd;
-				if (angle >= rotation[rot_frame]) {
-					advance_rot_frame();
-				}
-			} else {
-
-				if (angle > rotation[rot_frame]) {
-					angle -= spd;
-					if (angle <= rotation[rot_frame]) {
-						advance_rot_frame();
-					}
-				}
-			}
-		} else {
-			if (angle != rotTo) {
-				sprite.setRotation(angle);
-				float spd = speed * (delta / 1000f);
-				if (angle > rotTo) {
-					angle -= spd;
-					if (angle < rotTo) {
-						angle = rotTo;
-					}
-				} else {
-					if (angle < rotTo) {
-						angle += spd;
-						if (angle > rotTo) {
-							angle = rotTo;
-						}
-					}
-				}
-
+		if (rotation != null) {
+			frame += speed * (delta / 1000f);
+			System.out.println(rotation[0]);
+			if (frame >= frame_rate) {
+				frame = 0;
+				advance_rot_frame();
+				sprite.setRotation(rotation[rot_frame]);
+				System.out.printf("OKTHEN");
 			}
 		}
 
