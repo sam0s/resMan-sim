@@ -257,7 +257,7 @@ public class Room implements Serializable {
 										   down == null ? "" : "D"),
 											x + 10, y + 15);	
 			
-			surface.setColor(Color.red);
+			surface.setColor(Color.orange);
 		}
 	}
 
@@ -272,6 +272,19 @@ public class Room implements Serializable {
 			ovlp.left = this;
 			this.right = ovlp;
 		}
+		
+		if (type == "elevator") {
+		
+			if (up == null && (ovlp = s.room_overlap(x, y - 10, x + sizex, y)) != null) {
+				ovlp.down = this;
+				this.up = ovlp; 
+			}
+			
+			if (down == null && (ovlp = s.room_overlap(x, y, x + sizex, y + 10)) != null) {
+				ovlp.up = this;
+				this.down = ovlp;
+			}
+		
+		}
 	}
-
 }
