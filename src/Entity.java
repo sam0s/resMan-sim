@@ -21,6 +21,7 @@ public class Entity implements Serializable {
 	public float sizey = 1;
 	public float x;
 	public float y;
+	int direction = 1;
 	public transient Rectangle hitbox;
 	public transient Room curRoom;
 	public boolean moving = false;
@@ -34,22 +35,15 @@ public class Entity implements Serializable {
 	boolean dead;
 	float target_x;
 	boolean destroy;
-	transient Limb limbs[];
-
-	public void animation_clear() {
-		for (Limb l : limbs) {
-			l.set_rot(null);
-		}
-	}
-
-	public void animation_idle() {
-	}
-
-	public void animation_walk() {
-	}
 
 	public Method fgetMethod(String methodName, Class... args) throws NoSuchMethodException, SecurityException {
 		return this.getClass().getMethod(methodName, args);
+	}
+
+	public void anim_walk() {
+	}
+
+	public void anim_idle() {
 	}
 
 	public Entity(String name, int x, int y, boolean gender) throws NoSuchMethodException, SecurityException {
@@ -71,7 +65,6 @@ public class Entity implements Serializable {
 		if (r == start) {
 			return;
 		}
-		animation_walk();
 		String pathL = "";
 		String pathR = "";
 		String y = "";
@@ -103,6 +96,12 @@ public class Entity implements Serializable {
 		y = y.replaceAll("\\s", "");
 		cur_path = "" + y;
 		System.out.println("PATH: " + y);
+		if (cur_path.charAt(0) == 'l') {
+			direction = -1;
+		} else if (cur_path.charAt(0) == 'r') {
+			direction = 1;
+		}
+		anim_walk();
 
 	}
 
@@ -172,9 +171,8 @@ public class Entity implements Serializable {
 	}
 
 	public void move_to_point(float xx) {
-		animation_walk();
-
 		if (xx > curRoom.x + curRoom.sizex - sprite.getWidth()) {
+
 			System.out.println("o: " + xx + sprite);
 			xx = curRoom.x + sprite.getWidth();
 		}
@@ -190,6 +188,7 @@ public class Entity implements Serializable {
 	public void move(int delta) {
 		switch (cur_path.charAt(0)) {
 		case 'r':
+			direction = 1;
 			x += speed * (delta / 1000f);
 			// System.out.printf("moving right.. ");
 			if (x >= curRoom.x + curRoom.sizex) {
@@ -198,6 +197,7 @@ public class Entity implements Serializable {
 			}
 			break;
 		case 'l':
+			direction = -1;
 			x -= speed * (delta / 1000f);
 			// System.out.printf("moving right.. ");
 			if (x + sprite.getWidth() <= curRoom.x) {
@@ -224,46 +224,25 @@ public class Entity implements Serializable {
 			if (x > target_x) {
 				x -= speed / 2 * (delta / 1000f);
 				if (x < target_x) {
+					anim_idle();
 					x = target_x;
-					animation_idle();
 				}
 			} else {
 				if (x < target_x) {
 					x += speed / 2 * (delta / 1000f);
 					if (x > target_x) {
+						anim_idle();
 						x = target_x;
-						animation_idle();
 					}
 				}
 			}
-		}
-
-		// if (roamDir == 1) {
-		// x += speed / 2 * (delta / 1000f);
-		// if (x + sprite.getWidth() * sizex >= curRoom.x + curRoom.sizex) {
-		// roamDir = 0;
-		// sizex = -1;
-		// return;
-		// }
-		// } else {
-		// x -= speed / 2 * (delta / 1000f);
-		// if (x <= curRoom.x) {
-		// sizex = 1;
-		// roamDir = 1;
-		// return;
-		// }
-		// }
+		} 
 	}
 
 	public void setSpriteLoad(String spr_name) throws SlickException {
 		// later make this a list accessible by the class;
 		System.out.println("loading imags");
-		Limb arm = new Limb(new Image("gfx//charAttributes//" + spr_name + "//arm.png"));
-		Limb head = new Limb(new Image("gfx//charAttributes//" + spr_name + "//head.png"));
-		Image legg = new Image("gfx//charAttributes//" + spr_name + "//leg.png");
-		Image legg2 = new Image("gfx//charAttributes//" + spr_name + "//leg.png");
-		this.sprite = head.sprite;
-		this.limbs = new Limb[] { new Limb(legg), new Limb(legg2), head, arm };
+		// this.sprite = head.sprite;
 		this.hitbox = new Rectangle(x, y, sprite.getWidth(), sprite.getHeight());
 	}
 
@@ -277,15 +256,11 @@ public class Entity implements Serializable {
 			dead = true;
 			destroy = true;
 		}
-		for (Limb l : limbs) {
-			l.update(delta);
-		}
+
 	}
 
 	public void draw(Graphics surface) {
-		for (Limb l : limbs) {
-			l.draw(x, y);
-		}
+
 	}
 
 }

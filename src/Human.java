@@ -1,7 +1,9 @@
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.geom.Rectangle;
 
 import java.util.Random;
 
@@ -33,25 +35,19 @@ public class Human extends Entity {
 	transient Image eyes;
 	transient Image face;
 	transient Image hair;
+	transient Image head;
+	transient Animation legs;
 	boolean dead;
 
-	public void animation_idle() {
-		animation_clear();
-		limbs[3].set_origin(13, 18);
-		limbs[3].set_rot(new float[] { -3, 3 });
-		limbs[3].set_speed(15);
+	public void anim_walk() {
+		legs.setSpeed((float) 0.01);
+		legs.start();
 
-		limbs[0].rot_to(-10);
-		limbs[1].rot_to(10);
 	}
 
-	public void animation_walk() {
-		animation_clear();
-		limbs[3].set_origin(13, 18);
-		limbs[3].set_rot(new float[] { -30, -10, 0, 10, 30, 10, 0, -10 });
-		limbs[3].set_speed(100);
-		limbs[0].set_rot(new float[] { 30, 10, 0, -10, -30, -10, 0, 10 });
-		limbs[1].set_rot(new float[] { -30, -10, 0, 10, 30, 10, 0, -10 });
+	public void anim_idle() {
+		legs.stop();
+		legs.setCurrentFrame(1);
 	}
 
 	public Human(int x, int y) throws SlickException, NoSuchMethodException, SecurityException {
@@ -67,7 +63,7 @@ public class Human extends Entity {
 		System.out.printf("age: %d\n", age);
 		hair_color = r.nextInt(6);
 		eye_color = r.nextInt(6);
-		skin_color = r.nextInt(6);
+		skin_color = r.nextInt(4);
 		expression = r.nextInt(3);
 
 		level = r.nextInt(10) + 1;
@@ -95,8 +91,6 @@ public class Human extends Entity {
 		int hc[] = Traits.get_hair_color(hair_color);
 		// System.out.printf("%d %d %d\n", hc[0], hc[1], hc[2]);
 		hair.setImageColor(hc[0] / 255f, hc[1] / 255f, hc[2] / 255f);
-
-		animation_idle();
 
 	}
 
@@ -132,6 +126,20 @@ public class Human extends Entity {
 		this.gender = gender;
 	}
 
+	public void setSpriteLoad(String spr_name) throws SlickException {
+		// later make this a list accessible by the class;
+		System.out.println("loading imags");
+		head = StateGame.head.copy();
+		legs = new Animation(StateGame.legs, 1);
+		legs.setPingPong(true);
+		anim_walk();
+
+		sprite = new Image("gfx//charAttributes//" + spr_name + "//head.png");
+		int sc[] = Traits.get_skin_color(skin_color);
+		head.setImageColor(sc[0] / 255f, sc[1] / 255f, sc[2] / 255f);
+		this.hitbox = new Rectangle(x, y, sprite.getWidth(), sprite.getHeight());
+	}
+
 	public void setRoom(Room r) {
 		curRoom = r;
 		x = r.x;
@@ -154,7 +162,9 @@ public class Human extends Entity {
 
 	public void reset_colors() {
 		int ec[] = Traits.get_eye_color(this.eye_color);
+		int sc[] = Traits.get_skin_color(this.skin_color);
 		eyes.setImageColor(ec[0] / 255f, ec[1] / 255f, ec[2] / 255f);
+		// head.setImageColor(sc[0] / 255f, sc[1] / 255f, sc[2] / 255f);
 		int hc[] = Traits.get_hair_color(hair_color);
 		hair.setImageColor(hc[0] / 255f, hc[1] / 255f, hc[2] / 255f);
 	}
@@ -174,10 +184,12 @@ public class Human extends Entity {
 	}
 
 	public void draw(Graphics surface) {
-		super.draw(surface);
-		hair.draw(x, y);
-		eyes.draw(x + 15, y + 6);
-		face.draw(x + 12, y + 2);
+		head.draw(x, y);
+		legs.draw(x, y);
+		sprite.draw(x + ((direction == -1) ? sprite.getWidth() : 0), y, (direction == -1) ? -sprite.getWidth() : sprite.getWidth(), sprite.getHeight());
+		hair.draw(x + ((direction == -1) ? hair.getWidth() : 0), y, (direction == -1) ? -hair.getWidth() : hair.getWidth(), hair.getHeight());
+		face.draw(x + ((direction == -1) ? face.getWidth() + 4 : 12), y + 2, (direction == -1) ? -face.getWidth() : face.getWidth(), face.getHeight());
+		eyes.draw(x + ((direction == -1) ? eyes.getWidth() + 6 : 17), y + 6, (direction == -1) ? -eyes.getWidth() : eyes.getWidth(), eyes.getHeight());
 
 	}
 
