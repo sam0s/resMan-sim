@@ -83,11 +83,11 @@ public class Room implements Serializable {
 		build_d.set_args(null, "down");
 		build_d.pause = true;
 
-		build_r = new Button(75, sizey, (int) x + sizex + 6, (int) y, 2, "", s.f_18, fgetMethod("add_connection", Room.class, String.class), this);
+		build_r = new Button(80, sizey, (int) x + sizex + 6, (int) y, 2, "", s.f_18, fgetMethod("add_connection", Room.class, String.class), this);
 		build_r.set_args(null, "right");
 		build_r.pause = true;
 
-		build_l = new Button(75, sizey, -75 + x - 6, y, 2, "", s.f_18, fgetMethod("add_connection", Room.class, String.class), this);
+		build_l = new Button(80, sizey, -80 + x - 6, y, 2, "", s.f_18, fgetMethod("add_connection", Room.class, String.class), this);
 		build_l.set_args(null, "left");
 		build_l.pause = true;
 
@@ -185,6 +185,7 @@ public class Room implements Serializable {
 			r.check_adjacencies();
 			break;
 		}
+		check_adjacencies();
 		s.placed = true;
 	}
 
@@ -263,28 +264,14 @@ public class Room implements Serializable {
 
 	public void check_adjacencies() {
 		Room ovlp;
-		if (left == null && (ovlp = s.room_overlap(x - 10, y, x, y + sizey)) != null) {
+		if (left == null && (ovlp = s.room_overlap(x - 10, y + 5, x, y + sizey - 5)) != null) {
 			ovlp.right = this;
 			left = ovlp;
 		}
 
-		if (right == null && (ovlp = s.room_overlap(x + sizex, y, x + sizex + 10, y + sizey)) != null) {
+		if (right == null && (ovlp = s.room_overlap(x + sizex, y + 5, x + sizex + 10, y + sizey - 5)) != null) {
 			ovlp.left = this;
 			this.right = ovlp;
-		}
-		
-		if (type == "elevator") {
-		
-			if (up == null && (ovlp = s.room_overlap(x, y - 10, x + sizex, y)) != null) {
-				ovlp.down = this;
-				this.up = ovlp; 
-			}
-			
-			if (down == null && (ovlp = s.room_overlap(x, y, x + sizex, y + 10)) != null) {
-				ovlp.up = this;
-				this.down = ovlp;
-			}
-		
 		}
 	}
 }

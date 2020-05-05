@@ -38,18 +38,14 @@ public class Elevator extends Room {
 	public void check_adjacencies() {
 		super.check_adjacencies();
 		Room ovlp;
-		if (up == null && (ovlp = s.room_overlap(x, y - sizey, x, y)) != null) {
-			if (ovlp.type == "Elevator") {
-				ovlp.down = this;
-				up = ovlp;
-			}
+		if (up == null && (ovlp = s.room_overlap(x + 5, y - 10, x + sizex - 5, y)) != null) {
+			ovlp.down = this;
+			this.up = ovlp; 
 		}
-
-		if (down == null && (ovlp = s.room_overlap(x, y + sizey, x + sizex, y + sizey * 2)) != null) {
-			if (ovlp.type == "Elevator") {
-				ovlp.up = this;
-				down = ovlp;
-			}
+		
+		if (down == null && (ovlp = s.room_overlap(x + 5, y, x + sizex - 5, y + 10)) != null) {
+			ovlp.up = this;
+			this.down = ovlp;
 		}
 	}
 
