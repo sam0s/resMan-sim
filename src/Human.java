@@ -8,10 +8,8 @@ import org.newdawn.slick.geom.Rectangle;
 import java.util.Random;
 
 public class Human extends Entity {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+
 	public static String[] namesM = { "Glenn", "Jerry", "Joe", "Jack", "Paul", "Nick", "Trevor", "Mathew", "Todd", "Linus", "Harry", "Walter", "Ryan", "Bob", "Henry", "Brian", "Dennis" };
 	public static String[] namesF = { "Stephanie", "Susan", "Patricia", "Kim", "Rachel", "Rebecca", "Alice", "Jackie", "Judy", "Heidi", "Skylar", "Anna", "Paige" };
 	public static String[] namesL = { "Rollins", "Howard", "Zalman", "Bell", "Newell", "Caiafa", "Finnegan", "Hall", "Howell", "Kernighan", "Wilson", "Ritchie" };
@@ -26,7 +24,7 @@ public class Human extends Entity {
 	int hair_color;
 	int eye_color;
 	int skin_color;
-
+	int outfit = 0;
 	int morale;
 	int level;
 
@@ -63,7 +61,8 @@ public class Human extends Entity {
 		System.out.printf("age: %d\n", age);
 		hair_color = r.nextInt(6);
 		eye_color = r.nextInt(6);
-		skin_color = r.nextInt(4);
+		skin_color = r.nextInt(5);
+		outfit = r.nextInt(4);
 		expression = r.nextInt(3);
 
 		level = r.nextInt(10) + 1;
@@ -76,7 +75,7 @@ public class Human extends Entity {
 		dead = false;
 
 		/* outfit */
-		setSpriteLoad(gender ? "default" : "default_girl");
+		setSpriteLoad(gender ? "guy" : "girl");
 
 		/* eyes */
 		eyes = StateGame.eyes.copy();
@@ -97,7 +96,7 @@ public class Human extends Entity {
 	public void onLoad(Room rm) throws SlickException {
 
 		Random r = new Random();
-		setSpriteLoad(gender ? "default" : "default_girl");
+		setSpriteLoad(gender ? "guy" : "girl");
 
 		/* eyes */
 		eyes = StateGame.eyes.copy();
@@ -133,8 +132,13 @@ public class Human extends Entity {
 		legs = new Animation(StateGame.legs, 1);
 		legs.setPingPong(true);
 		anim_walk();
-
-		sprite = new Image("gfx//charAttributes//" + spr_name + "//head.png");
+		if (outfit == 0) {
+			sprite = new Image("gfx//charAttributes//default//default_" + spr_name + ".png");
+		} else {
+			// i have ideas for optimizing this, but for not this will do
+			// it is possible to have all occurrences of the same outfit share the same reference image
+			sprite = new Image("gfx//charAttributes//default//" + Traits.get_outfit(outfit));
+		}
 		int sc[] = Traits.get_skin_color(skin_color);
 		head.setImageColor(sc[0] / 255f, sc[1] / 255f, sc[2] / 255f);
 		this.hitbox = new Rectangle(x, y, sprite.getWidth(), sprite.getHeight());
