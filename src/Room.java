@@ -251,7 +251,13 @@ public class Room implements Serializable {
 			surface.setColor(Color.cyan);
 			surface.drawString("" + level, x + 2, y + 2);
 			surface.drawString("      pop: " + ents.size(), x + 2, y + 2);
-
+			surface.drawString(String.format("%s%s%s%s", left == null ? "" : "L",
+										   right == null ? "" : "R",
+										   up == null ? "" : "U",
+										   down == null ? "" : "D"),
+											x + 10, y + 15);	
+			
+			surface.setColor(Color.red);
 		}
 	}
 
