@@ -83,11 +83,11 @@ public class Room implements Serializable {
 		build_d.set_args(null, "down");
 		build_d.pause = true;
 
-		build_r = new Button(75, sizey, (int) x + sizex + 6, (int) y, 2, "", s.f_18, fgetMethod("add_connection", Room.class, String.class), this);
+		build_r = new Button(80, sizey, (int) x + sizex + 6, (int) y, 2, "", s.f_18, fgetMethod("add_connection", Room.class, String.class), this);
 		build_r.set_args(null, "right");
 		build_r.pause = true;
 
-		build_l = new Button(75, sizey, -75 + x - 6, y, 2, "", s.f_18, fgetMethod("add_connection", Room.class, String.class), this);
+		build_l = new Button(80, sizey, -80 + x - 6, y, 2, "", s.f_18, fgetMethod("add_connection", Room.class, String.class), this);
 		build_l.set_args(null, "left");
 		build_l.pause = true;
 
@@ -185,6 +185,7 @@ public class Room implements Serializable {
 			r.check_adjacencies();
 			break;
 		}
+		check_adjacencies();
 		s.placed = true;
 	}
 
@@ -251,21 +252,26 @@ public class Room implements Serializable {
 			surface.setColor(Color.cyan);
 			surface.drawString("" + level, x + 2, y + 2);
 			surface.drawString("      pop: " + ents.size(), x + 2, y + 2);
-
+			surface.drawString(String.format("%s%s%s%s", left == null ? "" : "L",
+										   right == null ? "" : "R",
+										   up == null ? "" : "U",
+										   down == null ? "" : "D"),
+											x + 10, y + 15);	
+			
+			surface.setColor(Color.orange);
 		}
 	}
 
 	public void check_adjacencies() {
 		Room ovlp;
-		if (left == null && (ovlp = s.room_overlap(x - 10, y, x, y + sizey)) != null) {
+		if (left == null && (ovlp = s.room_overlap(x - 10, y + 5, x, y + sizey - 5)) != null) {
 			ovlp.right = this;
 			left = ovlp;
 		}
 
-		if (right == null && (ovlp = s.room_overlap(x + sizex, y, x + sizex + 10, y + sizey)) != null) {
+		if (right == null && (ovlp = s.room_overlap(x + sizex, y + 5, x + sizex + 10, y + sizey - 5)) != null) {
 			ovlp.left = this;
 			this.right = ovlp;
 		}
 	}
-
 }
