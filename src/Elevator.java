@@ -48,11 +48,5 @@ public class Elevator extends Room {
 			this.down = ovlp;
 		}
 	}
-	
-	@Override
-	public void draw(Graphics surface) {
-		super.draw(surface);
-		surface.drawRect(x + 5,  y + sizey,  sizex - 10, 10);
-	}
 
 }
