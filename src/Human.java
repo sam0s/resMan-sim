@@ -139,6 +139,7 @@ public class Human extends Entity {
 			// it is possible to have all occurrences of the same outfit share the same reference image
 			sprite = new Image("gfx//charAttributes//default//" + Traits.get_outfit(outfit));
 		}
+		sprite.setFilter(Image.FILTER_NEAREST);
 		int sc[] = Traits.get_skin_color(skin_color);
 		head.setImageColor(sc[0] / 255f, sc[1] / 255f, sc[2] / 255f);
 		this.hitbox = new Rectangle(x, y, sprite.getWidth(), sprite.getHeight());

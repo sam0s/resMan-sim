@@ -200,10 +200,15 @@ public class StateGame extends BasicGameState implements Serializable {
 
 		mode = "general";
 		head = new Image("gfx//charAttributes//head.png");
+		head.setFilter(Image.FILTER_NEAREST);
 		eyes = new Image("gfx//charAttributes//eyes.png"); // 15,6
+		eyes.setFilter(Image.FILTER_NEAREST);
 		faces = new SpriteSheet(new Image("gfx//charAttributes//faces.png"), 17, 14); // 12,2
+		faces.setFilter(Image.FILTER_NEAREST);
 		legs = new SpriteSheet(new Image("gfx//charAttributes//leg_strip.png"), 32, 64);
+		legs.setFilter(Image.FILTER_NEAREST);
 		hairs = new SpriteSheet(new Image("gfx//charAttributes//hairs.png"), 32, 32); // 0,0
+		hairs.setFilter(Image.FILTER_NEAREST);
 		// parent state based game
 		psbg = sbg;
 
@@ -212,11 +217,17 @@ public class StateGame extends BasicGameState implements Serializable {
 		input.addKeyListener(kc);
 
 		bg = new Image("gfx//over_grass.png");
+		bg.setFilter(Image.FILTER_NEAREST);
 		bg2 = new Image("gfx//under1.png");
+		bg2.setFilter(Image.FILTER_NEAREST);
 		power_room_image = new Image("gfx//room_power.png");
+		power_room_image.setFilter(Image.FILTER_NEAREST);
 		elevator_room_image = new Image("gfx//room_elevator.png");
+		elevator_room_image.setFilter(Image.FILTER_NEAREST);
 		water_room_image = new Image("gfx//room_water.png");
+		water_room_image.setFilter(Image.FILTER_NEAREST);
 		food_room_image = new Image("gfx//room_food.png");
+		food_room_image.setFilter(Image.FILTER_NEAREST);
 		init_fonts();
 
 		resources = new Resources(this);
