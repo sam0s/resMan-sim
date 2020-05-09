@@ -27,6 +27,10 @@ public class Human extends Entity {
 	int outfit = 0;
 	int morale;
 	int level;
+	
+	/* behavior stuff */
+	float hunger;
+	float energy;
 
 	Human father;
 	Human mother;
@@ -90,6 +94,9 @@ public class Human extends Entity {
 		int hc[] = Traits.get_hair_color(hair_color);
 		// System.out.printf("%d %d %d\n", hc[0], hc[1], hc[2]);
 		hair.setImageColor(hc[0] / 255f, hc[1] / 255f, hc[2] / 255f);
+		
+		hunger = 0.0f;
+		energy = 100.0f;
 
 	}
 
@@ -187,7 +194,23 @@ public class Human extends Entity {
 		child.reset_colors();
 		return child;
 	}
-
+	
+	float timespan;
+	
+	public void update(int delta) {
+		super.update(delta);
+		
+		hunger += 0.1 * (delta/1000f);
+		energy -= 0.05 * (delta/1000f);
+		if (hunger > .5) {
+			timespan += delta;
+			if (timespan/1000f > 5) { /* lose 1 hp every 5 seconds if really hungry */
+				hp -= 1;
+				timespan = 0;
+			}
+		}
+	}
+	
 	public void draw(Graphics surface) {
 		head.draw(x, y);
 		legs.draw(x, y);

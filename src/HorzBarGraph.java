@@ -36,7 +36,7 @@ public class HorzBarGraph extends Container {
 		surface.fillRect(x, y, sizex, sizey);
 		surface.setColor(outer);
 		surface.fillRect(x,  y, (int) sizex * percent, sizey);
-		surface.drawRect(x, y, sizex, sizey-(int)weight);
+		surface.drawRect(x, y+1, sizex, sizey-(int)weight);
 		if (label != null) {
 			f.drawString(this.x + 2, this.y + 3, label, Color.cyan); /* TODO: figure out how to color text properly */
 		}
