@@ -1,4 +1,5 @@
 package game;
+
 import java.awt.FontFormatException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -369,23 +370,6 @@ public class StateGame extends BasicGameState implements Serializable {
 		if (input.isMouseButtonDown(1)) {
 			this.vp_x += newx - oldx;
 			this.vp_y += newy - oldy;
-
-			// i need some jdedmondt magic on this
-			if (vp_x < -1280) {
-				vp_x = -1280;
-			}
-
-			if (vp_y < -720) {
-				vp_y = -720;
-			}
-
-			if (vp_x > 1280) {
-				vp_x = 1280;
-			}
-
-			if (vp_y > 0) {
-				vp_y = 0;
-			}
 		}
 	}
 
@@ -483,10 +467,11 @@ public class StateGame extends BasicGameState implements Serializable {
 		g.scale(1 / vp_zoom_scale, 1 / vp_zoom_scale);
 
 		if (debug_info) {
-			f_32.drawString(32, menu.sizey, String.format("(%d, %d), vp: (%d %d) %dx%d [%f], mr: (%d, %d)", input.getMouseX(), input.getMouseY(), vp_x, vp_y, vp_w, vp_h, vp_zoom_scale, mousex_rel, mousey_rel), Color.red);
-			f_32.drawString(32, menu.sizey + 32, String.format("pop: %d, rms: %d", resources.n_staff, rooms.size()), Color.red);
-			f_32.drawString(32, menu.sizey + 64, String.format("power_use %.3f, power_prod %.3f, pow_net %.4f, pow_store %.3f", resources.power_use, resources.power_prod, resources.net_power(), resources.power_store), Color.red);
-			f_32.drawString(32, menu.sizey + 96, String.format("water_store %.3f, food_store %.3f", resources.water_store, resources.food_store), Color.red);
+			f_32.drawString(32, menu.sizey, "" + vp_x / vp_zoom_scale, Color.red);
+			// f_32.drawString(32, menu.sizey, String.format("(%d, %d), vp: (%d %d) %dx%d [%f], mr: (%d, %d)", input.getMouseX(), input.getMouseY(), vp_x, vp_y, vp_w, vp_h, vp_zoom_scale, mousex_rel, mousey_rel), Color.red);
+			// f_32.drawString(32, menu.sizey + 32, String.format("pop: %d, rms: %d", resources.n_staff, rooms.size()), Color.red);
+			// f_32.drawString(32, menu.sizey + 64, String.format("power_use %.3f, power_prod %.3f, pow_net %.4f, pow_store %.3f", resources.power_use, resources.power_prod, resources.net_power(), resources.power_store), Color.red);
+			// f_32.drawString(32, menu.sizey + 96, String.format("water_store %.3f, food_store %.3f", resources.water_store, resources.food_store), Color.red);
 		}
 
 		for (Container cont : ui) {

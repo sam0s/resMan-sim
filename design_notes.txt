@@ -1,0 +1,52 @@
+In attempt to lessen feature-creep, and create a means for focus...
+
+The world's most offical design document
+AKA The coomers guide to shelter building.
+
+
+*** CHARACTERS ***
+********************************
+
+Characters will have names, gender, stats, and attributes. Stats and attributes will include HP, Age, IQ, Proclivities (what jobs they might be good at). Rather than having XP/levelling, on a characters birthday they will age +1 year which can recalculate their stats. 
+
+Once a character is older than a certain age they have an increasing chance to die every year, (and maybe seniors should have some kind of buff that make them valuable in certain areas before they die or something?)
+
+
+*** COSTS, GOALS, END-GAME ***
+*****************************************
+*whistling sounds*
+
+What should building rooms/bases cost, how can more of this "currency" be found/created, and how can it be used to progress the game.
+
+
+*** POWER ***
+***************************
+
+Power rooms will provide enough output when it has max workers (4 or 5) to power how many rooms? I want to say 5 rooms worth of power output. Maybe add one rooms worth of power output per worker of the power room itself?
+
+I think another possible clever idea would be to incorporate power rooms as part of the room building mode, where any new non-power room being built must be within a certain degree of adjaceny to the power room or something like that?
+
+When any given room doesn't have access to power (however we decide to rule this) will be dark and not contribute to any releavent base stats until it has power. Pretty straightforward.
+
+*** WATER PRODUCTION ***
+***************************
+
+Water is vital to more than just people.
+
+Could follow similar rules to food, but would need to be made unique for sure.
+
+
+*** FOOD PRODUCTION ***
+***************************
+
+Required food production obviously has to correlate to population. This can be done similar to power wherein each food room can supply food for X number of people. 
+
+Or possibly everybody has a hunger meter, and when it gets to a certain point they have to go to a cafeteria to eat. This would then use a system of food storage, and the player would have to determine how to manage the use of the food or something.
+
+**NOTES**
+
+3 or 4 room-types could be added to supplement core gameplay. For instance, a cafeteria could be needed, or bedrooms, or storage, and stuff like that, and obviously rooms that play into whatever the end-game scenario or goal is going to be.
+
+Once this document has been tidied and complete and there is a full direction for the game, then development can really take off again.
+
+
